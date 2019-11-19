@@ -3,7 +3,11 @@
     {
       "path": "pages/building/detail",
       "style": {
-        "navigationBarTitleText": "楼盘详情"
+        "navigationBarTitleText": "楼盘详情",
+        "navigationBarBackgroundColor": "red",
+        "titleNView": {
+          
+        }
       }
     },
     {

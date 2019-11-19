@@ -33,9 +33,6 @@
       console.log('000000000000');
       wxLogin()
       console.log('this.$api', this.$api);
-      this.$api.getBuildingDetail(1124).then(res => {
-        console.log('res', res);
-      })
       // if (!this.hasLogin) {
       //     uni.showModal({
       //       title: '未登录',
