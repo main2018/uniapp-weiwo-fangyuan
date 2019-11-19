@@ -30,6 +30,7 @@
   export default {
     computed: mapState(['forcedLogin', 'hasLogin', 'userName']),
     onLoad() {
+      console.log('000000000000');
       wxLogin()
       console.log('this.$api', this.$api);
       this.$api.getBuildingDetail(1124).then(res => {
