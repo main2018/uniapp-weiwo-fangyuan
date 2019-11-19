@@ -1,0 +1,153 @@
+@import "./variable.scss";
+
+// 布局
+.flex{
+  display: flex;
+}
+
+.font{
+  &-color{
+    &-primary{
+      color: $color-primary;
+    }
+    &-red{
+      color: $color-red;
+    }
+    &-grey{
+      color: $color-grey;
+    }
+  }
+  &-size{
+    &-sm{
+      font-size: $font-size-sm;
+    }
+    &-base{
+      font-size: $font-size-base;
+    }
+    &-lg{
+      font-size: $font-size-lg;
+    }
+  }
+  &-weight{
+    &-bold{
+      font-weight: bold;
+    }
+  }
+  &-align{
+    &-center{
+      text-align: center;
+    }
+  }
+}
+
+.background{
+  &-color{
+    &-grey{
+      background-color: $color-grey;
+      &-l{
+        background-color: $color-grey-l;
+      }
+    }
+  }
+}
+
+
+$arr: 5, 10, 15, 20, 25, 30, 35, 40, 45, 50;
+.margin{
+  @each $item in $arr{
+    &-#{$item}{
+      margin: #{$item}rpx;
+    }  
+  }
+  &-x{
+    @each $item in $arr{
+      &-#{$item}{
+        margin: 0 #{$item}rpx;
+      }  
+    }
+  }
+  &-y{
+    @each $item in $arr{
+      &-#{$item}{
+        margin: #{$item}rpx 0;
+      }  
+    }
+  }
+  &-l{
+    @each $item in $arr{
+      &-#{$item}{
+        margin-left: #{$item}rpx;
+      }  
+    }
+  }
+  &-r{
+    @each $item in $arr{
+      &-#{$item}{
+        margin-right: #{$item}rpx;
+      }  
+    }
+  }
+  &-t{
+    @each $item in $arr{
+      &-#{$item}{
+        margin-top: #{$item}rpx;
+      }  
+    }
+  }
+  &-b{
+    @each $item in $arr{
+      &-#{$item}{
+        margin-bottom: #{$item}rpx;
+      }  
+    }
+  }
+}
+.padding{
+  @each $item in $arr{
+    &-#{$item}{
+      padding: #{$item}rpx;
+    }  
+  }
+  &-x{
+    @each $item in $arr{
+      &-#{$item}{
+        padding: 0 #{$item}rpx;
+      }  
+    }
+  }
+  &-y{
+    @each $item in $arr{
+      &-#{$item}{
+        padding: #{$item}rpx 0;
+      }  
+    }
+  }
+  &-l{
+    @each $item in $arr{
+      &-#{$item}{
+        padding-left: #{$item}rpx;
+      }  
+    }
+  }
+  &-r{
+    @each $item in $arr{
+      &-#{$item}{
+        padding-right: #{$item}rpx;
+      }  
+    }
+  }
+  &-t{
+    @each $item in $arr{
+      &-#{$item}{
+        padding-top: #{$item}rpx;
+      }  
+    }
+  }
+  &-b{
+    @each $item in $arr{
+      &-#{$item}{
+        padding-bottom: #{$item}rpx;
+      }  
+    }
+  }
+}
