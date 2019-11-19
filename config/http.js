@@ -77,7 +77,7 @@ export default {
 				response.config = _config
 				if (process.env.NODE_ENV === 'development') {
 					if (statusCode === 200) {
-						console.log("【" + _config.requestId + "】 结果：" + JSON.stringify(response.data))
+						// console.log("【" + _config.requestId + "】 结果：" + JSON.stringify(response.data))
 					}
 				}
 				if (this.interceptor.response) {
@@ -177,7 +177,7 @@ function _reslog(res) {
 		if (res.config.data) {
 			console.log("【" + res.config.requestId + "】 请求参数：" + JSON.stringify(res.config.data))
 		}
-		console.log("【" + res.config.requestId + "】 响应结果：" + JSON.stringify(res))
+		// console.log("【" + res.config.requestId + "】 响应结果：" + JSON.stringify(res))
 	}
 	//TODO 除了接口服务错误外，其他日志调接口异步写入日志数据库
 	switch(_statusCode){

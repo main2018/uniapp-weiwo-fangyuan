@@ -4,7 +4,8 @@
   "description": "",
   "main": "main.js",
   "dependencies": {
-    "@dcloudio/uni-ui": "^1.0.8"
+    "@dcloudio/uni-ui": "^1.0.8",
+    "jweixin-module": "^1.4.1"
   },
   "devDependencies": {},
   "scripts": {

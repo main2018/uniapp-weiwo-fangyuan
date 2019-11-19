@@ -22,6 +22,7 @@
 </template>
 
 <script>
+  import wxLogin from '@/common/js/wx-login';
   import {
       mapState
   } from 'vuex'
@@ -29,36 +30,37 @@
   export default {
     computed: mapState(['forcedLogin', 'hasLogin', 'userName']),
     onLoad() {
+      wxLogin()
       console.log('this.$api', this.$api);
       this.$api.getBuildingDetail(1124).then(res => {
         console.log('res', res);
       })
-      if (!this.hasLogin) {
-          uni.showModal({
-              title: '未登录',
-              content: '您未登录，需要登录后才能继续',
-              /**
-               * 如果需要强制登录，不显示取消按钮
-               */
-              showCancel: !this.forcedLogin,
-              success: (res) => {
-                  if (res.confirm) {
-        /**
-         * 如果需要强制登录，使用reLaunch方式
-         */
-                      if (this.forcedLogin) {
-                          uni.reLaunch({
-                              url: '../login/login'
-                          });
-                      } else {
-                          uni.navigateTo({
-                              url: '../login/login'
-                          });
-                      }
-                  }
-              }
-          });
-      }
+      // if (!this.hasLogin) {
+      //     uni.showModal({
+      //       title: '未登录',
+      //       content: '您未登录，需要登录后才能继续',
+      //       /**
+      //        * 如果需要强制登录，不显示取消按钮
+      //        */
+      //       showCancel: !this.forcedLogin,
+      //       success: (res) => {
+      //         if (res.confirm) {
+      //         /**
+      //          * 如果需要强制登录，使用reLaunch方式
+      //          */
+      //           if (this.forcedLogin) {
+      //               uni.reLaunch({
+      //                   url: '../login/login'
+      //               });
+      //           } else {
+      //             uni.navigateTo({
+      //                 url: '../login/login'
+      //             });
+      //           }
+      //         }
+      //       }
+      //   });
+      // }
     }
   }
 </script>
