@@ -6,6 +6,12 @@
         "navigationBarTitleText": "楼盘详情"
       }
     },
+		{
+		  "path": "pages/building/album",
+		  "style": {
+		    "navigationBarTitleText": "楼盘相册"
+		  }
+		},
     {
       "path": "pages/main/main",
       "style": {
