@@ -88,10 +88,13 @@ export default {
 				}
 				// 统一的响应日志记录
 				_reslog(response)
-				if (statusCode === 200) { //成功
-					resolve(response);
+        const res = response && response.data
+        const isRequestSuccess = statusCode === 200
+        const isDataSuccess = res && res.status
+				if (isRequestSuccess && isDataSuccess) { //成功
+					resolve(res && res.data);
 				} else {
-					reject(response)
+					reject(res)
 				}
 			}
 

@@ -4,7 +4,7 @@ import * as api from '@/api';
 
 export default {
   //判断是否在微信中
-  isWechat:function(){  
+  isWechat:function(){
     var ua = window.navigator.userAgent.toLowerCase();
     return ua.match(/micromessenger/i) == 'micromessenger';
   },  
@@ -15,7 +15,7 @@ export default {
       if(res.data){
         jweixin.config({
            debug: true,
-           appId: res.data.appId,  
+           appId: res.data.appId,
            timestamp:res.data.timestamp,
            nonceStr: res.data.nonceStr,
            signature:res.data.signature,

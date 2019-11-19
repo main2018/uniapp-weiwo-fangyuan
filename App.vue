@@ -16,7 +16,7 @@
 	/*每个页面公共css */
 	page {
 		min-height: 100%;
-		display: flex;
+		/* display: flex; */
 	}
 
 	/* #ifdef MP-BAIDU */
