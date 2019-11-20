@@ -50,6 +50,15 @@
     }
   }
 }
+.page-bg {
+  background-color: $uni-bg-color;
+  &-grey {
+     background-color: $uni-bg-color-grey;
+  }
+}
+.mod-bg{
+  background-color: $uni-bg-color;
+}
 
 
 $arr: 5, 10, 15, 20, 25, 30, 35, 40, 45, 50;
@@ -150,4 +159,10 @@ $arr: 5, 10, 15, 20, 25, 30, 35, 40, 45, 50;
       }  
     }
   }
+}
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
 }
