@@ -1,11 +1,6 @@
 {
   "pages": [ //pages数组中第一项表示应用启动页,
-    {
-      "path": "pages/building/album",
-      "style": {
-        "navigationBarTitleText": "楼盘相册"
-      }
-    },
+   
     {
       "path": "pages/building/detail",
       "style": {
@@ -16,7 +11,12 @@
         }
       }
     },
-		
+		{
+		  "path": "pages/building/album",
+		  "style": {
+		    "navigationBarTitleText": "楼盘相册"
+		  }
+		},
     {
       "path": "pages/main/main",
       "style": {
