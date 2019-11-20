@@ -3,6 +3,20 @@
 // 布局
 .flex{
   display: flex;
+  &.center{
+    align-items: center;
+  }
+  &.center-x{
+    justify-content: center;
+  }
+  &-space{
+    &-b{
+      justify-content: space-between;
+    }
+  }
+  .flex-1{
+    flex: 1;
+  }
 }
 
 .font{
@@ -15,6 +29,9 @@
     }
     &-grey{
       color: $color-grey;
+    }
+    &-link{
+      color: $color-link;
     }
   }
   &-size{
@@ -71,14 +88,16 @@ $arr: 5, 10, 15, 20, 25, 30, 35, 40, 45, 50;
   &-x{
     @each $item in $arr{
       &-#{$item}{
-        margin: 0 #{$item}rpx;
+        margin-left: #{$item}rpx;
+        margin-right: #{$item}rpx;
       }  
     }
   }
   &-y{
     @each $item in $arr{
       &-#{$item}{
-        margin: #{$item}rpx 0;
+        margin-top: #{$item}rpx;
+        margin-bottom: #{$item}rpx;
       }  
     }
   }
@@ -120,14 +139,16 @@ $arr: 5, 10, 15, 20, 25, 30, 35, 40, 45, 50;
   &-x{
     @each $item in $arr{
       &-#{$item}{
-        padding: 0 #{$item}rpx;
+        padding-left: #{$item}rpx;
+        padding-right: #{$item}rpx;
       }  
     }
   }
   &-y{
     @each $item in $arr{
       &-#{$item}{
-        padding: #{$item}rpx 0;
+        padding-top: #{$item}rpx;
+        padding-bottom: #{$item}rpx;
       }  
     }
   }
@@ -160,9 +181,14 @@ $arr: 5, 10, 15, 20, 25, 30, 35, 40, 45, 50;
     }
   }
 }
+
 .ellipsis {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   display: block;
+}
+.split{
+  height: 20rpx;
+  background-color: $color-grey-l;
 }
