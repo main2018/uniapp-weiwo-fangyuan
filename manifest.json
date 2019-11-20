@@ -64,5 +64,14 @@
     },
     "mp-toutiao" : {
         "usingComponents" : true
+    },
+    "h5" : {
+        "sdkConfigs" : {
+            "maps" : {
+                "qqmap" : {
+                    "key" : "NEPBZ-SDK3W-SWMRQ-R4ZOY-X5QRT-QQFL5"
+                }
+            }
+        }
     }
 }

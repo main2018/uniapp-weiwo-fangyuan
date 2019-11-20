@@ -3,19 +3,86 @@
     view.building-detail-header
       swiper.swiper(:indicator-dots="false" :circular="true" :autoplay="false" :interval="2000" :duration="500")
         swiper-item.swiper-item(v-for="url in detail.imgs1" :key="url")
-          image(:src="url" mode="center")
+          image(:src="url" mode="aspectFill")
     view.building-detail-hint.font-size-sm.font-align-center.background-color-grey-l 详细信息及项目动态请咨询置业顾问
-    view.building-detail-overviewview
+    view.building-detail-overview.padding-20
       view.building-detail-overview-title.flex.font-size-lg.font-weight-bold
         |新修改完
         view.rate.font-color-primary {{rate(3)}}
-      view.tags.flex.font-size-sm.font-color-grey: view.tag.margin-l-20.padding-5.background-color-grey-l(v-for="tag in 5") 在售
+      view.tags.flex.font-size-sm.font-color-grey: view.tag.margin-y-20.margin-r-20.padding-5.background-color-grey-l(v-for="tag in 5") 在售
+      view.building-detail-overview-item.margin-y-15
+        text.font-color-grey 参考均价:
+        text.font-color-red.font-size-lg 10500元/㎡
+      view.building-detail-overview-item.margin-y-15
+        text.font-color-grey 最新开盘:
+        text 10500元/㎡
+      view.building-detail-overview-item.margin-y-15
+        text.font-color-grey 产权年限:
+        text 10500元/㎡
+      view.building-detail-overview-item.margin-y-15
+        text.font-color-grey 售楼处:
+        text.font-color-link(@tap="navigateTo({url: './nearby'})") 10500元/㎡
+      view.font-size-sm.font-align-center.background-color-grey-l.padding-y-20 更多楼盘信息
+    view.split
+    view.building-detail-item.house-type.padding-20
+      view.building-detail-item-title.flex.margin-b-10
+        text.flex-1 主力户型
+        text.font-size-sm 查看全部>
+      scroll-view.scroll-view.font-size-sm(scroll-x="true")
+        view.scroll-view-item(v-for="url in detail.imgs1")
+          image(:src="url" mode="aspectFill")
+          .scroll-view-item-title.flex.flex-space-b
+            text 1案说法
+            text.font-color-red 52万起
+    view.split
+    view.building-detail-item.activity.padding-20
+      view.building-detail-item-title.flex.margin-b-10
+        text.flex-1 主力户型
+        view.button.font-size-sm 活动报名
+    view.split
+    view.building-detail-item.special.padding-20
+      view.building-detail-item-title.flex.margin-b-10
+        text.flex-1 特色解读
+      view.flex.margin-b-20(v-for="url in detail.imgs1")
+        image.margin-r-20(:src="url" mode="aspectFill")
+        view.flex-1
+          view.margin-b-10 68玩得两侧三方
+          view.font-size-sm.font-color-grey 二室二厅/65.84㎡
+    view.building-detail-item.special.padding-20
+      view.building-detail-item-title.flex.margin-b-10
+        text.flex-1 周边配套
+      map#map(ref="map" @tap="navigateTo({url: './nearby'})" style="width: 100%; height: 300px;" :latitude="latitude" :longitude="longitude" :markers="covers" :hidden="false")
+    view.building-detail-item.habit.padding-20
+      view.building-detail-item-title.flex.margin-b-10
+        text.flex-1 看了又看
+      view.habit-item.flex.margin-b-20(v-for="url in detail.imgs1")
+        image.margin-r-20(:src="url" mode="aspectFill")
+        view.flex-1
+          view.margin-b-10 68玩得两侧三方
+          view.font-size-sm.font-color-grey 二室二厅/65.84㎡
+          
+    contact
+      
 </template>
 
 <script>
+  import contact from "@/components/contact";
+  
   export default {
+    components: {
+      contact
+    },
     data() {
       return {
+        latitude: 39.909,
+        longitude: 116.39742,
+        covers: [
+          {
+            latitude: 39.909,
+            longitude: 116.39742,
+            iconPath: '../../static/img/weixin.png'
+          }
+        ],
         detail: {
           imgs1: [
             'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1574153459148&di=aa8c0bbb7f822cea1812ff137c6bb419&imgtype=0&src=http%3A%2F%2Fi8.qhimg.com%2Ft014c0bef2485acc973.jpg',
@@ -34,7 +101,12 @@
         console.log('data', data);
       })
     },
+    onReady() {
+    },
     methods: {
+      navigateTo(obj) {
+      	uni.navigateTo(obj);
+      },
       rate(rate) {
         // return "★★★★★☆☆☆☆☆".slice(5 - rate, 10 - rate)
         return "★★★★★☆☆☆☆☆".slice(0, rate)
@@ -48,6 +120,7 @@
   &-item{
     image{
       width: 100%;
+      height: 100%;
     }
   }
 }
@@ -61,6 +134,44 @@
   }
   &-overview{
     .tags{
+    }
+  }
+  &-item{
+    &-title{
+      .button{
+        padding: 0 20rpx;
+        border: 1rpx solid;
+        border-radius: 10rpx;
+      }
+    }
+    &.house-type{
+      .scroll-view{
+        white-space: nowrap;
+        &-item{
+          display: inline-block;
+          width: 60%;
+          height: 300rpx;
+          &:not(:last-child){
+            margin-right: 40rpx;
+          }
+          image{
+            width: 100%;
+            height: 100%;
+          }
+        }
+      }
+    }
+    &.special{
+      image{
+        width: 30%;
+        height: 150rpx;
+      }
+    }
+    &.habit{
+      image{
+        width: 30%;
+        height: 150rpx;
+      }
     }
   }
 }
