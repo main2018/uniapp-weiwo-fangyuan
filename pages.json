@@ -1,22 +1,44 @@
 {
   "pages": [ //pages数组中第一项表示应用启动页,
     {
-      "path": "pages/building/album",
-      "style": {
-        "navigationBarTitleText": "楼盘相册"
+      "path" : "pages/building/house",
+      "style" : {
+        "navigationBarTitleText": "户型详情",
+        "titleNView": {
+          "type": "transparent"
+        }
+      }
+    },
+    {
+      "path" : "pages/pano/index",
+      "style" : {
+        "navigationBarTitleText": "全景"
+        // "titleNView": {
+        //   "type": "transparent"
+        // }
       }
     },
     {
       "path": "pages/building/detail",
       "style": {
         "navigationBarTitleText": "楼盘详情",
-        "navigationBarBackgroundColor": "red",
+        "navigationBarBackgroundColor": "#F0AD4E",
         "titleNView": {
-          
+          "type": "transparent"
+        },
+        "app-plus": {
+        	"titleNView": {
+        		"type": "transparent"
+        	}
         }
       }
     },
-		
+		{
+		  "path": "pages/building/album",
+		  "style": {
+		    "navigationBarTitleText": "楼盘相册"
+		  }
+		},
     {
       "path": "pages/main/main",
       "style": {

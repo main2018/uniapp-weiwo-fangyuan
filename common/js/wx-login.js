@@ -38,7 +38,7 @@ export default {
     if(!this.isWechat()){  
         return ;  
     }  
-            //每次都需要重新初始化配置，才可以进行分享  
+    //每次都需要重新初始化配置，才可以进行分享  
     this.initJssdk(function(signData){  
       jweixin.ready(function(){    
         var shareData = {  

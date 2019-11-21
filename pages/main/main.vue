@@ -22,7 +22,9 @@
 </template>
 
 <script>
+  // #ifdef H5
   import wxLogin from '@/common/js/wx-login';
+  // #endif
   import {
       mapState
   } from 'vuex'
@@ -30,8 +32,7 @@
   export default {
     computed: mapState(['forcedLogin', 'hasLogin', 'userName']),
     onLoad() {
-      console.log('000000000000');
-      wxLogin()
+      console.log('wxLogin', wxLogin);
       console.log('this.$api', this.$api);
       // if (!this.hasLogin) {
       //     uni.showModal({

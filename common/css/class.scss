@@ -34,10 +34,16 @@
     &-link{
       color: $color-link;
     }
+    &-white{
+      color: $color-white;
+    }
   }
   &-size{
     &-sm{
       font-size: $font-size-sm;
+      &-s{
+        font-size: $font-size-sm-s;
+      }
     }
     &-base{
       font-size: $font-size-base;

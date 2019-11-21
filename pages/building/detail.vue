@@ -29,7 +29,7 @@
         text.flex-1 主力户型
         text.font-size-sm 查看全部>
       scroll-view.scroll-view.font-size-sm(scroll-x="true")
-        view.scroll-view-item(v-for="url in detail.imgs1")
+        view.scroll-view-item(v-for="url in detail.imgs1" @tap="navigateTo({url: './house'})")
           image(:src="url" mode="aspectFill")
           .scroll-view-item-title.flex.flex-space-b
             text 1案说法
