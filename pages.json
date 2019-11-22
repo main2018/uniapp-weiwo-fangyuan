@@ -55,7 +55,13 @@
     ,{
           "path" : "pages/building/nearby",
           "style" : {}
+      },
+    {
+      "path" : "pages/building/housetypelist",
+      "style" : {
+         "navigationBarTitleText": "主力户型"
       }
+     }
     ],
   "tabBar": {
     "color": "#7a7e83",

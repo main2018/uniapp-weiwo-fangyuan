@@ -193,3 +193,46 @@ $arr: 5, 10, 15, 20, 25, 30, 35, 40, 45, 50;
   height: 20rpx;
   background-color: $color-grey-l;
 }
+// 按钮，标签
+.btn {
+  display: inline-block;
+  height: 60rpx;
+  line-height: 60rpx;
+  padding: 0 20rpx;
+  background-color: #009688;
+  color: #fff;
+  white-space: nowrap;
+  text-align: center;
+  font-size: 28rpx;
+  border: none;
+  border-radius: 4rpx;
+  cursor: pointer;
+  &-sm {
+    height: 44rpx;
+    line-height: 44rpx;
+    padding: 0 10rpx;
+    font-size: $font-sm;
+  }
+  &-danger {
+    background-color: #ff5722;
+  }
+  &-disabled {
+    border: 1px solid #e6e6e6;
+    background-color: #FBFBFB;
+    color: #C9C9C9;
+    cursor: not-allowed;
+    opacity: 1;
+  }
+  &-primary {
+    border: 1px solid #C9C9C9;
+    background-color: #fff;
+    color: #555;
+  }
+  &-radius {
+    border-radius: 200rpx;
+    padding: 0 16rpx;
+  }
+}
+.btn+.btn {
+  margin-left: 12rpx;
+}
