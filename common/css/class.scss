@@ -31,13 +31,27 @@
     &-grey{
       color: $color-grey;
     }
+    &-grey-l{
+      color: $color-grey-l;
+    }
     &-link{
       color: $color-link;
     }
+    &-white{
+      color: $color-white;
+    }
   }
   &-size{
+    @for $i from 1 through 100{
+      &-#{$i}{
+        font-size: #{$i}rpx;
+      }
+    }
     &-sm{
       font-size: $font-size-sm;
+      &-s{
+        font-size: $font-size-sm-s;
+      }
     }
     &-base{
       font-size: $font-size-base;
@@ -79,15 +93,21 @@
 }
 
 
-$arr: 5, 10, 15, 20, 25, 30, 35, 40, 45, 50;
+// $arr: 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80;
+$max: 100;
 .margin{
-  @each $item in $arr{
+  // @each $item in $arr{
+  //   &-#{$item}{
+  //     margin: #{$item}rpx;
+  //   }  
+  // }
+  @for $item from 1 through $max{
     &-#{$item}{
       margin: #{$item}rpx;
     }  
   }
   &-x{
-    @each $item in $arr{
+    @for $item from 1 through $max{
       &-#{$item}{
         margin-left: #{$item}rpx;
         margin-right: #{$item}rpx;
@@ -95,7 +115,7 @@ $arr: 5, 10, 15, 20, 25, 30, 35, 40, 45, 50;
     }
   }
   &-y{
-    @each $item in $arr{
+    @for $item from 1 through $max{
       &-#{$item}{
         margin-top: #{$item}rpx;
         margin-bottom: #{$item}rpx;
@@ -103,28 +123,28 @@ $arr: 5, 10, 15, 20, 25, 30, 35, 40, 45, 50;
     }
   }
   &-l{
-    @each $item in $arr{
+    @for $item from 1 through $max{
       &-#{$item}{
         margin-left: #{$item}rpx;
       }  
     }
   }
   &-r{
-    @each $item in $arr{
+    @for $item from 1 through $max{
       &-#{$item}{
         margin-right: #{$item}rpx;
       }  
     }
   }
   &-t{
-    @each $item in $arr{
+    @for $item from 1 through $max{
       &-#{$item}{
         margin-top: #{$item}rpx;
       }  
     }
   }
   &-b{
-    @each $item in $arr{
+    @for $item from 1 through $max{
       &-#{$item}{
         margin-bottom: #{$item}rpx;
       }  
@@ -132,13 +152,13 @@ $arr: 5, 10, 15, 20, 25, 30, 35, 40, 45, 50;
   }
 }
 .padding{
-  @each $item in $arr{
+  @for $item from 1 through $max{
     &-#{$item}{
       padding: #{$item}rpx;
     }  
   }
   &-x{
-    @each $item in $arr{
+    @for $item from 1 through $max{
       &-#{$item}{
         padding-left: #{$item}rpx;
         padding-right: #{$item}rpx;
@@ -146,7 +166,7 @@ $arr: 5, 10, 15, 20, 25, 30, 35, 40, 45, 50;
     }
   }
   &-y{
-    @each $item in $arr{
+    @for $item from 1 through $max{
       &-#{$item}{
         padding-top: #{$item}rpx;
         padding-bottom: #{$item}rpx;
@@ -154,28 +174,28 @@ $arr: 5, 10, 15, 20, 25, 30, 35, 40, 45, 50;
     }
   }
   &-l{
-    @each $item in $arr{
+    @for $item from 1 through $max{
       &-#{$item}{
         padding-left: #{$item}rpx;
       }  
     }
   }
   &-r{
-    @each $item in $arr{
+    @for $item from 1 through $max{
       &-#{$item}{
         padding-right: #{$item}rpx;
       }  
     }
   }
   &-t{
-    @each $item in $arr{
+    @for $item from 1 through $max{
       &-#{$item}{
         padding-top: #{$item}rpx;
       }  
     }
   }
   &-b{
-    @each $item in $arr{
+    @for $item from 1 through $max{
       &-#{$item}{
         padding-bottom: #{$item}rpx;
       }  

@@ -3,7 +3,7 @@
     image.margin-r-20(src="" mode="aspectFill")
     text.username.flex-1.font-size-lg 小可
     view.button.see 约看房
-    view.button.call 打电话
+    view.button.call(@tap="call") 打电话
 </template>
 
 <script>
@@ -12,7 +12,13 @@
 			return {
 				
 			};
-		}
+		},
+    methods: {
+      call() {
+        // location.href = `tel:${phone}`
+        uni.makePhoneCall({phoneNumber: '13322061910'})
+      }
+    }
 	}
 </script>
 

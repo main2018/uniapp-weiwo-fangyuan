@@ -3,11 +3,16 @@ import App from './App'
 
 import store from './store'
 import * as api from '@/api';
+import {baseUrl} from '@/config';
+
+// require('./assets/styles/vendor.css');
+// import 'http://at.alicdn.com/t/font_1495979_gj3et9fbpr9.css';
 
 Vue.config.productionTip = false
 
 Vue.prototype.$store = store
 Vue.prototype.$api = api
+Vue.prototype.$baseUrl = baseUrl
 
 App.mpType = 'app'
 
