@@ -11,27 +11,24 @@
           <view class="building-name font-size-sm font-color-white padding-x-20 padding-y-10">
             {{'【 ' + (panoData.location_province || '') + ' · ' + (panoData.location_city || '') + ' 】 ' + (panoData.name_project || panoData.name_house || '')}}
           </view>
-          <section :class="!IllustrationShow && 'height0'" class="pos_a of_h right0 top30">
+          <!-- <section class="pos_a of_h right0 top30">
             <div>
-              <!--<transition name="expand">-->
               <div style="" class="fixed_width_110 expand-transition pos_r ">
-                <img ref="Illustration" :src="Illustration" class="w_100" @tap="IllustrationIsVisibleFunc(1)" alt="">
+                <image ref="Illustration" :src="Illustration" @tap="IllustrationIsVisibleFunc(1)">
                 <span :class="!mapsize && 'opacity'" ref="IllustrationCoordinate" class="icon-dingwei-copy pos_a"></span>
               </div>
-              <!--</transition>-->
             </div>
             <div>
               <div @tap="IllustrationClick" class="f-icon-tupiansuolvetuBox">
                 <span class="icon iconfont icon-tupiansuolvetu f-icon-tupiansuolvetu"></span>
               </div>
             </div>
-          </section>
-          <section class="pos_a right10 top40">
-            <div v-show="!IllustrationShow" @tap="IllustrationClick" class="f-icon-tupiansuolvetuBox">
-              <span class="iconfont iconimage"></span>
-            </div>
-          </section>
-          <section v-show="panoNameType" class="pos_a top189 left0 w_100 text-center f_co_fff f-weight-600 text-shadow-999 f-15">
+          </section> -->
+          <view class="building-cover">
+            <image v-show="!IllustrationShow" :src="Illustration" @tap="previewImage([Illustration])">
+            <text @tap="IllustrationClick" class="iconfont image">{{IllustrationShow ? '&#xf2b6;' : '&#xe6a4;'}}</text>
+          </view>
+          <section v-show="panoNameType" class="current-pano-name">
             <span>{{panoName}}</span>
           </section>
           <section v-show="prompt" class="pos_a w_100 top244">
@@ -44,6 +41,14 @@
               <p class="f-12 text-center f_co_fff">左右滑动，效果更佳</p>
             </div>
           </section>
+          <view v-show="prompt" class="pano-hint">
+            <view class="pano-hint-top">
+              <text class="left iconfont">&#xeafb;</text>
+              <text class="hand iconfont">&#xe6cf;</text>
+              <text class="right iconfont">&#xe608;</text>
+            </view>
+            <text class="font-size-sm-s">左右滑动，效果更佳</text>
+          </view>
           <section :class="{'hide':!currentType || (panoData.panoramas && panoData.panoramas.length < 2)}" class="pano-panoramas">
             <!-- <ul ref="ThumbnailsBox" class="f-panorama-imgListBox cl ma_auto">
               <li :ref="'Thumbnails'" class="f-panorama-List pos_r of_h l" :class="currentPanoramaIndex==index && 'f-panorama-ListAc'" @tap="clickSwitchPanoramic(index, p.name)" v-for="(p, index) in panoData.panoramas" :key="index">
@@ -58,11 +63,29 @@
               </view>
             </scroll-view>
           </section>
-          <section class="pos_f bottom15 right0">
+          <view class="pano-bottom">
+            <view @tap="forwardingShow = !forwardingShow" v-if="panoData.act_status == 2&&($route.query.display_area==1||$route.query.display_area==2)">
+              <text class="iconfont">&#xe641;</text>
+              <text class="font-size-sm-s">有奖转发</text>
+            </view>
+            <view >
+              <text class="iconfont">&#xe641;</text>
+              <text class="font-size-sm-s">
+                {{panoData.type == 21?'项目':panoData.type == 22?'区位':panoData.type == 23?'户型':'户型'}}介绍
+              </text>
+            </view>
+            <view @tap="statistics(3)">
+              <text class="iconfont">&#xe60d;</text>
+              <text class="font-size-sm-s">咨询电话</text>
+            </view>
+            <view @tap="currentFunc">
+              <text class="iconfont" style="font-size: 50rpx;">&#xe602;</text>
+            </view>
+          </view>
+          <!-- <section class="pano-bottom">
             <ul class="cl">
               <li @tap="forwardingShow = !forwardingShow" v-if="panoData.act_status == 2&&($route.query.display_area==1||$route.query.display_area==2)" class="l f-gengduo-list text-center">
                 <div class="f-icon-box bor-50 background-fff">
-                  <!--<span class="icon iconfont icon-youjiang f_co_999 f-font-24"></span>-->
                   <span class="activityIcon"></span>
                 </div>
                 <p class="f-12 f_co_fff">有奖转发</p>
@@ -87,7 +110,7 @@
                 </div>
               </li>
             </ul>
-          </section>
+          </section> -->
         </div>
       </div>
       <!--示意图放大-->
@@ -139,6 +162,38 @@
   // @import "~common/styles/mixins/bg-image";
   // @import '~common/styles/mixins/border-1px.less';
   //@import "~common/styles/transition";
+  .current-pano-name{
+    position: absolute;
+    top: 30%;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-weight: 600;
+    color: $color-white;
+  }
+  .pano-hint{
+    pointer-events: none;
+    padding: 30rpx;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: $color-white;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 10rpx;
+    &-top{
+      text{
+        vertical-align: top;
+        &:not(.iconfont){
+          display: block;
+        }
+        &.hand{
+          font-size: 80rpx;
+        }
+      }
+    }
+  }
   .building-name{
     position: absolute;
     top: 0;
@@ -146,11 +201,55 @@
     width: 100%;
     background: rgba(0, 0, 0, 0.1);
   }
+  .building-cover{
+    position: absolute;
+    top: 80rpx;
+    right: 5%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    image{
+      width: 200rpx;
+      height: 300rpx;
+    }
+    text{
+      margin-top: 10rpx;
+      width: 50rpx;
+      height: 50rpx;
+      line-height: 50rpx;
+      background-color: $color-white;
+      text-align: center;
+      border-radius: 50%;
+      font-size: 24rpx;
+    }
+  }
+  .pano-bottom{
+    position: fixed;
+    right: 0;
+    bottom: 40rpx;
+    color: $color-white;
+    >view{
+      margin-right: 20rpx;
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .iconfont{
+      width: 80rpx;
+      height: 80rpx;
+      line-height: 80rpx;
+      font-size: 60rpx;
+      border-radius: 50%;
+      background-color: $color-white;
+      text-align: center;
+      color: $color-grey;
+    }
+  }
   .pano-panoramas{
     position: fixed;
     left: 0;
     width: 100%; 
-    bottom: 1.81rem;
+    bottom: 180rpx;
     background: rgba(0, 0, 0, 0.3);
     overflow-x: auto;
     overflow-y: hidden;
@@ -560,13 +659,6 @@
     },
     /* 在 `methods` 对象中定义方法 */
     methods: {
-      //      分享
-      forward () {
-        this.showShare = true
-      },
-      routerFunc (limk) {
-        this.$router.push({path: limk})
-      },
       /* 示意图 是否  显示 与 坐标点 */
       IllustrationCoordinateFunc (pano) {
         let panorama = pano;
@@ -577,20 +669,16 @@
         }
         this.mapsize = panorama.mapsize
         this.PanoramicKey = panorama.id;
-        let IllustrationWidth = this.$refs.Illustration.offsetWidth || this.$refs.Illustration.clientWidth;
-        let IllustrationHeight = this.$refs.Illustration.offsetHeight || this.$refs.Illustration.clientHeight;
-        let IllustrationMaxWidth = this.$refs.IllustrationMax.offsetWidth || this.$refs.IllustrationMax.clientWidth;
-        let IllustrationMaxHeight = this.$refs.IllustrationMax.offsetHeight || this.$refs.IllustrationMax.clientHeight;
-        let IllustrationCoordinateWidth = this.$refs.IllustrationCoordinate.offsetWidth || this.$refs.IllustrationCoordinate.clientWidth;
-        let IllustrationCoordinateHeight = this.$refs.IllustrationCoordinate.offsetWidth || this.$refs.IllustrationCoordinate.clientHeight;
-        let IllustrationCoordinateMaxWidth = this.$refs.IllustrationCoordinateMax.offsetWidth || this.$refs.IllustrationCoordinateMax.clientWidth;
-        let IllustrationCoordinateMaxHeight = this.$refs.IllustrationCoordinateMax.offsetWidth || this.$refs.IllustrationCoordinateMax.clientHeight;
-        if (panorama.mapsize) {
-          this.$refs.IllustrationCoordinate.style.left = (panorama.mapsize.OffsetX * (IllustrationWidth / panorama.mapsize.imgWidth) - IllustrationCoordinateWidth / 2) + "px";
-          this.$refs.IllustrationCoordinate.style.top = (panorama.mapsize.OffsetY * (IllustrationHeight / panorama.mapsize.imgHeight) - IllustrationCoordinateHeight / 2) + "px";
-          this.$refs.IllustrationCoordinateMax.style.left = (panorama.mapsize.OffsetX * (IllustrationMaxWidth / panorama.mapsize.imgWidth) - IllustrationCoordinateMaxWidth / 2) + "px";
-          this.$refs.IllustrationCoordinateMax.style.top = (panorama.mapsize.OffsetY * (IllustrationMaxHeight / panorama.mapsize.imgHeight) - IllustrationCoordinateMaxHeight / 2) + "px";
-        }
+      },
+      previewImage(urls) {
+        uni.previewImage({urls: urls})
+      },
+      //      分享
+      forward () {
+        this.showShare = true
+      },
+      routerFunc (limk) {
+        this.$router.push({path: limk})
       },
       IllustrationIsVisibleFunc (type) {
         this.IllustrationIsVisible = type;
@@ -817,7 +905,6 @@
           ],
           cdnPath: [{field: 'panoramas_map'}, {field: 'cover'}]
         });
-        console.log('panoData', self.panoData)
         self.Viewer = new PANOLENS.Viewer({
           container: document.getElementById("panolensContainer"),
             //          output: 'overlay',
@@ -849,7 +936,6 @@
         setTimeout(() => {
           this.panoData.panoramas[0].hotspotsLoadType = true;
           self.PanoramaDetailsNameToggle(self.panoData.panoramas[0].name);
-          //          self.IllustrationCoordinateFunc(self.panoData.panoramas[0]);
         })
         self.panoData.act_status == 2 && (self.forwardingShow = true)
       })
@@ -898,7 +984,6 @@
       this.panolensContainer.addEventListener("touchend", function () {
         // rotateToggle(true)
       })
-      //      this.IllustrationCoordinateFunc(this.panoData.panoramas[0]);
     },
     /* 更新前 */
     beforeUpdate () {

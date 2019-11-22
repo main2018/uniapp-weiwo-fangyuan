@@ -1,6 +1,27 @@
 {
   "pages": [ //pages数组中第一项表示应用启动页,
     {
+      "path": "pages/building/detail",
+      "style": {
+        "navigationBarTitleText": "楼盘详情",
+        "navigationBarBackgroundColor": "#F0AD4E",
+        "titleNView": {
+          "type": "transparent"
+        },
+        "app-plus": {
+        	"titleNView": {
+        		"type": "transparent"
+        	}
+        }
+      }
+    },
+    {
+        "path" : "pages/building/activity",
+        "style" : {
+          "navigationBarTitleText": "活动详情"
+        }
+    },
+    {
       "path" : "pages/building/house",
       "style" : {
         "navigationBarTitleText": "户型详情",
@@ -18,27 +39,18 @@
         // }
       }
     },
-    {
-      "path": "pages/building/detail",
-      "style": {
-        "navigationBarTitleText": "楼盘详情",
-        "navigationBarBackgroundColor": "#F0AD4E",
-        "titleNView": {
-          "type": "transparent"
-        },
-        "app-plus": {
-        	"titleNView": {
-        		"type": "transparent"
-        	}
-        }
-      }
-    },
 		{
 		  "path": "pages/building/album",
 		  "style": {
 		    "navigationBarTitleText": "楼盘相册"
 		  }
 		},
+    {
+      "path": "pages/building/info",
+      "style": {
+        "navigationBarTitleText": "楼盘数据"
+      }
+    },
     {
       "path": "pages/main/main",
       "style": {
@@ -69,10 +81,10 @@
         "navigationBarTitleText": "我的"
       }
     }
-      ,{
-            "path" : "pages/building/nearby",
-            "style" : {}
-        }
+    ,{
+          "path" : "pages/building/nearby",
+          "style" : {}
+      }
     ],
   "tabBar": {
     "color": "#7a7e83",

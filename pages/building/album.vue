@@ -5,13 +5,12 @@
       view.scoll-wrapper.mod-bg
         view.f-item.padding-x-30(v-for="item in slist" :key="item.id" :class="{curr: item.id === currentId}" @click="tabtap(item)") {{item.name}}
     
-    scroll-view.content-wrap(scroll-y="true" @scroll="asideScroll" :scroll-top="tabScrollTop")
+    scroll-view.content-wrap(scroll-y="true" @scroll="asideScroll" :scroll-top="tabScrollTop" scroll-with-animation)
       view.s-list.mod-bg.margin-b-10(v-for="item in slist" :key="item.id" :id="'main-'+item.id")
         text.s-item {{item.name}}
         view.t-list
           view.t-item(v-if="titem.pid === item.id" v-for="titem in tlist" :key="titem.id")
-            image.pic(:src="titem.picture")
-    
+            image.pic(:src="titem.picture"  @tap="preImg()")
 </template>
 
 <script>
@@ -74,7 +73,7 @@
          	id: 9,
          	pid: 1,
          	name: '景区园林2',
-         	picture: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1574153459148&di=aa8c0bbb7f822cea1812ff137c6bb419&imgtype=0&src=http%3A%2F%2Fi8.qhimg.com%2Ft014c0bef2485acc973.jpg'
+         	picture: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1574155503081&di=daa82b272c93fac5c1b08d9909a46eeb&imgtype=0&src=http%3A%2F%2Fpic70.nipic.com%2Ffile%2F20150615%2F19831515_145215217000_2.jpg'
          },
          {
          	id: 10,
@@ -172,7 +171,8 @@
          	name: '周边配套1',
          	picture: '/static/temp/cate16.jpg'
          }
-        ]
+        ],
+        imgUrls:[]
       }
     },
     methods: {
@@ -211,6 +211,18 @@
       	if(tabs.length > 0){
       		this.currentId = tabs[0].pid;
       	}
+      },
+      // 放大图片
+      preImg() {
+        setTimeout(() => {
+        	uni.previewImage({
+        		current: 0,
+            indicator: "default",
+        		urls: [
+              'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1574153459148&di=aa8c0bbb7f822cea1812ff137c6bb419&imgtype=0&src=http%3A%2F%2Fi8.qhimg.com%2Ft014c0bef2485acc973.jpg'
+            ]
+        	})
+        }, 150)
       }
       
     }
@@ -221,8 +233,6 @@
 .page-album {
   position: relative;
   height: calc(100vh - 44px);
-  /* display: flex;
-  flex-direction: column; */
   .ww-top-nav-wrap{
     position: relative;
     width: 100%;
@@ -258,10 +268,10 @@
     }
     
   }
-  
   .content-wrap {
-    flex: 1;
+    // flex: 1;
     height: 100%;
+    height: calc(100% - 44px);
     .s-list {
       .s-item {
         height: 80rpx;

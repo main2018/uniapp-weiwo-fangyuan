@@ -11,22 +11,8 @@ function login(username, password, deviceId) {
   })
 }
 
-/**
- * 楼盘详情
- * @param {id}
- * @returns {Promise}
- */
-function getBuildingDetail(id) {
-  console.log('http', http);
-  return http.request({
-    method: 'get',
-    url: `consultant//building/${id}`
-  })
-}
-
 export {
-  login,
-  getBuildingDetail
+  login
 }
 
 function generateGetUrl (url, obj = {}) {
