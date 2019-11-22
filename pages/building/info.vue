@@ -51,7 +51,7 @@
             src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1574155503081&di=daa82b272c93fac5c1b08d9909a46eeb&imgtype=0&src=http%3A%2F%2Fpic70.nipic.com%2Ffile%2F20150615%2F19831515_145215217000_2.jpg"
             mode="aspectFill"
             )
-          <i class="iconfont">&#xe62f;</i>
+          <i class="iconfont">&#xf2b6;</i>
         view.papers-item
           view.img-wrap
             image.img(

@@ -25,7 +25,6 @@
     url('//at.alicdn.com/t/font_1495979_rn10kaeb8yj.ttf') format('truetype'),
     url('//at.alicdn.com/t/font_1495979_rn10kaeb8yj.svg#iconfont') format('svg');
   }
-
   .iconfont{
       font-family:"iconfont" !important;
       font-size:16px;font-style:normal;
