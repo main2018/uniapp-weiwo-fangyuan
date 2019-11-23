@@ -15,6 +15,20 @@ function dmDetail(id, daid) {
 }
 
 /**
+ * 楼盘传单列表
+ * @params {did: 楼盘id}
+ * @returns {AxiosPromise}
+ */
+function buildingDms(did) {
+  return http.request({
+    method: 'get',
+    url: `consultant/building/${did}/dm`
+  })
+}
+
+
+
+/**
  * 楼盘详情
  * @param {id}
  * @returns {Promise}
@@ -62,6 +76,7 @@ function statistics(type, idSubject, subject, terminal = 2) {
 export {
   dmDetail,
   getBuildingDetail,
+  buildingDms,
   dmHouseTypeImgs,
   statistics
 }
