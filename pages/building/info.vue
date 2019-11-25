@@ -125,6 +125,10 @@
           view.ptl-item
             view.pic-wrap
               image.pic(src="https://img-cdn-qiniu.dcloud.net.cn/tuku/img/dongwu06.jpg" mode="aspectFill")
+              view.star-wrap
+                text.iconfont.font-size-24 &#xe671;
+                text.iconfont.font-size-24 &#xe671;
+                text.iconfont.font-size-24 &#xe61c;
             view.text-wrap
               view.margin-b-12.font-weight-bold 恒大海口文化
               view.flex.margin-b-12
@@ -139,6 +143,10 @@
           view.ptl-item
             view.pic-wrap
               image.pic(src="https://img-cdn-qiniu.dcloud.net.cn/tuku/img/dongwu06.jpg" mode="aspectFill")
+              view.star-wrap
+                text.iconfont.font-size-24 &#xe671;
+                text.iconfont.font-size-24 &#xe671;
+                text.iconfont.font-size-24 &#xe61c;
             view.text-wrap
               view.margin-b-12.font-weight-bold 恒大海口文化
               view.flex.margin-b-12
@@ -153,6 +161,10 @@
           view.ptl-item
             view.pic-wrap
               image.pic(src="https://img-cdn-qiniu.dcloud.net.cn/tuku/img/dongwu06.jpg" mode="aspectFill")
+              view.star-wrap
+                text.iconfont.font-size-24 &#xe671;
+                text.iconfont.font-size-24 &#xe671;
+                text.iconfont.font-size-24 &#xe61c;
             view.text-wrap
               view.margin-b-12.font-weight-bold 恒大海口文化
               view.flex.margin-b-12
@@ -357,12 +369,27 @@
       border: none;
     }
     .pic-wrap {
+      position: relative;
       width: 200rpx;
       height: 164rpx;
       margin-right: $spacing-base;
       .pic {
         width: 100%;
         height: 100%;
+      }
+      .star-wrap {
+        position: absolute;
+        top: 12rpx;
+        left: 0;
+        background-color: rgba(0,0,0,.5);
+        height: 32rpx;
+        line-height: 32rpx;
+        padding: 0 16rpx;
+        color: #fff;
+        border-top-right-radius: 20rpx;
+        border-bottom-right-radius: 20rpx;
+        display: flex;
+        align-items: center;
       }
     }
     .text-wrap {
