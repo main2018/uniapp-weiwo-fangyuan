@@ -75,6 +75,9 @@
     &-center{
       text-align: center;
     }
+    &-right {
+     text-align: right;
+    }
   }
   &-weight
     &-bold{
@@ -252,8 +255,9 @@ $max: 100;
   text-align: center;
   font-size: 28rpx;
   border: none;
-  border-radius: 4rpx;
+  border-radius: 2rpx;
   cursor: pointer;
+  margin-right: 12rpx;
   &.fullwidth{
     display: block;
     &.large{
@@ -262,10 +266,10 @@ $max: 100;
     }
   }
   &-sm {
-    height: 44rpx;
-    line-height: 44rpx;
-    padding: 0 10rpx;
-    font-size: $font-sm;
+    height: 36rpx;
+    line-height: 36rpx;
+    padding: 0 14rpx;
+    font-size: 22rpx;
   }
   &-danger {
     background-color: #ff5722;
@@ -275,21 +279,23 @@ $max: 100;
   }
   &-disabled {
     border: 1px solid #e6e6e6;
-    background-color: #FBFBFB;
-    color: #C9C9C9;
+    background-color: #fbfbfb;
+    color: #c9c9c9;
     cursor: not-allowed;
     opacity: 1;
   }
   &-primary {
-    border: 1px solid #C9C9C9;
+    border: 1px solid #c9c9c9;
     background-color: #fff;
     color: #555;
+  }
+  &-grey {
+    border: 1px solid #f3f5f6;
+    background-color: #f3f5f6;
+    color: #798697;
   }
   &-radius {
     border-radius: 200rpx;
     padding: 0 16rpx;
   }
-}
-.btn+.btn {
-  margin-left: 12rpx;
 }

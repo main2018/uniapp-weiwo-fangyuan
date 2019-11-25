@@ -11,10 +11,13 @@
         text.s-item {{item.name}}
         //- 图片列表
         view.t-list
-          view.t-item(v-if="titem.pid === item.id" v-for="(titem, index) in tlist" :key="titem.id" :data-index="titem.index" @tap="preImg")
+          view.t-item(v-if="titem.pid === item.id && !titem.videosrc" v-for="(titem, index) in tlist" :key="titem.id" :data-index="index" @click="preImg")
             image.pic(:src="titem.picture" mode="aspectFill")
-            text.video-icon(v-if="titem.videosrc" @click="")
+            text.video-icon(v-if="titem.videosrc")
             
+          view.t-item(v-if="titem.pid === item.id && titem.videosrc" v-for="(titem, index) in tlist" :key="titem.id" @click="videoShow")
+            image.pic( :src="titem.picture" mode="aspectFill")
+            text.video-icon(v-if="titem.videosrc")
 </template>
 
 <script>
@@ -83,7 +86,7 @@
          	id: 10,
          	pid: 1,
          	name: '景区园林1',
-         	// picture: 'https://img-cdn-qiniu.dcloud.net.cn/tuku/img/meinv04-l.jpg'
+         	picture: 'https://img-cdn-qiniu.dcloud.net.cn/tuku/img/meinv04-l.jpg',
           videosrc:'http://cdn.weiwo.info/file_library/mp4/20190307/5c80c02bdc1ec.mp4'
          },
          {
@@ -242,6 +245,10 @@
           indicator: "default",
           urls: list
         })
+      },
+      // 显示视频
+      videoShow() {
+        alert('11')
       }
       
     }

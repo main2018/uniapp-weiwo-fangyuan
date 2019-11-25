@@ -3,7 +3,7 @@
     view.flex.center.padding-20.contact-content
       image.margin-r-10(src="" mode="aspectFill")
       text.username.flex-1.font-size-30 小可
-      view.button.see.margin-r-10.flex.flex-y.center.center-x(@tap="$navigateTo({url: './subscribe'})")
+      view.button.see.margin-r-10.flex.flex-y.center.center-x(@tap="$navigateTo({url: '/pages/building/subscribe'})")
         text.font-size-30 约看房
         text.font-size-22 快速预约看房
       view.button.call.flex.flex-y.center.center-x(@tap="call")

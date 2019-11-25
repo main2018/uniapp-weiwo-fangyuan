@@ -30,7 +30,7 @@
         text {{overviewNormalize('产权年限')}}
       view.building-detail-overview-item.margin-y-15
         text.font-color-grey.margin-r-20(:decode="true" @tap="navigateTo({url: './nearby'})") {{`售楼处&emsp;`}}
-        text.font-color-link(@tap="navigateTo({url: './nearby'})") {{building.modules[0].data[0].content}}
+        text.font-color-link(@tap="navigateTo({url: './nearby'})") {{building | filterAddress}}
       view.font-size-sm.font-align-center.font-color-primary.background-color-grey-l.margin-t-40.padding-y-20(@tap="navigateTo({url: './info'})") 更多信息
     view.building-detail-item.activity.padding-x-40
       view.building-detail-item-title.flex.center.margin-b-40
@@ -140,9 +140,10 @@
         return this.dmList.filter(item => [8,23].includes(Number(item.type)))
       },
       overview() {
-        const obj = this.building && this.building.modules[0] && this.building.modules[0].data && this.building.modules[0].data[1] && this.building.modules[0].data[1].package
+        const building = this.building || {}
+        const obj = building.modules && building.modules[0] && building.modules[0].data && building.modules[0].data[1] && building.modules[0].data[1].package
         
-        return obj || {}
+        return obj || []
       },
       swipers() {
         const cover = this.building && this.building.cover
@@ -163,6 +164,9 @@
       }
     },
     filters: {
+      filterAddress(val) {
+        return val && val.modules && val.modules[0] && val.modules[0].data && val.modules[0].data[0] && val.modules[0].data[0].content
+      }
     },
     onLoad() {
       // const id = 1124
