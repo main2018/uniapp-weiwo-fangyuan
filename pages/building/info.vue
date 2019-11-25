@@ -3,9 +3,9 @@
     //- 顶部选项
     view.top-tab.mod-bg
       view.tab-item(v-for="(item, index) in navlist" :key="index" :class="{curr:index === navCurrIndex}" @click="tabnav(index)") {{item.title}}
-    view.content-wrap
+    view.content-wrap(@scroll="contentScroll" :scroll-top="tabScrollTop")
       //- 数据详情
-      view.x-form.mod-bg
+      view.x-form.mod-bg#main-1
         view.title 项目数据
         view.x-form-item
           label.x-form-label 最新开盘：
@@ -71,7 +71,7 @@
           label.x-form-label 售楼处：
           view.x-form-content.color-deep 海南海口龙华区
       //- 预售许可证    
-      view.x-form.mod-bg
+      view.x-form.mod-bg#main-2
         view.title 预售许可证
         view.x-form-item
           label.x-form-label 预售证号：
@@ -83,43 +83,43 @@
           label.x-form-label 绑定楼栋：
           view.x-form-content 暂无
       //- 楼盘介绍        
-      view.x-form.mod-bg
+      view.x-form.mod-bg#main-3
         view.title 楼盘介绍
         view.margin-b-40
           |项目位于海口西海岸片区， 海南十里繁华地，东十里是海南商务区，西十里是海口行政区，北走1000步是大海，南靠秀英老城区。“十里繁华，宁静海生活”，闹市区选择这安静的生活空间，无论出租、自主、投资都是首选
       //- 楼盘证件
-      view.container.mod-bg
+      view.container.mod-bg#main-4
         view.title 楼盘证件
         view.papers-list
           view.papers-item
             view.img-wrap
               image.img(
-              src="https://img-cdn-qiniu.dcloud.net.cn/tuku/img/dongwu06.jpg"
+              src="https://img-cdn-qiniu.dcloud.net.cn/tuku/img/dongwu05-l.jpg"
               mode="aspectFill"
               )
             view.aux.ellipsis 《营业执照》
           view.papers-item
             view.img-wrap
               image.img(
-              src="https://img-cdn-qiniu.dcloud.net.cn/tuku/img/dongwu06.jpg"
+              src="https://img-cdn-qiniu.dcloud.net.cn/tuku/img/dongwu05-l.jpg"
               mode="aspectFill"
               )
             view.aux.ellipsis 《国有土地使用证》
           view.papers-item
             view.img-wrap
               image.img(
-              src="https://img-cdn-qiniu.dcloud.net.cn/tuku/img/dongwu06.jpg"
+              src="https://img-cdn-qiniu.dcloud.net.cn/tuku/img/dongwu05-l.jpg"
               mode="aspectFill"
               )
             view.aux.ellipsis 《建设用地规划许可证》
           view.papers-item
             view.img-wrap
               image.img(
-              src="https://img-cdn-qiniu.dcloud.net.cn/tuku/img/dongwu06.jpg"
+              src="https://img-cdn-qiniu.dcloud.net.cn/tuku/img/dongwu05-l.jpg"
               mode="aspectFill")
             view.aux.ellipsis 《建筑工程规划许可证》
       //- 看了又看
-      view.lookagain.mod-bg
+      view.lookagain.mod-bg#main-5
         view.title 看了又看
         view.ptl-list
           view.ptl-item
@@ -150,7 +150,20 @@
                 text.btn.btn-sm.btn-grey 商住
                 text.btn.btn-sm.btn-grey 首付低
                 text.btn.btn-sm.btn-grey 大型社区
-              
+          view.ptl-item
+            view.pic-wrap
+              image.pic(src="https://img-cdn-qiniu.dcloud.net.cn/tuku/img/dongwu06.jpg" mode="aspectFill")
+            view.text-wrap
+              view.margin-b-12.font-weight-bold 恒大海口文化
+              view.flex.margin-b-12
+                text.font-color-red.font-size-30 1000元/㎡
+              view.margin-b-12
+                text.font-size-24 龙华区/1-4室 24-122㎡
+              view
+                text.btn.btn-sm.btn-danger 在售
+                text.btn.btn-sm.btn-grey 商住
+                text.btn.btn-sm.btn-grey 首付低
+                text.btn.btn-sm.btn-grey 大型社区    
     contact
 </template>
         
@@ -159,6 +172,7 @@
 	export default {
 		data() {
 			return {
+        tabScrollTop: 0,
         navCurrIndex: 0,
         navlist:[
           {
@@ -186,9 +200,14 @@
           this.calcSize();
         } */
         this.navCurrIndex = index;
+        // this.tabScrollTop = document.querySlector('#main-1').top;
        /* let index = this.slist.findIndex(sitem=>sitem.pid === item.id);
         this.tabScrollTop = this.slist[index].top; */
       },
+      // 窗口滚动
+      contentScroll(e){
+        let scrollTop = e.detail.scrollTop;
+      }
 			
 		}
 	}

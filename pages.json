@@ -52,6 +52,12 @@
       }
     },
     {
+      "path": "pages/building/housetypelist",
+      "style": {
+        "navigationBarTitleText": "户型列表页"
+      }
+    },
+    {
       "path": "pages/main/main",
       "style": {
         "navigationBarTitleText": "登录模板"
@@ -84,13 +90,7 @@
     ,{
           "path" : "pages/building/nearby",
           "style" : {}
-      },
-    {
-      "path" : "pages/building/housetypelist",
-      "style" : {
-         "navigationBarTitleText": "主力户型"
       }
-     }
     ],
   "tabBar": {
     "color": "#7a7e83",

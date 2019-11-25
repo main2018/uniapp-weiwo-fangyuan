@@ -1,62 +1,84 @@
 <template lang="pug">
   view.page-bg-grey
     //- 户型
-    view.house-wrap.mod-bg.margin-b-10
-      view.house-nav-wrap
-        text.btn.btn-sm.btn-radius 全部(10)
-        text.btn.btn-sm.btn-radius.btn-primary 一室(3)
-        text.btn.btn-sm.btn-radius.btn-primary 二室(3)
-        text.btn.btn-sm.btn-radius.btn-primary 三室(2)
-        text.btn.btn-sm.btn-radius.btn-primary 其他(2)
+    //- 顶部选项
+    view.house-wrap.mod-bg
+      view.top-tab.mod-bg
+        view.tab-item.curr 全部(10)
+        view.tab-item 一室(3)
+        view.tab-item 二室(3)
+        view.tab-item 三室(2)
+        view.tab-item 其他(2)
       view.house-list.ptl-list
-        view.ptl-item
-          view.pic-wrap
-            image.pic(src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1574155503081&di=daa82b272c93fac5c1b08d9909a46eeb&imgtype=0&src=http%3A%2F%2Fpic70.nipic.com%2Ffile%2F20150615%2F19831515_145215217000_2.jpg" mode="aspectFill")
-          view.text-wrap
-            view.flex.margin-b-10
-              text.flex-1 1-4室 | 24-122㎡
-              text.font-color-red 72万起
-            view
-              text 72㎡ 朝南
-        view.ptl-item
-          view.pic-wrap
-            image.pic(src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1574155503081&di=daa82b272c93fac5c1b08d9909a46eeb&imgtype=0&src=http%3A%2F%2Fpic70.nipic.com%2Ffile%2F20150615%2F19831515_145215217000_2.jpg" mode="aspectFill")
-          view.text-wrap
-            view.flex.margin-b-10
-              text.flex-1 1-4室 | 24-122㎡
-              text.font-color-red 72万起
-            view
-              text 72㎡ 朝南    
+        view.ptl-list
+          view.ptl-item
+            view.pic-wrap
+              image.pic(src="https://img-cdn-qiniu.dcloud.net.cn/tuku/img/dongwu06.jpg" mode="aspectFill")
+            view.text-wrap
+              view.margin-b-12.font-weight-bold.ellipsis 恒大海口文化
+              view.flex.margin-b-12
+                text.font-color-red.font-size-30 72万元起
+              view.margin-b-12
+                text.font-size-24 建面72㎡/朝南
+              view.margin-b-12.font-align-right
+                text.font-color-red 转发
+          view.ptl-item
+            view.pic-wrap
+              image.pic(src="https://img-cdn-qiniu.dcloud.net.cn/tuku/img/dongwu06.jpg" mode="aspectFill")
+            view.text-wrap
+              view.margin-b-12.font-weight-bold.ellipsis 恒大海口文化
+              view.flex.margin-b-12
+                text.font-color-red.font-size-30 72万元起
+              view.margin-b-12
+                text.font-size-24 建面72㎡/朝南
+              view.margin-b-12.font-align-right
+                text.font-color-red 转发
     //- 看了又看
-    view.lookagain.mod-bg
+    view.lookagain.mod-bg#main-5
       view.title 看了又看
       view.ptl-list
         view.ptl-item
           view.pic-wrap
-            image.pic(src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1574155503081&di=daa82b272c93fac5c1b08d9909a46eeb&imgtype=0&src=http%3A%2F%2Fpic70.nipic.com%2Ffile%2F20150615%2F19831515_145215217000_2.jpg" mode="aspectFill")
+            image.pic(src="https://img-cdn-qiniu.dcloud.net.cn/tuku/img/dongwu06.jpg" mode="aspectFill")
           view.text-wrap
-            view.margin-b-10 恒大海口文化
-            view.flex.margin-b-10
-              text.flex-1 1-4室 | 24-122㎡
-              text.font-color-red 1000元/㎡
-            view
-              text 龙华区 海口东站
+            view.margin-b-12.font-weight-bold.ellipsis 恒大海口文化
+            view.flex.margin-b-12
+              text.font-color-red.font-size-30 1000元/㎡
+            view.margin-b-12
+              text.font-size-24 龙华区/1-4室 24-122㎡
             view
               text.btn.btn-sm.btn-danger 在售
-              text.btn.btn-sm.btn-disabled 商住
+              text.btn.btn-sm.btn-grey 商住
+              text.btn.btn-sm.btn-grey 首付低
+              text.btn.btn-sm.btn-grey 大型社区
         view.ptl-item
           view.pic-wrap
-            image.pic(src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1574155503081&di=daa82b272c93fac5c1b08d9909a46eeb&imgtype=0&src=http%3A%2F%2Fpic70.nipic.com%2Ffile%2F20150615%2F19831515_145215217000_2.jpg" mode="aspectFill")
+            image.pic(src="https://img-cdn-qiniu.dcloud.net.cn/tuku/img/dongwu06.jpg" mode="aspectFill")
           view.text-wrap
-            view.margin-b-10 恒大海口文化
-            view.flex.margin-b-10
-              text.flex-1 1-4室 | 24-122㎡
-              text.font-color-red 1000元/㎡
-            view
-              text 龙华区 海口东站
+            view.margin-b-12.font-weight-bold.ellipsis 恒大海口文化
+            view.flex.margin-b-12
+              text.font-color-red.font-size-30 1000元/㎡
+            view.margin-b-12
+              text.font-size-24 龙华区/1-4室 24-122㎡
             view
               text.btn.btn-sm.btn-danger 在售
-              text.btn.btn-sm.btn-disabled 商住
+              text.btn.btn-sm.btn-grey 商住
+              text.btn.btn-sm.btn-grey 首付低
+              text.btn.btn-sm.btn-grey 大型社区
+        view.ptl-item
+          view.pic-wrap
+            image.pic(src="https://img-cdn-qiniu.dcloud.net.cn/tuku/img/dongwu06.jpg" mode="aspectFill")
+          view.text-wrap
+            view.margin-b-12.font-weight-bold.ellipsis 恒大海口文化
+            view.flex.margin-b-12
+              text.font-color-red.font-size-30 1000元/㎡
+            view.margin-b-12
+              text.font-size-24 龙华区/1-4室 24-122㎡
+            view
+              text.btn.btn-sm.btn-danger 在售
+              text.btn.btn-sm.btn-grey 商住
+              text.btn.btn-sm.btn-grey 首付低
+              text.btn.btn-sm.btn-grey 大型社区      
     contact
 </template>
 
@@ -65,9 +87,7 @@
   export default {
     data() {
       return {
-        
       }
-      
     },
     components:{
       contact
@@ -79,30 +99,76 @@
 .house-nav-wrap {
   padding: $spacing-base 20rpx $spacing-base 0;
   display: flex;
-  .btn {
+}
+.top-tab {
+  display: flex;
+  border-bottom: 1rpx solid #eee;
+  .tab-item {
+    position:relative;
+    display: flex;
     flex: 1;
-    margin-left: 20rpx;
+    justify-content: center;
+    align-items: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 20rpx 0;
+    color: #979B9E;
+    font-weight: 700;
+    &.curr {
+      color: $color-black;
+      &::after {
+        content:'';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 32rpx;
+        height: 0;
+        margin-left: -16rpx;
+        border-bottom: 6rpx solid $color-default;
+      }
+    }
   }
+  
+}
+.house-list {
+    padding: $spacing-xlg $spacing-xlg 0;
+    &::after{
+      content: "";
+      width: 100%;
+      height: 0;
+      border-bottom: 1px solid #eee;
+      display: block;
+    }
 }
 .lookagain {
+   padding: 0 $spacing-xlg;
+   &::after{
+     content: "";
+     width: 100%;
+     height: 0;
+     border-bottom: 1px solid #eee;
+     display: block;
+   }
   .title {
-    font-size: $font-lg;
-    padding: 16rpx $spacing-base;
+    font-size: 36rpx;
+    padding: 40rpx 0;
     font-weight: 700;
   }
 }
 .ptl-list {
   .ptl-item {
     display: flex;
-    padding: 0 $spacing-base $spacing-base;
-    margin-bottom: $spacing-base;
-    border-bottom: 1rpx solid $uni-border-color;
+    padding-bottom: 30rpx;
+    margin-bottom: 30rpx;
+    border-bottom: 1rpx solid #eee;
     &:last-child {
       border: none;
+      margin-bottom: 0;
     }
     .pic-wrap {
-      width: 240rpx;
-      height: 180rpx;
+      width: 200rpx;
+      height: 164rpx;
       margin-right: $spacing-base;
       .pic {
         width: 100%;
@@ -111,6 +177,7 @@
     }
     .text-wrap {
       flex: 1;
+      line-height: 1;
     }
   }
 }
