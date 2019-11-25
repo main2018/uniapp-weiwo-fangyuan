@@ -10,7 +10,13 @@
   &.center-x{
     justify-content: center;
   }
+  &-y{
+    flex-direction: column;
+  }
   &-space{
+    &-a{
+      justify-content: space-around;
+    }
     &-b{
       justify-content: space-between;
     }
@@ -44,13 +50,13 @@
   &-size{
     @for $i from 1 through 100{
       &-#{$i}{
-        font-size: #{$i}rpx;
+        font-size: #{$i}rpx!important;
       }
     }
     &-sm{
-      font-size: $font-size-sm;
+      font-size: $font-size-sm!important;
       &-s{
-        font-size: $font-size-sm-s;
+        font-size: $font-size-sm-s!important;
       }
     }
     &-base{
@@ -72,6 +78,9 @@
   }
 }
 
+.line-h1{
+  line-height: 1;
+}
 .background{
   &-color{
     &-grey{
@@ -79,6 +88,17 @@
       &-l{
         background-color: $color-grey-l;
       }
+    }
+  }
+}
+.border{
+  $arr: 1, 2;
+  @each $i in $arr{
+    &-#{$i}{
+      border: #{$i}rpx solid $color-grey-l;
+    }
+    &-b-#{$i}{
+      border-bottom: #{$i}rpx solid $color-grey-l;
     }
   }
 }
