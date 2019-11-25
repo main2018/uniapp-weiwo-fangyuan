@@ -119,63 +119,77 @@
               mode="aspectFill")
             view.aux.ellipsis 《建筑工程规划许可证》
       //- 看了又看
-      view.lookagain.mod-bg#main-5
+      //- 看了又看
+      view.lookagain.mod-bg
         view.title 看了又看
         view.ptl-list
           view.ptl-item
-            view.pic-wrap
-              image.pic(src="https://img-cdn-qiniu.dcloud.net.cn/tuku/img/dongwu06.jpg" mode="aspectFill")
-              view.star-wrap
-                text.iconfont.font-size-24 &#xe671;
-                text.iconfont.font-size-24 &#xe671;
-                text.iconfont.font-size-24 &#xe61c;
-            view.text-wrap
-              view.margin-b-12.font-weight-bold 恒大海口文化
-              view.flex.margin-b-12
-                text.font-color-red.font-size-30 1000元/㎡
-              view.margin-b-12
-                text.font-size-24 龙华区/1-4室 24-122㎡
-              view
-                text.btn.btn-sm.btn-danger 在售
-                text.btn.btn-sm.btn-grey 商住
-                text.btn.btn-sm.btn-grey 首付低
-                text.btn.btn-sm.btn-grey 大型社区
+            view.flex
+              view.pic-wrap
+                image.pic(src="https://img-cdn-qiniu.dcloud.net.cn/tuku/img/dongwu06.jpg" mode="aspectFill")
+                view.star-wrap
+                  text.iconfont.font-size-24 &#xe671;
+                  text.iconfont.font-size-24 &#xe671;
+                  text.iconfont.font-size-24 &#xe61c;
+              view.text-wrap
+                view.margin-b-12.font-weight-bold.ellipsis 恒大海口文化
+                view.flex.margin-b-12
+                  text.font-color-red.font-size-30 1000元/㎡
+                view.margin-b-12
+                  text.font-size-24 龙华区/1-4室 24-122㎡
+                view
+                  text.btn.btn-sm.btn-danger 在售
+                  text.btn.btn-sm.btn-grey 商住
+                  text.btn.btn-sm.btn-grey 首付低
+                  text.btn.btn-sm.btn-grey 大型社区
+            view
+              text.iconfont.color-yellow.margin-r-6 &#xe605;
+              text 活动描述
+      
           view.ptl-item
-            view.pic-wrap
-              image.pic(src="https://img-cdn-qiniu.dcloud.net.cn/tuku/img/dongwu06.jpg" mode="aspectFill")
-              view.star-wrap
-                text.iconfont.font-size-24 &#xe671;
-                text.iconfont.font-size-24 &#xe671;
-                text.iconfont.font-size-24 &#xe61c;
-            view.text-wrap
-              view.margin-b-12.font-weight-bold 恒大海口文化
-              view.flex.margin-b-12
-                text.font-color-red.font-size-30 1000元/㎡
-              view.margin-b-12
-                text.font-size-24 龙华区/1-4室 24-122㎡
-              view
-                text.btn.btn-sm.btn-danger 在售
-                text.btn.btn-sm.btn-grey 商住
-                text.btn.btn-sm.btn-grey 首付低
-                text.btn.btn-sm.btn-grey 大型社区
+            view.flex
+              view.pic-wrap
+                image.pic(src="https://img-cdn-qiniu.dcloud.net.cn/tuku/img/dongwu06.jpg" mode="aspectFill")
+                view.star-wrap
+                  text.iconfont.font-size-24 &#xe671;
+                  text.iconfont.font-size-24 &#xe671;
+                  text.iconfont.font-size-24 &#xe61c;
+              view.text-wrap
+                view.margin-b-12.font-weight-bold.ellipsis 恒大海口文化
+                view.flex.margin-b-12
+                  text.font-color-red.font-size-30 1000元/㎡
+                view.margin-b-12
+                  text.font-size-24 龙华区/1-4室 24-122㎡
+                view
+                  text.btn.btn-sm.btn-danger 在售
+                  text.btn.btn-sm.btn-grey 商住
+                  text.btn.btn-sm.btn-grey 首付低
+                  text.btn.btn-sm.btn-grey 大型社区
+            view
+              text.iconfont.color-yellow.margin-r-6 &#xe605;
+              text 活动描述
           view.ptl-item
-            view.pic-wrap
-              image.pic(src="https://img-cdn-qiniu.dcloud.net.cn/tuku/img/dongwu06.jpg" mode="aspectFill")
-              view.star-wrap
-                text.iconfont.font-size-24 &#xe671;
-                text.iconfont.font-size-24 &#xe671;
-                text.iconfont.font-size-24 &#xe61c;
-            view.text-wrap
-              view.margin-b-12.font-weight-bold 恒大海口文化
-              view.flex.margin-b-12
-                text.font-color-red.font-size-30 1000元/㎡
-              view.margin-b-12
-                text.font-size-24 龙华区/1-4室 24-122㎡
-              view
-                text.btn.btn-sm.btn-danger 在售
-                text.btn.btn-sm.btn-grey 商住
-                text.btn.btn-sm.btn-grey 首付低
-                text.btn.btn-sm.btn-grey 大型社区    
+            view.flex
+              view.pic-wrap
+                image.pic(src="https://img-cdn-qiniu.dcloud.net.cn/tuku/img/dongwu06.jpg" mode="aspectFill")
+                view.star-wrap
+                  text.iconfont.font-size-24 &#xe671;
+                  text.iconfont.font-size-24 &#xe671;
+                  text.iconfont.font-size-24 &#xe61c;
+              view.text-wrap
+                view.margin-b-12.font-weight-bold.ellipsis 恒大海口文化
+                view.flex.margin-b-12
+                  text.font-color-red.font-size-30 1000元/㎡
+                view.margin-b-12
+                  text.font-size-24 龙华区/1-4室 24-122㎡
+                view
+                  text.btn.btn-sm.btn-danger 在售
+                  text.btn.btn-sm.btn-grey 商住
+                  text.btn.btn-sm.btn-grey 首付低
+                  text.btn.btn-sm.btn-grey 大型社区
+            view
+              text.iconfont.color-yellow.margin-r-6 &#xe605;
+              text 活动描述
     contact
 </template>
         
@@ -226,6 +240,9 @@
 </script>
 
 <style lang="scss">
+.color-yellow {
+  color: #fda84e;
+}
 .color-deep{
   color: #305E8F;
  }
@@ -362,6 +379,7 @@
 .ptl-list {
   .ptl-item {
     display: flex;
+    flex-direction: column;
     padding-bottom: 30rpx;
     margin-bottom: 30rpx;
     border-bottom: 1rpx solid #eee;
