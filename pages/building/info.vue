@@ -51,29 +51,64 @@
             src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1574155503081&di=daa82b272c93fac5c1b08d9909a46eeb&imgtype=0&src=http%3A%2F%2Fpic70.nipic.com%2Ffile%2F20150615%2F19831515_145215217000_2.jpg"
             mode="aspectFill"
             )
-          <i class="iconfont">&#xf2b6;</i>
+          view.aux.ellipsis 国有土地使用证
         view.papers-item
           view.img-wrap
             image.img(
             src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1574155503081&di=daa82b272c93fac5c1b08d9909a46eeb&imgtype=0&src=http%3A%2F%2Fpic70.nipic.com%2Ffile%2F20150615%2F19831515_145215217000_2.jpg"
             mode="aspectFill"
             )
+          view.aux.ellipsis 建筑工程施工许可证
         view.papers-item
           view.img-wrap
             image.img(
             src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1574155503081&di=daa82b272c93fac5c1b08d9909a46eeb&imgtype=0&src=http%3A%2F%2Fpic70.nipic.com%2Ffile%2F20150615%2F19831515_145215217000_2.jpg"
-            mode="aspectFill"
-            )
-      
-      
+            mode="aspectFill")
+          view.aux.ellipsis 建筑工程施工许可证
+    //- 看了又看
+    view.lookagain.mod-bg
+      view.title 看了又看
+      view.ptl-list
+        view.ptl-item
+          view.pic-wrap
+            image.pic(src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1574155503081&di=daa82b272c93fac5c1b08d9909a46eeb&imgtype=0&src=http%3A%2F%2Fpic70.nipic.com%2Ffile%2F20150615%2F19831515_145215217000_2.jpg" mode="aspectFill")
+          view.text-wrap
+            view.margin-b-10 恒大海口文化
+            view.flex.margin-b-10
+              text.flex-1 1-4室 | 24-122㎡
+              text.font-color-red 1000元/㎡
+            view
+              text 龙华区 海口东站
+            view
+              text.btn.btn-sm.btn-danger 在售
+              text.btn.btn-sm.btn-disabled 商住
+        view.ptl-item
+          view.pic-wrap
+            image.pic(src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1574155503081&di=daa82b272c93fac5c1b08d9909a46eeb&imgtype=0&src=http%3A%2F%2Fpic70.nipic.com%2Ffile%2F20150615%2F19831515_145215217000_2.jpg" mode="aspectFill")
+          view.text-wrap
+            view.margin-b-10 恒大海口文化
+            view.flex.margin-b-10
+              text.flex-1 1-4室 | 24-122㎡
+              text.font-color-red 1000元/㎡
+            view
+              text 龙华区 海口东站
+            view
+              text.btn.btn-sm.btn-danger 在售
+              text.btn.btn-sm.btn-disabled 商住
+              
+    contact
 </template>
-
+        
 <script>
+  import contact from "@/components/contact";
 	export default {
 		data() {
 			return {
 			}
 		},
+    components: {
+      contact
+    },
 		methods: {
 			
 		}
@@ -91,8 +126,8 @@
   .x-form-item {
     display: flex;
     padding: 16rpx 0;
-    line-height: 20px;
-    margin-right: 10px;
+    line-height: 40rpx;
+    margin-right: 20rpx;
     .x-form-label {
       width: 160rpx;
       margin-right: 10rpx;
@@ -113,9 +148,10 @@
   .papers-list {
     display: flex;
     flex-wrap: wrap;
+    margin-right: -$spacing-base;
     .papers-item {
       width:50%;
-      padding: 0 $spacing-base $spacing-base;
+      padding: 0 $spacing-base $spacing-base 0;
       box-sizing: border-box;
       .img-wrap {
         position:relative;
@@ -135,6 +171,36 @@
         text-align: center;
         padding: 16rpx 0;
       }
+    }
+  }
+}
+.lookagain {
+  .title {
+    font-size: $font-lg;
+    padding: 16rpx $spacing-base;
+    font-weight: 700;
+  }
+}
+.ptl-list {
+  .ptl-item {
+    display: flex;
+    padding: 0 $spacing-base $spacing-base;
+    margin-bottom: $spacing-base;
+    border-bottom: 1px solid $uni-border-color;
+    &:last-child {
+      border: none;
+    }
+    .pic-wrap {
+      width: 240rpx;
+      height: 180rpx;
+      margin-right: $spacing-base;
+      .pic {
+        width: 100%;
+        height: 100%;
+      }
+    }
+    .text-wrap {
+      flex: 1;
     }
   }
 }

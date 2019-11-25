@@ -3,7 +3,7 @@
     view.flex.center.padding-20.contact-content
       image.margin-r-10(src="" mode="aspectFill")
       text.username.flex-1.font-size-30 小可
-      view.button.see.margin-r-10.flex.flex-y.center.center-x
+      view.button.see.margin-r-10.flex.flex-y.center.center-x(@tap="$navigateTo({url: './subscribe'})")
         text.font-size-30 约看房
         text.font-size-22 快速预约看房
       view.button.call.flex.flex-y.center.center-x(@tap="call")
@@ -20,6 +20,7 @@
 		},
     mounted() {
       this.resetHeight()
+      console.log('$navigateTo', this.$navigateTo);
     },
     methods: {
       call() {
@@ -52,14 +53,6 @@
   border-top: 1rpx solid $color-grey-l;
   background-color: $color-white;
   z-index: 9999;
-  &::after{
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    width: 100%;
-    height: 100%;
-  }
   image{
     width: 60rpx;
     height: 60rpx;

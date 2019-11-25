@@ -72,6 +72,9 @@
                     "key" : "NEPBZ-SDK3W-SWMRQ-R4ZOY-X5QRT-QQFL5"
                 }
             }
+        },
+        "router" : {
+            "mode" : "history"
         }
     }
 }

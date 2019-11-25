@@ -1,13 +1,19 @@
 <template lang="pug">
-  view.activity
-    view.activity-title 手动阀手动阀手动阀手动阀
-    rich-text(:nodes="nodes")
+  view.activity.padding-x-40.padding-y-30
+    view.activity-title.font-weight-bold.font-size-36.margin-b-40 手动阀手动阀手动阀手动阀
+    <!-- rich-text(:nodes="nodes") -->
     rich-text(:nodes="htmlNodes")
+    fixed(hasBorder)
+      view.btn.fullwidth.large.primary.margin-x-40.margin-y-20.padding-y-26(@click="$navigateTo({url: './activity-join'})") 活动报名
 </template>
 <script>
   import htmlParser from '@/common/js/html-parser';
+  import Fixed from '@/components/fixed';
   
   export default {
+    components: {
+      Fixed
+    },
     data() {
       return {
         nodes: [
@@ -38,5 +44,6 @@
   }
 </script>
 <style lang="scss" scoped>
-  
+  .activity{
+  }
 </style>

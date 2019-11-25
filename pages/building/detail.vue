@@ -9,7 +9,7 @@
           view.swiper-bar-switch-btn.padding-x-20.padding-y-5(
             v-for="(swiper, index) in swipers"
             :class="{active: swiperIndex === index}"
-            @tap="switchSwiper(index)"
+            @tap.stop="switchSwiper(index)"
             ) {{swiper.name}}
         text.swiper-bar-number.padding-x-20.padding-y-5 共{{swiperImgs.length}}张
     <!-- view.building-detail-hint.font-size-sm.font-align-center.background-color-grey-l 详细信息及项目动态请咨询置业顾问 -->
@@ -36,12 +36,12 @@
       view.building-detail-item-title.flex.center.margin-b-40
         text.flex-1 优惠活动
         view.button.font-size-24.padding-x-14.padding-y-5.font-color-primary 活动报名
-      image(:src="$baseUrl + swiperImgs[0]" mode="aspectFill" lazy-load)
+      image(:src="$baseUrl + swiperImgs[0]" mode="aspectFill" lazy-load @tap="navigateTo({url: './activity'})")
     view.building-detail-item.house-type.padding-40
-      view.building-detail-item-title.flex.margin-b-40
+      view.building-detail-item-title.flex.center.margin-b-40
         text.flex-1 主力户型
         .view.font-size-sm-s.font-color-grey
-          text 查看更多
+          text(@tap="navigateTo({url: './housetypelist'})") 查看更多
           text.iconfont.font-size-sm-s &#xe62a;
       scroll-view.scroll-view.font-size-sm(scroll-x="true")
         view.scroll-view-item(v-for="item in houseTypes" @tap="navigateTo({url: './house'})")
@@ -82,17 +82,7 @@
     view.building-detail-item.habit.padding-40
       view.building-detail-item-title.flex.margin-b-40
         text.flex-1 看了又看
-      view.habit-item.flex.margin-b-20(v-for="item in dmList")
-        view.habit-item-view.margin-r-30
-          view.habit-item-view-rate.padding-x-18.padding-y-4.flex.center
-            text.iconfont.font-size-18 &#xe671;
-            text.iconfont.font-size-18 &#xe671;
-            text.iconfont.font-size-18 &#xe671;
-          text.iconfont.font-size-20(v-show="isPano(item)") &#xe7bc;
-          image(:src="$baseUrl + item.cover" mode="aspectFill")
-        view.flex-1
-          view.margin-b-10 {{item.title}}
-          view.font-size-sm.font-color-grey 二室二厅/65.84㎡
+      card(v-for="item in dmList" :data="item" border)
           
     contact
       
@@ -100,10 +90,12 @@
 
 <script>
   import contact from "@/components/contact";
+  import card from "@/components/card";
   
   export default {
     components: {
-      contact
+      contact,
+      card
     },
     data() {
       return {
@@ -346,40 +338,7 @@
           }
         }
       }
-      &.habit{
-        .habit-item{
-          &-view{
-            position: relative;
-            width: 200rpx;
-            height: 164rpx;
-            image{
-              width: 100%;
-              height: 100%;
-            }
-            &>text, &-rate{
-              position: absolute;
-              z-index: 1;
-              color: $color-white;
-              background-color: rgba(0,0,0,.5);
-            }
-            &-rate{
-              top: 10rpx;
-              border-radius: 0 16rpx 16rpx 0;
-              line-height: 1;
-            }
-            &>text{
-              left: 10rpx;
-              bottom: 10rpx;
-              width: 40rpx;
-              height: 40rpx;
-              line-height: 40rpx;
-              text-align: center;
-              border-radius: 50%;
-            }
-          }
-        }
         
-      }
     }
   }
 </style>

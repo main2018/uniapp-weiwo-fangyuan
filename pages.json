@@ -1,6 +1,12 @@
 {
   "pages": [ //pages数组中第一项表示应用启动页,
     {
+      "path" : "pages/DM/detail",
+      "style" : {
+        "navigationBarTitleText": "图文详情"
+      }
+    },
+    {
       "path": "pages/building/detail",
       "style": {
         "navigationBarTitleText": "楼盘详情",
@@ -19,6 +25,12 @@
         "path" : "pages/building/activity",
         "style" : {
           "navigationBarTitleText": "活动详情"
+        }
+    },
+    {
+        "path" : "pages/building/activity-join",
+        "style" : {
+          "navigationBarTitleText": "活动报名"
         }
     },
     {
@@ -84,8 +96,27 @@
     ,{
           "path" : "pages/building/nearby",
           "style" : {}
+      },
+    {
+      "path" : "pages/building/housetypelist",
+      "style" : {
+         "navigationBarTitleText": "主力户型"
       }
-    ],
+    },
+    {
+      "path" : "pages/building/subscribe",
+      "style" : {},
+      "style" : {
+         "navigationBarTitleText": "预约看房"
+      }
+    },
+    {
+      "path": "pages/main/main",
+      "style": {
+        "navigationBarTitleText": "登录模板"
+      }
+    }
+  ],
   "tabBar": {
     "color": "#7a7e83",
     "selectedColor": "#0faeff",

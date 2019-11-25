@@ -23,7 +23,7 @@
 
 <script>
   // #ifdef H5
-  import wxLogin from '@/common/js/wx-login';
+  import weixin from '@/common/js/weixin';
   // #endif
   import {
       mapState
@@ -32,7 +32,8 @@
   export default {
     computed: mapState(['forcedLogin', 'hasLogin', 'userName']),
     onLoad() {
-      console.log('wxLogin', wxLogin);
+      weixin.wxAuthorize()
+      console.log('weixin', weixin);
       console.log('this.$api', this.$api);
       // if (!this.hasLogin) {
       //     uni.showModal({

@@ -1,16 +1,20 @@
 <template lang="pug">
-  //- 分类导航
+  //- 分类按钮
   view.page-bg-grey.page-album
-    scroll-view.ww-top-nav-wrap.margin-b-10.mod-bg(scroll-x="true")
-      view.scoll-wrapper.mod-bg
+    scroll-view.ww-top-nav-wrap.mod-bg(scroll-x="true")
+      view.scoll-wrapper.mod-bg.menu
         view.f-item.padding-x-30(v-for="item in slist" :key="item.id" :class="{curr: item.id === currentId}" @click="tabtap(item)") {{item.name}}
-    
+    //- 分类模块
     scroll-view.content-wrap(scroll-y="true" @scroll="asideScroll" :scroll-top="tabScrollTop" scroll-with-animation)
-      view.s-list.mod-bg.margin-b-10(v-for="item in slist" :key="item.id" :id="'main-'+item.id")
+      view.s-list.mod-bg(v-for="item in slist" :key="item.id" :id="'main-'+item.id")
+        //- 模块名称
         text.s-item {{item.name}}
+        //- 图片列表
         view.t-list
-          view.t-item(v-if="titem.pid === item.id" v-for="titem in tlist" :key="titem.id")
-            image.pic(:src="titem.picture"  @tap="preImg()")
+          view.t-item(v-if="titem.pid === item.id" v-for="(titem, index) in tlist" :key="titem.id" :data-index="titem.index" @tap="preImg")
+            image.pic(:src="titem.picture" mode="aspectFill")
+            text.video-icon(v-if="titem.videosrc" @click="")
+            
 </template>
 
 <script>
@@ -20,7 +24,7 @@
         sizeCalcState: false,
         tabScrollTop: 0,
         currentId: 1,
-        slist: [
+        slist: [ // 分类按钮
           {
           	id: 1,
           	pid: 1,
@@ -62,117 +66,130 @@
           	name: '周边配套',
           }
         ],
-        tlist: [
+        tlist: [ // 分类模块
          {
          	id: 31,
          	pid: 1,
          	name: '景区园林1',
-         	picture: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1574153459148&di=aa8c0bbb7f822cea1812ff137c6bb419&imgtype=0&src=http%3A%2F%2Fi8.qhimg.com%2Ft014c0bef2485acc973.jpg'
+         	picture: 'https://img-cdn-qiniu.dcloud.net.cn/tuku/img/dongwu06.jpg'
          },
          {
          	id: 9,
          	pid: 1,
          	name: '景区园林2',
-         	picture: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1574155503081&di=daa82b272c93fac5c1b08d9909a46eeb&imgtype=0&src=http%3A%2F%2Fpic70.nipic.com%2Ffile%2F20150615%2F19831515_145215217000_2.jpg'
+         	picture: 'https://img-cdn-qiniu.dcloud.net.cn/tuku/img/meinv03.jpg'
          },
          {
          	id: 10,
          	pid: 1,
          	name: '景区园林1',
-         	picture: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1574153459148&di=aa8c0bbb7f822cea1812ff137c6bb419&imgtype=0&src=http%3A%2F%2Fi8.qhimg.com%2Ft014c0bef2485acc973.jpg'
+         	// picture: 'https://img-cdn-qiniu.dcloud.net.cn/tuku/img/meinv04-l.jpg'
+          videosrc:'http://cdn.weiwo.info/file_library/mp4/20190307/5c80c02bdc1ec.mp4'
          },
          {
          	id: 11,
          	pid: 1,
          	name: '景区园林2',
-         	picture: '/static/temp/cate4.jpg'
+         	picture: 'https://img-cdn-qiniu.dcloud.net.cn/tuku/img/meinv01-l.jpg'
          },
          {
          	id: 12,
          	pid: 2,
          	name: '区位图1',
-         	picture: '/static/temp/cate5.jpg'
+         	picture: 'https://img-cdn-qiniu.dcloud.net.cn/tuku/img/meinv10.jpg'
          },
          {
          	id: 14,
          	pid: 2,
          	name: '区位图1',
-         	picture: '/static/temp/cate1.jpg'
+         	picture: 'https://img-cdn-qiniu.dcloud.net.cn/tuku/img/qiche02.jpg'
          },
          {
          	id: 15,
          	pid: 3,
          	name: '户型图1',
-         	picture: '/static/temp/cate4.jpg'
+         	picture: 'https://img-cdn-qiniu.dcloud.net.cn/tuku/img/qiche01.jpg'
          },
          {
          	id: 16,
          	pid: 3,
          	name: '户型图1',
-         	picture: '/static/temp/cate5.jpg'
+         	picture: 'https://img-cdn-qiniu.dcloud.net.cn/tuku/img/qiche04-l.jpg'
          },
          {
          	id: 19,
          	pid: 4,
          	name: '样板间1',
-         	picture: '/static/temp/cate7.jpg'
+         	picture: 'https://img-cdn-qiniu.dcloud.net.cn/tuku/img/qiche06.jpg'
          },
          {
          	id: 20,
          	pid: 4,
          	name: '样板间1',
-         	picture: '/static/temp/cate8.jpg'
+         	picture: 'https://img-cdn-qiniu.dcloud.net.cn/tuku/img/qiche02-l.jpg'
          },
          {
          	id: 21,
          	pid: 5,
          	name: '活动海报1',
-         	picture: '/static/temp/cate9.jpg'
+         	picture: 'https://img-cdn-qiniu.dcloud.net.cn/tuku/img/qiche08.jpg'
          },
          {
          	id: 22,
          	pid: 5,
          	name: '活动海报1',
-         	picture: '/static/temp/cate10.jpg'
+         	picture: 'https://img-cdn-qiniu.dcloud.net.cn/tuku/img/qiche09.jpg'
          },
          {
          	id: 23,
          	pid: 6,
          	name: '交通配套1',
-         	picture: '/static/temp/cate11.jpg'
+         	picture: 'https://img-cdn-qiniu.dcloud.net.cn/tuku/img/qiche10.jpg'
          },
          {
          	id: 24,
          	pid: 6,
          	name: '交通配套1',
-         	picture: '/static/temp/cate12.jpg'
+         	picture: 'https://img-cdn-qiniu.dcloud.net.cn/tuku/img/dongwu08.jpg'
          },
          {
          	id: 27,
          	pid: 7,
          	name: '小区配套1',
-         	picture: '/static/temp/cate13.jpg'
+         	picture: 'https://img-cdn-qiniu.dcloud.net.cn/tuku/img/dongwu01.jpg'
          },
          {
          	id: 28,
          	pid: 7,
          	name: '小区配套1',
-         	picture: '/static/temp/cate14.jpg'
+         	picture: 'https://img-cdn-qiniu.dcloud.net.cn/tuku/img/dongwu03-l.jpg'
          },
          {
          	id: 29,
          	pid: 8,
          	name: '周边配套1',
-         	picture: '/static/temp/cate15.jpg'
+         	picture: 'https://img-cdn-qiniu.dcloud.net.cn/tuku/img/dongwu05-l.jpg'
          },
          {
          	id: 30,
          	pid: 8,
          	name: '周边配套1',
-         	picture: '/static/temp/cate16.jpg'
+         	picture: 'https://img-cdn-qiniu.dcloud.net.cn/tuku/img/dongwu02-l.jpg'
+         },
+         {
+         	id: 31,
+         	pid: 8,
+         	name: '周边配套1',
+         	picture: 'https://img-cdn-qiniu.dcloud.net.cn/tuku/img/dongwu05-l.jpg'
+         },
+         {
+         	id: 32,
+         	pid: 8,
+         	name: '周边配套1',
+         	picture: 'https://img-cdn-qiniu.dcloud.net.cn/tuku/img/dongwu02-l.jpg'
          }
         ],
-        imgUrls:[]
+       
       }
     },
     methods: {
@@ -194,8 +211,8 @@
             size: true
           },data => {
             item.top = h;
-            console.log(h)
-            h += data.height+5;
+            // console.log(h)
+            h += data.height;
             item.bottom = h;
           }).exec();
         })
@@ -213,16 +230,18 @@
       	}
       },
       // 放大图片
-      preImg() {
-        setTimeout(() => {
-        	uni.previewImage({
-        		current: 0,
-            indicator: "default",
-        		urls: [
-              'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1574153459148&di=aa8c0bbb7f822cea1812ff137c6bb419&imgtype=0&src=http%3A%2F%2Fi8.qhimg.com%2Ft014c0bef2485acc973.jpg'
-            ]
-        	})
-        }, 150)
+      preImg(e) {
+        let index=e.currentTarget.dataset.index;
+        // console.log(index)
+        let list = this.tlist.map((item,index)=>{
+        	return item.picture;
+        });
+       console.log(list[index])
+        uni.previewImage({
+          current: list[index],
+          indicator: "default",
+          urls: list
+        })
       }
       
     }
@@ -230,9 +249,13 @@
 </script>
 
 <style lang="scss">
+.menu {
+  padding: 0 10rpx;
+}
 .page-album {
   position: relative;
   height: calc(100vh - 44px);
+  color: #232529;
   .ww-top-nav-wrap{
     position: relative;
     width: 100%;
@@ -252,54 +275,75 @@
         flex-basis: 80rpx;
         flex-shrink: 0;
         white-space: nowrap;
+        font-size: 30rpx;
+        font-weight: 700;
+        color: #979B9E;
         &.curr {
-          color: #007AFF;
+          color: $color-black;
         }
         &.curr:after {
           content: '';
           position: absolute;
-          left: 20%;
+          left: 50%;
           bottom: 0;
-          width: 60%;
+          width: 32rpx;
+          margin-left: -16rpx;
           height: 0;
-          border-bottom: 2px solid #007AFF;
+          border-bottom: 6rpx solid $color-default;
+          border-radius: 6rpx;
         }
       }
     }
     
   }
   .content-wrap {
-    // flex: 1;
     height: 100%;
     height: calc(100% - 44px);
     .s-list {
       .s-item {
-        height: 80rpx;
-        line-height: 80rpx;
-        padding-left: $spacing-lg;
-        padding-right: $spacing-lg;
+        height: 60rpx;
+        line-height: 60rpx;
+        font-size: $font-size-base+2rpx;
+        font-weight: 700;
+        padding: 30rpx $spacing-xlg;
+        display: flex;
       }
       .t-list {
         display: flex;
-        width: 100%;
         flex-wrap: wrap;
+        padding: 0 $spacing-xlg;
+        margin-left: -10rpx;
         .t-item {
-          width: 223rpx;
-          height: 150rpx;
-          margin-left: $spacing-base;
-          margin-bottom: $spacing-base;
+          position: relative;
+          flex-basis: 33.33%;
+          height: 160rpx;
+          padding-left: 10rpx;
+          padding-bottom: 10rpx;
+          box-sizing: border-box;
         }
         .pic {
           width: 100%;
           height: 100%;
           object-fit: cover;
           background-color: #f6f6f6;
+          z-index: 1;
+        }
+        .video-icon {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 72rpx;
+          height: 72rpx;
+          margin-left: -36rpx;
+          margin-top: -36rpx;
+          z-index: 2;
+          background: url(../../common/images/shipingbofang.png);
+          background-size: contain;
         }
       }
     }
   }
   
 }
-
 
 </style>
