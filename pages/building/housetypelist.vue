@@ -15,6 +15,8 @@
             view.flex
               view.pic-wrap
                 image.pic(src="https://img-cdn-qiniu.dcloud.net.cn/tuku/img/dongwu06.jpg" mode="aspectFill")
+                view.sign-center 
+                  text.iconfont &#xe7bc;
               view.text-wrap
                 view.margin-b-12.font-weight-bold.ellipsis 恒大海口文化
                 view.flex.margin-b-12
@@ -43,6 +45,8 @@
           view.flex
             view.pic-wrap
               image.pic(src="https://img-cdn-qiniu.dcloud.net.cn/tuku/img/dongwu06.jpg" mode="aspectFill")
+              view.sign-bl
+                text.iconfont &#xe7bc;
               view.star-wrap
                 text.iconfont.font-size-24 &#xe671;
                 text.iconfont.font-size-24 &#xe671;
@@ -145,6 +149,7 @@
     padding: 20rpx 0;
     color: #979B9E;
     font-weight: 700;
+    font-size: 30rpx;
     &.curr {
       color: $color-black;
       &::after {
@@ -171,6 +176,7 @@
       display: block;
     }
 }
+// 看了又看
 .lookagain {
    padding: 0 $spacing-xlg;
    &::after{
@@ -186,6 +192,7 @@
     font-weight: 700;
   }
 }
+// 列表
 .ptl-list {
   .ptl-item {
     display: flex;
@@ -205,6 +212,40 @@
       .pic {
         width: 100%;
         height: 100%;
+      }
+      .sign-center {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 60rpx;
+        height: 60rpx;
+        margin-left:-30rpx;
+        margin-top: -30rpx;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color:rgba(0,0,0,.5);
+        border-radius:60rpx ;
+        .iconfont {
+          font-size: 36rpx;
+          color: #fff;
+        }
+      }
+      .sign-bl {
+        position: absolute;
+        bottom: 12rpx;
+        left: 12rpx;
+        width: 40rpx;
+        height: 40rpx;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color:rgba(0,0,0,.5);
+        border-radius:60rpx ;
+        .iconfont {
+          font-size: 24rpx;
+          color: #fff;
+        }
       }
       .star-wrap {
         position: absolute;
