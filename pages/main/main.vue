@@ -1,5 +1,8 @@
 <template>
     <view class="content">
+      <!-- #ifdef H5 -->
+      <vmap></vmap>
+      <!-- #endif -->
         <view v-if="hasLogin" class="hello">
             <view class="title">
                 您好 {{userName}}，您已成功登录。
@@ -22,6 +25,8 @@
 </template>
 
 <script>
+  import vmap from '@/components/map';
+  
   // #ifdef H5
   import weixin from '@/common/js/weixin';
   // #endif
@@ -30,6 +35,9 @@
   } from 'vuex'
 
   export default {
+    components: {
+      vmap
+    },
     computed: mapState(['forcedLogin', 'hasLogin', 'userName']),
     onLoad() {
       weixin.wxAuthorize()

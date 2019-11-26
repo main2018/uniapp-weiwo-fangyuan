@@ -1,22 +1,29 @@
 <template lang="pug">
   view.nearby
     web-view(:src="tecentMap")
-    scroll-view(scroll-x="true").nearby-menu.font-align-center: text.padding-x-50.padding-y-40(v-for="(item, index) in nearby" @tap="currIndex = index") {{item.name}}
+    scroll-view(scroll-x="true").nearby-bar.font-align-center
+      view.nearby-bar-item(v-for="(item, index) in nearby" @tap="currIndex = index" :class="{active: currIndex === index}")
+        text.iconfont.margin-r-8(decode :style="{color: item.color}") {{unicodeToZh(item.icon)}}
+        |{{item.name}}
+      <!-- text.padding-x-50.padding-y-40(v-for="(item, index) in nearby" @tap="currIndex = index") {{item.name}} -->
 </template>
 
 <script>
+  import {unicodeToZh} from '@/common/js/util';
+  
 	export default {
 		data() {
 			return {
+        unicodeToZh,
         currIndex: 0,
         nearby: [
-          {name: '公交'},
-          {name: '地铁'},
-          {name: '学校'},
-          {name: '购物', keyword: '商场/超市'},
-          {name: '医院'},
-          {name: '银行'},
-          {name: '餐饮'},
+          {name: '公交', icon: '&#xe614;', color: '#22c392'},
+          {name: '地铁', icon: '&#xe6f3;', color: '#66a2fe'},
+          {name: '学校', icon: '', color: '#ff5e3a'},
+          {name: '购物', icon: '&#xe619;', color: '#fda84e', keyword: '商场/超市'},
+          {name: '医院', icon: '&#xe6a7;', color: '#c86183'},
+          {name: '银行', icon: '&#xe64c;', color: '#22c392'},
+          {name: '餐饮', icon: '&#xe64d;', color: '#22c392'},
         ]
 			};
 		},
@@ -28,23 +35,32 @@
         const keyword = this.nearby[this.currIndex].keyword || this.nearby[this.currIndex].name
         return `https://apis.map.qq.com/tools/poimarker?type=1&keyword=${keyword}&tonav=${tonav}&center=39.908491,116.374328&radius=1000&key=${key}&referer=微窝`
       }
+    },
+    methods: {
+      
     }
 	}
 </script>
 
 <style lang="scss">
 .nearby{
-  &-menu{
+  &-bar{
     position: absolute;
     z-index: 99;
     bottom: 0;
     left: 0;
     white-space: nowrap;
-    text{
+    background-color: $color-white;
+    &-item{
+      padding: 20rpx 20rpx;
       display: inline-block;
-      color: $color-primary;
-      background-color: $color-white;
-      white-space: nowrap;
+      filter: grayscale(100%);
+      &.active{
+        filter: none;
+      }
+      .iconfont{
+        vertical-align: middle;
+      }
     }
   }
 }
