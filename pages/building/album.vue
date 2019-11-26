@@ -214,14 +214,13 @@
             size: true
           },data => {
             item.top = h;
-            // console.log(h)
             h += data.height;
             item.bottom = h;
           }).exec();
         })
         this.sizeCalcState = true;
       },
-      //右侧栏滚动
+      //窗口滚动
       asideScroll(e){
       	if(!this.sizeCalcState){
       		this.calcSize();
@@ -235,7 +234,6 @@
       // 放大图片
       preImg(e) {
         let index=e.currentTarget.dataset.index;
-        // console.log(index)
         let list = this.tlist.map((item,index)=>{
         	return item.picture;
         });

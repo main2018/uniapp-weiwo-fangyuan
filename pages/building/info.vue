@@ -3,9 +3,9 @@
     //- 顶部选项
     view.top-tab.mod-bg
       view.tab-item(v-for="(item, index) in navlist" :key="index" :class="{curr:index === navCurrIndex}" @click="tabnav(index)") {{item.title}}
-    view.content-wrap(@scroll="contentScroll" :scroll-top="tabScrollTop")
+    scroll-view.content-wrap(scroll-y="true" @scroll="contentScroll" :scroll-top="tabScrollTop" scroll-with-animation)
       //- 数据详情
-      view.x-form.mod-bg#main-1
+      view.x-form.mod-bg#floor-1
         view.title 项目数据
         view.x-form-item
           label.x-form-label 最新开盘：
@@ -71,7 +71,7 @@
           label.x-form-label 售楼处：
           view.x-form-content.color-deep 海南海口龙华区
       //- 预售许可证    
-      view.x-form.mod-bg#main-2
+      view.x-form.mod-bg#floor-2
         view.title 预售许可证
         view.x-form-item
           label.x-form-label 预售证号：
@@ -83,12 +83,12 @@
           label.x-form-label 绑定楼栋：
           view.x-form-content 暂无
       //- 楼盘介绍        
-      view.x-form.mod-bg#main-3
+      view.x-form.mod-bg#floor-3
         view.title 楼盘介绍
         view.margin-b-40
           |项目位于海口西海岸片区， 海南十里繁华地，东十里是海南商务区，西十里是海口行政区，北走1000步是大海，南靠秀英老城区。“十里繁华，宁静海生活”，闹市区选择这安静的生活空间，无论出租、自主、投资都是首选
       //- 楼盘证件
-      view.container.mod-bg#main-4
+      view.container.mod-bg#floor-4
         view.title 楼盘证件
         view.papers-list
           view.papers-item
@@ -200,18 +200,23 @@
 			return {
         tabScrollTop: 0,
         navCurrIndex: 0,
+        sizeCalcState:false,
         navlist:[
           {
             title:'项目数据',
+            id: '1'
           },
           {
             title:'预售许可证',
+            id: '2'
           },
           {
             title:'楼盘介绍',
+            id: '3'
           },
           {
             title:'楼盘证件',
+            id: '4'
           }
         ]
 			}
@@ -222,17 +227,38 @@
 		methods: {
       //一级分类点击
       tabnav(index){
-       /* if(!this.sizeCalcState){
-          this.calcSize();
-        } */
+       if(!this.sizeCalcState){
+          this.calcSize()
+        }
         this.navCurrIndex = index;
-        // this.tabScrollTop = document.querySlector('#main-1').top;
-       /* let index = this.slist.findIndex(sitem=>sitem.pid === item.id);
-        this.tabScrollTop = this.slist[index].top; */
+        let nindex = this.navlist.findIndex(navlist=>navlist.id === index);
+        this.tabScrollTop = this.navlist[index].top;
+      },
+      //计算每个tab的高度等信息
+      calcSize() {
+        let h = 0;
+        this.navlist.forEach(item=>{
+          let view = uni.createSelectorQuery().select("#floor-" + item.id);
+          view.fields({
+            size: true
+          },data => {
+            item.top = h;
+            h += data.height;
+            item.bottom = h;
+          }).exec();
+        })
+        this.sizeCalcState = true;
       },
       // 窗口滚动
       contentScroll(e){
+        if(!this.sizeCalcState){
+        	this.calcSize();
+        }
         let scrollTop = e.detail.scrollTop;
+        let tabs = this.navlist.filter(item=>item.top <= scrollTop).reverse();
+        if(tabs.length > 0){
+        	this.navCurrIndex = tabs[0].id-1;
+        }
       }
 			
 		}
@@ -253,7 +279,7 @@
   display: flex;
   flex-direction: column;
   .content-wrap {
-    flex: 1;
+    height: 100%;
     overflow-y:auto;
    -webkit-overflow-scrolling: touch;
   }
