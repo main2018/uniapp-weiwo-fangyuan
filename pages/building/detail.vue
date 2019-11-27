@@ -92,6 +92,8 @@
   import contact from "@/components/contact";
   import card from "@/components/card";
   
+  const app = getApp()
+  
   export default {
     components: {
       contact,
@@ -169,6 +171,7 @@
       }
     },
     onLoad() {
+      console.log('text', app.globalData.text);
       // const id = 1124
       const id = 31
       this.$api.getBuildingDetail(id).then(data => {

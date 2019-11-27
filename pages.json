@@ -1,12 +1,6 @@
 {
   "pages": [ //pages数组中第一项表示应用启动页,
     {
-      "path": "pages/main/main",
-      "style": {
-        "navigationBarTitleText": "登录模板"
-      }
-    },
-    {
       "path": "pages/building/detail",
       "style": {
         "navigationBarTitleText": "楼盘详情",
@@ -75,6 +69,12 @@
         "navigationBarTitleText": "户型列表页"
       }
     },
+    {
+      "path": "pages/main/main",
+      "style": {
+        "navigationBarTitleText": "登录模板"
+      }
+    }, 
     {
       "path": "pages/login/login",
       "style": {
