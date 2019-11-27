@@ -231,7 +231,6 @@
           this.calcSize()
         }
         this.navCurrIndex = index;
-        let nindex = this.navlist.findIndex(navlist=>navlist.id === index);
         this.tabScrollTop = this.navlist[index].top;
       },
       //计算每个tab的高度等信息
@@ -258,6 +257,7 @@
         let tabs = this.navlist.filter(item=>item.top <= scrollTop).reverse();
         if(tabs.length > 0){
         	this.navCurrIndex = tabs[0].id-1;
+          this.tabScrollTop = scrollTop
         }
       }
 			
