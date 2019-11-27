@@ -36,14 +36,14 @@ http.createServer(function (req, res) {
   let pathname = url.parse(req.url).pathname; // 形如`/index.html`
   pathname = req.url==="/" ? 'index.html' : pathname
   var filePath = path.join(staticPath, pathname);
-  console.log('收到对文件 ' + pathname + '的请求');
+  // console.log('收到对文件 ' + pathname + '的请求');
   // 读取文件内容, 也可先使用fs.exists检查文件是否存在
   fs.readFile(filePath, (err, data) => {
     var ext = path.extname(filePath);
     ext = ext?ext.slice(1) : 'unknown';
     var contentType = MIME_TYPE[ext] || "text/plain";
     if (err) {
-      console.log('文件读取失败：' + err);
+      // console.log('文件读取失败：' + err);
       // 设置404响应
       // res.writeHead(404, {
       //   'Content-Type': 'text/html'
