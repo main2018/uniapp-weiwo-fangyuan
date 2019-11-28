@@ -7,7 +7,7 @@
         text.font-size-30 约看房
         text.font-size-22 快速预约看房
       view.button.call.flex.flex-y.center.center-x(@tap="call")
-        text.font-size-30 指点咨询
+        text.font-size-30 致电咨询
         text.font-size-22 保护您的真实号码
 </template>
 

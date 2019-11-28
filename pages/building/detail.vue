@@ -53,7 +53,7 @@
     view.building-detail-item.special.padding-40
       view.building-detail-item-title.flex.margin-b-40
         text.flex-1 特色解读
-      view.special-item.flex.margin-b-20.padding-b-20.border-b-1(v-for="item in specials")
+      view.special-item.flex.margin-b-20.padding-b-20.border-b-1(v-for="item in specials" @tap="navigateTo({url: '../DM/detail'})")
         text.iconfont.font-size-28(v-show="isPano(item)") &#xe7bc;
         image.margin-r-20(:src="$baseUrl + item.cover" mode="aspectFill")
         view.flex-1
