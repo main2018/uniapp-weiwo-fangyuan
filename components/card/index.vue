@@ -11,8 +11,8 @@
       view.flex-1
         view.margin-b-10 {{data.title}}
         view.font-size-sm.font-color-grey 二室二厅/65.84㎡
-    view.card-bottom.flex.center.margin-t-24
-      text.iconfont.font-size-18.font-color-primary.margin-r-10 &#xe605;
+    view.card-bottom.flex.center.margin-t-18
+      text.iconfont.font-color-primary.margin-r-10 &#xe605;
       text.font-size-24 活动活动活动活动活动活动活动活动活动活动
 </template>
 <script>

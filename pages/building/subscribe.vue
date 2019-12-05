@@ -6,7 +6,7 @@
     view.subscribe-title.font-weight-bold.margin-t-100.margin-b-40 目的地楼盘
     card(border)
     
-    view.btn.fullwidth.large.primary 立即预约
+    view.btn.fullwidth.large.primary.bg-yellow-linear.btn-radius-xs 立即预约
     view.font-size-24.font-color-link.font-align-center(@tap="explainShow = true") 了解活动说明
     
     layer-explain(v-model="explainShow" title="活动说明")

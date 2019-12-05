@@ -14,7 +14,7 @@
           text.font-color-grey.font-size-sm-s 建筑面积
         view.budling-house-overview-top-item.flex-1.flex.flex-y
           text.font-color-primary.margin-b-10 {{detail.price_starting || '暂无'}}
-          text.font-color-grey.font-size-sm-s 参考单价
+          text.font-color-grey.font-size-sm-s 参考均价
       view.budling-house-overview-content.padding-y-40.border-b-1
         view.font-size-sm(v-for="item in overviews")
           text.font-color-grey.margin-r-20 {{item.name}}:

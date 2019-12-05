@@ -1,5 +1,5 @@
 <template lang="pug">
-  view.input.padding-y-30.flex.center(:class="{'border-b-1': border}")
+  view.input.padding-y-30.flex.center.btn-yuyue(:class="{'border-b-1': border}")
     text.required.font-color-red.margin-r-5 *
     input(
       :type="type"
@@ -43,6 +43,7 @@
 <style lang="scss" scoped>
   .input{
     input{
+      
     }
   }
 </style>

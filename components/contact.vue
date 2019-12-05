@@ -1,12 +1,12 @@
 <template lang="pug">
   view.contact(:style="{height: `${height * 2}rpx`}")
-    view.flex.center.padding-20.contact-content
-      image.margin-r-10(src="" mode="aspectFill")
+    view.flex.center.padding-y-20.padding-x-40.contact-content
+      image.margin-r-10(src="https://img-cdn-qiniu.dcloud.net.cn/tuku/img/dongwu08.jpg" mode="aspectFill")
       text.username.flex-1.font-size-30 小可
-      view.button.see.margin-r-10.flex.flex-y.center.center-x(@tap="$navigateTo({url: '/pages/building/subscribe'})")
+      view.button.see.margin-r-10.flex.flex-y.center.center-x.bg-yellow-linear(@tap="$navigateTo({url: '/pages/building/subscribe'})")
         text.font-size-30 约看房
         text.font-size-22 快速预约看房
-      view.button.call.flex.flex-y.center.center-x(@tap="call")
+      view.button.call.flex.flex-y.center.center-x.bg-blue-linear(@tap="call")
         text.font-size-30 致电咨询
         text.font-size-22 保护您的真实号码
 </template>
@@ -56,8 +56,9 @@
   image{
     width: 60rpx;
     height: 60rpx;
-    border: 1px solid;
+    background-color: #fff;
     border-radius: 50%;
+    box-shadow: inset 4rpx 4rpx 14rpx rgba(0,0,0,.2);
   }
   .button{
     width: 240rpx;

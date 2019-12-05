@@ -19,7 +19,7 @@
         view.rate.font-color-primary.font-size-24.margin-l-20
           text(class="iconfont" v-for="item in 3") &#xe671;
       view.tags.flex.font-size-sm-s.font-color-grey.margin-b-40.padding-y-30
-        view.tag.margin-r-20.margin-r-20.padding-10.background-color-grey-l(v-for="tag in 5") 在售
+        view.tag.btn.btn-grey.btn-sm(v-for="tag in 5") 在售
       view.building-detail-overview-item.margin-y-15
         text.font-color-grey.margin-r-20 参考均价
         text.font-color-red.font-size-38 {{building.average_price}}元/㎡
@@ -31,7 +31,7 @@
       view.building-detail-overview-item.margin-y-15
         text.font-color-grey.margin-r-20(:decode="true" @tap="navigateTo({url: './nearby'})") {{`售楼处&emsp;`}}
         text.font-color-link(@tap="navigateTo({url: './nearby'})") {{building | filterAddress}}
-      view.font-size-sm.font-align-center.font-color-primary.background-color-grey-l.margin-t-40.padding-y-20(@tap="navigateTo({url: './info'})") 更多信息
+      view.font-size-sm.font-align-center.font-color-primary.btn-grey.margin-t-40.padding-y-20(@tap="navigateTo({url: './info'})") 更多信息
     view.building-detail-item.activity.padding-x-40
       view.building-detail-item-title.flex.center.margin-b-40
         text.flex-1 优惠活动
@@ -39,7 +39,7 @@
       image(:src="$baseUrl + swiperImgs[0]" mode="aspectFill" lazy-load @tap="navigateTo({url: './activity'})")
     view.building-detail-item.house-type.padding-40
       view.building-detail-item-title.flex.center.margin-b-40
-        text.flex-1 主力户型
+        text.flex-1 主力户型({{houseTypes.length}})
         .view.font-size-sm-s.font-color-grey
           text(@tap="navigateTo({url: './housetypelist'})") 查看更多
           text.iconfont.font-size-sm-s &#xe62a;

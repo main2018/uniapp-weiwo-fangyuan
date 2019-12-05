@@ -4,7 +4,8 @@
     <!-- rich-text(:nodes="nodes") -->
     rich-text(:nodes="htmlNodes")
     fixed(hasBorder)
-      view.btn.fullwidth.large.primary.margin-x-40.margin-y-20.padding-y-26(@click="$navigateTo({url: './activity-join'})") 活动报名
+      view.padding-x-40.padding-y-20
+        view.btn.fullwidth.large.primary.bg-yellow-linear.btn-radius-xs(@click="$navigateTo({url: './activity-join'})") 活动报名
 </template>
 <script>
   import htmlParser from '@/common/js/html-parser';
