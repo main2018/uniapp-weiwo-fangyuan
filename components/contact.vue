@@ -66,7 +66,6 @@
     color: $color-white;
     border-radius: 8rpx;
     &.see{
-      background-color: $color-primary;
     }
     &.call{
       background-color: $color-blue;

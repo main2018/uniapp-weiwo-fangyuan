@@ -1,5 +1,5 @@
 <template lang="pug">
-  //- 分类按钮
+  //- 顶部分类导航
   view.page-bg-grey.page-album
     scroll-view.ww-top-nav-wrap.mod-bg(scroll-x="true")
       view.scoll-wrapper.mod-bg.menu
@@ -202,6 +202,7 @@
           this.calcSize();
         }
         this.currentId = item.id;
+        console.log(item.id)
         let index = this.slist.findIndex(sitem=>sitem.pid === item.id);
         this.tabScrollTop = this.slist[index].top;
       },
@@ -230,14 +231,16 @@
       	if(tabs.length > 0){
       		this.currentId = tabs[0].pid;
       	}
+        this.tabScrollTop =  scrollTop;
       },
       // 放大图片
       preImg(e) {
         let index=e.currentTarget.dataset.index;
         let list = this.tlist.map((item,index)=>{
-        	return item.picture;
+            return item.picture;
         });
-       console.log(list[index])
+        console.log(list)
+       // console.log(list[index])
         uni.previewImage({
           current: list[index],
           indicator: "default",
