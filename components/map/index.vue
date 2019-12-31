@@ -16,7 +16,7 @@
         validator: function (value) {
           return value && value.length === 2
         },
-        default: () => [39.916527, 116.397128]
+        default: () => []
       }
     },
     data() {
@@ -28,7 +28,7 @@
     async created() {},
     async mounted() {
       await this.loadScript()
-      this.init(this.searchKeyword)
+      // this.init(this.searchKeyword)
     },
     watch: {
       keyword: {
@@ -39,6 +39,10 @@
           this.searchKeyword()
         }
         // immediate: true
+      },
+      center(ctr) {
+        console.log('ctr', ctr);
+        if (ctr && ctr.length) this.init(this.searchKeyword)
       }
     },
     methods: {

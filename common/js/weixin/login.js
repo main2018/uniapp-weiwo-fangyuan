@@ -23,7 +23,8 @@ export default {
     } else {
       let appid = 'xxx';
       let uri = encodeURIComponent(link);
-      let authURL = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${uri}&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect`;
+      // let authURL = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${uri}&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect`;
+      let authURL = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxcd56fa29c2da0f1b&redirect_uri=http://weiwo.info/site/1340/dm_agency/16681?id_push_log=56693&id_position=2&daid=0&response_type=code&scope=snsapi_userinfo&state=STATE&connect_redirect=1&uin=MTM1MDAxMTE0MQ%3D%3D&key=3a00c89785751499800511f8e2e5bc81f8178df36b8f3d83afafb3828f255479d04ac284f4ca1427c7583ded13b03f43&pass_ticket=pJfyzRN+KSeK6j3Hef0gR9Z32rLeZkHBOd4i3dmg5ldztQ7kWXAt4b1yU9Ukh7vCxkXXANjhEeNGHywHNqAEvA==`;
       window.location.href = authURL;
     }
   },

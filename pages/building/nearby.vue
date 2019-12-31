@@ -24,7 +24,9 @@
           {name: '医院', icon: '&#xe6a7;', color: '#c86183'},
           {name: '银行', icon: '&#xe64c;', color: '#22c392'},
           {name: '餐饮', icon: '&#xe64d;', color: '#22c392'},
-        ]
+        ],
+        lat: 0,
+        lng: 0
 			};
 		},
     computed: {
@@ -33,8 +35,13 @@
         const key = 'NEPBZ-SDK3W-SWMRQ-R4ZOY-X5QRT-QQFL5';
         // const key = 'OB4BZ-D4W3U-B7VVO-4PJWW-6TKDJ-WPB77';
         const keyword = this.nearby[this.currIndex].keyword || this.nearby[this.currIndex].name
-        return `https://apis.map.qq.com/tools/poimarker?type=1&keyword=${keyword}&tonav=${tonav}&center=39.908491,116.374328&radius=1000&key=${key}&referer=微窝`
+        return `https://apis.map.qq.com/tools/poimarker?type=1&keyword=${keyword}&tonav=${tonav}&center=${this.lat},${this.lng}&radius=1000&key=${key}&referer=微窝`
       }
+    },
+    onLoad(option) {
+      const {lat, lng} = option
+      this.lat = lat
+      this.lng = lng
     },
     methods: {
       

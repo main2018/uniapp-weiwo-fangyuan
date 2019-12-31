@@ -10,6 +10,9 @@
   &.center-x{
     justify-content: center;
   }
+  &.wrap{
+    flex-wrap: wrap;
+  }
   &-y{
     flex-direction: column;
   }

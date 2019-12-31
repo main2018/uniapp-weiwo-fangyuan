@@ -3,214 +3,49 @@
   view.page-bg-grey.page-album
     scroll-view.ww-top-nav-wrap.mod-bg(scroll-x="true")
       view.scoll-wrapper.mod-bg.menu
-        view.f-item.padding-x-30(v-for="item in slist" :key="item.id" :class="{curr: item.id === currentId}" @click="tabtap(item)") {{item.name}}
+        view.f-item.padding-x-30(v-for="(item, index) in plist" :key="index" :class="{curr: index === currentId}" @click="tabtap(index)" v-show="item.poster_list.length > 0") {{item.type_name}}
     //- 分类模块
     scroll-view.content-wrap(scroll-y="true" @scroll="asideScroll" :scroll-top="tabScrollTop" scroll-with-animation)
-      view.s-list.mod-bg(v-for="item in slist" :key="item.id" :id="'main-'+item.id")
-        //- 模块名称
-        text.s-item {{item.name}}
+      view.s-list.mod-bg(v-for="(item, index) in plist" :key="index" :id="'main-'+index" v-show="item.poster_list.length > 0")
+        text.s-item {{item.type_name}}
         //- 图片列表
         view.t-list
-          view.t-item(v-if="titem.pid === item.id && !titem.videosrc" v-for="(titem, index) in tlist" :key="titem.id" :data-index="index" @click="preImg")
-            image.pic(:src="titem.picture" mode="aspectFill")
-            text.video-icon(v-if="titem.videosrc")
-            
-          view.t-item(v-if="titem.pid === item.id && titem.videosrc" v-for="(titem, index) in tlist" :key="titem.id" @click="videoShow")
-            image.pic( :src="titem.picture" mode="aspectFill")
-            text.video-icon(v-if="titem.videosrc")
+          view.t-item(v-for="(p, itemIndex) in item.poster_list" :key="itemIndex" @click="preImg(index, itemIndex, p.screenage_format)")
+            image.pic(v-if="p.screenage_format == 1" :src="$baseUrl + p.screenage" mode="aspectFill")
+            image.pic(v-if="p.screenage_format == 2" :src="$baseUrl + p.cover" mode="aspectFill")
+            text.video-icon(v-if="p.screenage_format == 2")
+    //- 弹出层
+    
 </template>
 
 <script>
   export default {
     data() {
       return {
+        timer: null,
+        isClick: false,
         sizeCalcState: false,
         tabScrollTop: 0,
-        currentId: 1,
-        slist: [ // 分类按钮
-          {
-          	id: 1,
-          	pid: 1,
-          	name: '园林景区'
-          },
-          {
-          	id: 2,
-          	pid: 2,
-          	name: '区位图'
-          },
-          {
-          	id: 3,
-          	pid: 3,
-          	name: '户型图',
-          },
-          {
-          	id: 4,
-          	pid: 4,
-          	name: '样板间',
-          },
-          {
-          	id: 5,
-          	pid: 5,
-          	name: '活动海报'
-          },
-          {
-          	id: 6,
-          	pid: 6,
-          	name: '交通配套'
-          },
-          {
-          	id: 7,
-          	pid: 7,
-          	name: '小区配套',
-          },
-          {
-          	id: 8,
-          	pid: 8,
-          	name: '周边配套',
-          }
-        ],
-        tlist: [ // 分类模块
-         {
-         	id: 31,
-         	pid: 1,
-         	name: '景区园林1',
-         	picture: 'https://img-cdn-qiniu.dcloud.net.cn/tuku/img/dongwu06.jpg'
-         },
-         {
-         	id: 9,
-         	pid: 1,
-         	name: '景区园林2',
-         	picture: 'https://img-cdn-qiniu.dcloud.net.cn/tuku/img/meinv03.jpg'
-         },
-         {
-         	id: 10,
-         	pid: 1,
-         	name: '景区园林1',
-         	picture: 'https://img-cdn-qiniu.dcloud.net.cn/tuku/img/meinv04-l.jpg',
-          videosrc:'http://cdn.weiwo.info/file_library/mp4/20190307/5c80c02bdc1ec.mp4'
-         },
-         {
-         	id: 11,
-         	pid: 1,
-         	name: '景区园林2',
-         	picture: 'https://img-cdn-qiniu.dcloud.net.cn/tuku/img/meinv01-l.jpg'
-         },
-         {
-         	id: 12,
-         	pid: 2,
-         	name: '区位图1',
-         	picture: 'https://img-cdn-qiniu.dcloud.net.cn/tuku/img/meinv10.jpg'
-         },
-         {
-         	id: 14,
-         	pid: 2,
-         	name: '区位图1',
-         	picture: 'https://img-cdn-qiniu.dcloud.net.cn/tuku/img/qiche02.jpg'
-         },
-         {
-         	id: 15,
-         	pid: 3,
-         	name: '户型图1',
-         	picture: 'https://img-cdn-qiniu.dcloud.net.cn/tuku/img/qiche01.jpg'
-         },
-         {
-         	id: 16,
-         	pid: 3,
-         	name: '户型图1',
-         	picture: 'https://img-cdn-qiniu.dcloud.net.cn/tuku/img/qiche04-l.jpg'
-         },
-         {
-         	id: 19,
-         	pid: 4,
-         	name: '样板间1',
-         	picture: 'https://img-cdn-qiniu.dcloud.net.cn/tuku/img/qiche06.jpg'
-         },
-         {
-         	id: 20,
-         	pid: 4,
-         	name: '样板间1',
-         	picture: 'https://img-cdn-qiniu.dcloud.net.cn/tuku/img/qiche02-l.jpg'
-         },
-         {
-         	id: 21,
-         	pid: 5,
-         	name: '活动海报1',
-         	picture: 'https://img-cdn-qiniu.dcloud.net.cn/tuku/img/qiche08.jpg'
-         },
-         {
-         	id: 22,
-         	pid: 5,
-         	name: '活动海报1',
-         	picture: 'https://img-cdn-qiniu.dcloud.net.cn/tuku/img/qiche09.jpg'
-         },
-         {
-         	id: 23,
-         	pid: 6,
-         	name: '交通配套1',
-         	picture: 'https://img-cdn-qiniu.dcloud.net.cn/tuku/img/qiche10.jpg'
-         },
-         {
-         	id: 24,
-         	pid: 6,
-         	name: '交通配套1',
-         	picture: 'https://img-cdn-qiniu.dcloud.net.cn/tuku/img/dongwu08.jpg'
-         },
-         {
-         	id: 27,
-         	pid: 7,
-         	name: '小区配套1',
-         	picture: 'https://img-cdn-qiniu.dcloud.net.cn/tuku/img/dongwu01.jpg'
-         },
-         {
-         	id: 28,
-         	pid: 7,
-         	name: '小区配套1',
-         	picture: 'https://img-cdn-qiniu.dcloud.net.cn/tuku/img/dongwu03-l.jpg'
-         },
-         {
-         	id: 29,
-         	pid: 8,
-         	name: '周边配套1',
-         	picture: 'https://img-cdn-qiniu.dcloud.net.cn/tuku/img/dongwu05-l.jpg'
-         },
-         {
-         	id: 30,
-         	pid: 8,
-         	name: '周边配套1',
-         	picture: 'https://img-cdn-qiniu.dcloud.net.cn/tuku/img/dongwu02-l.jpg'
-         },
-         {
-         	id: 31,
-         	pid: 8,
-         	name: '周边配套1',
-         	picture: 'https://img-cdn-qiniu.dcloud.net.cn/tuku/img/dongwu05-l.jpg'
-         },
-         {
-         	id: 32,
-         	pid: 8,
-         	name: '周边配套1',
-         	picture: 'https://img-cdn-qiniu.dcloud.net.cn/tuku/img/dongwu02-l.jpg'
-         }
-        ],
-       
+        currentId: 0,
+        plist: [],
       }
     },
     methods: {
-      //一级分类点击
-      tabtap(item){
+      //分类点击
+      tabtap(index){
         if(!this.sizeCalcState){
-          this.calcSize();
+          this.calcSize(index);
         }
-        this.currentId = item.id;
-        console.log(item.id)
-        let index = this.slist.findIndex(sitem=>sitem.pid === item.id);
-        this.tabScrollTop = this.slist[index].top;
+        this.currentId = index;
+        console.log(index)
+        this.isClick = true
+        this.tabScrollTop = this.plist[index].top;
       },
-      //计算每个tab的高度等信息
+      //计算每个类的高度信息
       calcSize() {
         let h = 0;
-        this.slist.forEach(item=>{
-          let view = uni.createSelectorQuery().select("#main-" + item.id);
+        this.plist.forEach((item, index)=>{
+          let view = uni.createSelectorQuery().select("#main-" + index);
           view.fields({
             size: true
           },data => {
@@ -223,35 +58,49 @@
       },
       //窗口滚动
       asideScroll(e){
+        clearTimeout(this.timer)
+        this.timer = setTimeout(() => { if (this.isClick) this.isClick = false }, 300)
+        if (this.isClick) return
+        
       	if(!this.sizeCalcState){
       		this.calcSize();
       	}
       	let scrollTop = e.detail.scrollTop;
-      	let tabs = this.slist.filter(item=>item.top <= scrollTop).reverse();
+      	let tabs = this.plist.filter(item=>item.top <= scrollTop).reverse();
       	if(tabs.length > 0){
-      		this.currentId = tabs[0].pid;
+          const currentId = this.plist.findIndex(item => item.type_name == tabs[0].type_name)
+      		this.currentId = currentId;
       	}
         this.tabScrollTop =  scrollTop;
       },
       // 放大图片
-      preImg(e) {
-        let index=e.currentTarget.dataset.index;
-        let list = this.tlist.map((item,index)=>{
-            return item.picture;
-        });
-        console.log(list)
-       // console.log(list[index])
-        uni.previewImage({
-          current: list[index],
-          indicator: "default",
-          urls: list
-        })
+      preImg(index, itemIndex, screenageFormat) {
+        if (screenageFormat == 2) {
+          uni.navigateTo({
+              url: '/pages/component/video/video'
+          });
+        } else {
+          let list = this.plist[index].poster_list.filter(item => item.screenage_format == 1).map((p, itemIndex)=>{
+            return this.$baseUrl + p.screenage;
+          });
+          uni.previewImage({
+            current: list[itemIndex],
+            indicator: "number",
+            urls: list
+          })
+        }
       },
       // 显示视频
       videoShow() {
         alert('11')
       }
-      
+    },
+    onLoad (option) {
+      const {id, mu, sf, at} = option
+      this.$api.getPoster(id, mu, sf, at).then( data => {
+        console.log('data.list', data.list);
+        this.plist = data.list
+      })
     }
   }
 </script>

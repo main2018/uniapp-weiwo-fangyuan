@@ -1,4 +1,5 @@
 import http from '@/config/http'
+import {generateGetUrl} from './index'
 
 /**
  * DM详情
@@ -33,11 +34,41 @@ function buildingDms(did) {
  * @param {id}
  * @returns {Promise}
  */
-function getBuildingDetail(id) {
-  console.log('http', http);
+function getBuildingDetail(id, mu, sf, at) {
   return http.request({
     method: 'get',
-    url: `consultant/building/${id}`
+    url: generateGetUrl(`site/${id}/agency_building_push`, {mu, sf, at})
+  })
+}
+
+function getHxDms(id, mu, sf, at) {
+  return http.request({
+    method: 'get',
+    url: generateGetUrl(`site/${id}/agency_hx_dm`, {mu, sf, at})
+  })
+}
+
+// 获取特色解读
+function getSpecialDms(id, mu, sf, at) {
+  return http.request({
+    method: 'get',
+    url: generateGetUrl(`site/${id}/agency_other_dm`, {mu, sf, at})
+  })
+}
+
+// 看了又看
+function getHabitDms(id, mu, sf, at) {
+  return http.request({
+    method: 'get',
+    url: generateGetUrl(`site/${id}/agency_enshrine_building`, {mu, sf, at})
+  })
+}
+
+// 相册
+function getPoster(id, mu, sf, at) {
+  return http.request({
+    method: 'get',
+    url: generateGetUrl(`site/${id}/agency_poster`, {mu, sf, at})
   })
 }
 
@@ -76,6 +107,10 @@ function statistics(type, idSubject, subject, terminal = 2) {
 export {
   dmDetail,
   getBuildingDetail,
+  getHxDms,
+  getSpecialDms,
+  getHabitDms,
+  getPoster,
   buildingDms,
   dmHouseTypeImgs,
   statistics

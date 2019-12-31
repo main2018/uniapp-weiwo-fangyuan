@@ -1,5 +1,5 @@
 const urls = [
-  // 'http://192.168.1.9:80',
+  'http://192.168.1.250:80/',
 	'http://weiwo.info/',
 	'http://weiwo.info/'
 ]

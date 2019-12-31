@@ -1,6 +1,7 @@
 <template lang="pug">
-  view.building-detail
-    view.building-detail-header(@tap="navigateTo({url: './album'})")
+  empty(v-if="!building")
+  view.building-detail(v-else)
+    view.building-detail-header(@tap="navigateTo({url: `./album?id=${option.id}&mu=${option.mu}&sf=${option.sf}&at=${option.at}`})")
       swiper.swiper(:indicator-dots="false" :circular="true" :autoplay="false" :interval="2000" :duration="500" :current="currIndex")
         swiper-item.swiper-item(v-for="url in swiperImgs" :key="url")
           image(:src="$baseUrl + url" mode="aspectFill" lazy-load)
@@ -8,6 +9,7 @@
         view.swiper-bar-switch
           view.swiper-bar-switch-btn.padding-x-20.padding-y-5(
             v-for="(swiper, index) in swipers"
+            v-show="swipers.length > 1"
             :class="{active: swiperIndex === index}"
             @tap.stop="switchSwiper(index)"
             ) {{swiper.name}}
@@ -15,54 +17,63 @@
     <!-- view.building-detail-hint.font-size-sm.font-align-center.background-color-grey-l 详细信息及项目动态请咨询置业顾问 -->
     view.building-detail-overview.margin-y-80.padding-x-40
       view.building-detail-overview-title.flex.center.font-size-46.font-weight-bold
-        |{{building.project_name}}
+        |{{building.building_info.name_project}}
         view.rate.font-color-primary.font-size-24.margin-l-20
-          text(class="iconfont" v-for="item in 3") &#xe671;
-      view.tags.flex.font-size-sm-s.font-color-grey.margin-b-40.padding-y-30
-        view.tag.btn.btn-grey.btn-sm(v-for="tag in 5") 在售
+          text(class="iconfont" v-for="item in building.building_info.star_level") &#xe671;
+      view.tags.flex.wrap.font-size-sm-s.font-color-grey.margin-b-40.padding-y-30
+        view.tag.btn.btn-grey.btn-sm.margin-b-10(v-for="tag in tags") {{tag}}
       view.building-detail-overview-item.margin-y-15
         text.font-color-grey.margin-r-20 参考均价
-        text.font-color-red.font-size-38 {{building.average_price}}元/㎡
+        text.font-color-red.font-size-38 {{building.building_info.average_price}}元/㎡
       view.building-detail-overview-item.margin-y-15
         text.font-color-grey.margin-r-20 最新开盘
-        text {{overviewNormalize('开盘时间')}}
+        text {{building.building_info.opening_date}}
         text.font-color-grey.margin-l-40.margin-r-20 产权年限
-        text {{overviewNormalize('产权年限')}}
+        text {{building.building_info.property_limit || '未知'}}
       view.building-detail-overview-item.margin-y-15
         text.font-color-grey.margin-r-20(:decode="true" @tap="navigateTo({url: './nearby'})") {{`售楼处&emsp;`}}
-        text.font-color-link(@tap="navigateTo({url: './nearby'})") {{building | filterAddress}}
+        text.font-color-link(@tap="navigateTo({url: './nearby'})") {{building.building_info.province_name + building.building_info.city_name + building.building_info.sales_office_address}}
       view.font-size-sm.font-align-center.font-color-primary.btn-grey.margin-t-40.padding-y-20(@tap="navigateTo({url: './info'})") 更多信息
-    view.building-detail-item.activity.padding-x-40
+    view.building-detail-item.activity.padding-x-40(v-if="building.activity_info && building.activity_info.dsoid")
       view.building-detail-item-title.flex.center.margin-b-40
         text.flex-1 优惠活动
         view.button.font-size-24.padding-x-14.padding-y-5.font-color-primary 活动报名
-      image(:src="$baseUrl + swiperImgs[0]" mode="aspectFill" lazy-load @tap="navigateTo({url: './activity'})")
-    view.building-detail-item.house-type.padding-40
+      image(:src="$baseUrl + building.activity_info.cover" mode="aspectFill" lazy-load @tap="navigateTo({url: './activity'})")
+    view.building-detail-item.house-type.padding-40(v-if="hxDms && hxDms.length")
       view.building-detail-item-title.flex.center.margin-b-40
-        text.flex-1 主力户型({{houseTypes.length}})
+        text.flex-1 主力户型({{hxDms.length}})
         .view.font-size-sm-s.font-color-grey
           text(@tap="navigateTo({url: './housetypelist'})") 查看更多
           text.iconfont.font-size-sm-s &#xe62a;
       scroll-view.scroll-view.font-size-sm(scroll-x="true")
-        view.scroll-view-item(v-for="item in houseTypes" @tap="navigateTo({url: './house'})")
-          image(:src="$baseUrl + item.cover" mode="aspectFill")
-          text.scroll-view-item-pano.iconfont.font-size-42(v-show="isPano(item)") &#xe7bc;
+        view.scroll-view-item(v-for="item in hxDms" @tap="navigateTo({url: './house'})")
+          image(:src="$baseUrl + item.gallery" mode="aspectFill")
+          text.scroll-view-item-pano.iconfont.font-size-42(v-show="item.panorama") &#xe7bc;
           .scroll-view-item-title.padding-x-20.padding-y-30.line-h1
-            text(decode) {{`${item.defective_room}&nbsp;${Math.round(item.area_built || 0)}㎡`}}
-            view.font-color-red.margin-t-20 {{item.total_price_min || 0}}万起
-    view.building-detail-item.special.padding-40
+            text(decode) {{`${item.defective_room}&nbsp;${item.area_built}`}}
+            view.font-color-red.margin-t-20 {{item.price_total || 0}}
+    view.building-detail-item.special.padding-40(v-if="specialDms")
       view.building-detail-item-title.flex.margin-b-40
         text.flex-1 特色解读
-      view.special-item.flex.margin-b-20.padding-b-20.border-b-1(v-for="item in specials" @tap="navigateTo({url: '../DM/detail'})")
-        text.iconfont.font-size-28(v-show="isPano(item)") &#xe7bc;
+      view.special-item.flex.margin-b-20.padding-b-20.border-b-1(v-for="item in specialDms" @tap="navigateTo({url: '../DM/detail'})")
+        text.iconfont.font-size-28(v-show="item.panorama") &#xe7bc;
         image.margin-r-20(:src="$baseUrl + item.cover" mode="aspectFill")
         view.flex-1
           view.margin-b-10 {{item.title}}
-          view.font-size-sm.font-color-grey {{`${item.defective_room}/${Math.round(item.area_built || 0)}㎡`}}
-    view.building-detail-item.nearby.padding-40
+          <!-- view.font-size-sm.font-color-grey {{`${item.defective_room}/${Math.round(item.area_built || 0)}㎡`}} -->
+          view.font-size-sm.font-color-grey {{item.intro}}
+    view.building-detail-item.nearby.padding-40(v-if="latlng")
       view.building-detail-item-title.flex.margin-b-40
-        text.flex-1 周边配套
-      map#map(ref="map" @tap="navigateTo({url: './nearby'})" :latitude="latitude" :longitude="longitude" :markers="covers" :hidden="false")
+        text.flex-1
+      map#map(
+        ref="map"
+        @tap="$navigateTo({url: `./nearby?lat=${latlng.lat}&lng=${latlng.lng}`})"
+        :center="[latlng.lat, latlng.lng]"
+        :latitude="latlng.lat"
+        :longitude="latlng.lng"
+        :markers="covers"
+        :hidden="false"
+        )
       view.nearby-bar.font-color-grey.flex.center.flex-space-a.font-size-30.padding-y-30.border-1
         view.nearby-bar-item
           text.iconfont.margin-r-8(style="color: #22c392;") &#xe614;
@@ -79,33 +90,38 @@
         view.nearby-bar-item
           text.iconfont.margin-r-8(style="color: #c86183;") &#xe6a7;
           |医院
-    view.building-detail-item.habit.padding-40
+    view.building-detail-item.habit.padding-40(v-if="habitDms && habitDms.length")
       view.building-detail-item-title.flex.margin-b-40
         text.flex-1 看了又看
-      card(v-for="item in dmList" :data="item" border)
+      card(v-for="item in habitDms" :data="item" border)
           
-    contact
+    contact(:phone="phone")
       
 </template>
 
 <script>
   import contact from "@/components/contact";
   import card from "@/components/card";
+  import empty from "@/components/empty";
   
   const app = getApp()
   
   export default {
     components: {
       contact,
-      card
+      card,
+      empty
     },
     data() {
       return {
-        latitude: 39.909,
-        longitude: 116.39742,
+        option: {},
+        latlng: null,
         currIndex: 0,
         swiperIndex: 0,
-        building: {},
+        building: null,
+        hxDms: null,
+        specialDms: null,
+        habitDms: null,
         dmList: [],
         houseTypeImgs: null,
         detail: {
@@ -121,16 +137,44 @@
       }
     },
     computed: {
+      phone() {
+        const {mobile} = this.building && this.building.contact_info || {}
+        return mobile
+      },
+      tags() {
+        const {building_status, building_type, feature_arr} = this.building && this.building.building_info || {}
+        return [building_status, building_type, ...feature_arr]
+      },
       covers() {
+        if (!this.latlng) return []
+        const {name_project, province_name, city_name, sales_office_address} = (this.building && this.building.building_info) || {}
+        const fontSize = 14
+        const address = province_name + city_name + sales_office_address
+        
+        const html = `
+          <div style="padding: 5px 10px;text-align: center;transform: translateX(-50%);background-color: rgba(255,255,255,.9);">
+            <h6 style="font-size: 14px;">${name_project}</h6>
+            <p style="font-size: 12px;color: #979B9E;">${address}</p>
+          </div>
+        `
         return [
           {
-            latitude: 39.909,
-            longitude: 116.39742,
+            id: 0,
+            latitude: this.latlng.lat,
+            longitude: this.latlng.lng,
             iconPath: '../../static/img/location.png',
-            width: 12,
-            callout: {
-              content: this.building && this.building.project_name,
-              display: 'ALWAYS'
+            width: 15,
+            // title: 'safaf',
+            // callout: {
+            //   content: name_project,
+            //   display: 'ALWAYS'
+            // }
+            label: {
+              content: html,
+              fontSize,
+              x: '-9px',
+              y: '-5px',
+              color: 'black',
             }
           }
         ]
@@ -141,25 +185,21 @@
       houseTypes() {
         return this.dmList.filter(item => [8,23].includes(Number(item.type)))
       },
-      overview() {
-        const building = this.building || {}
-        const obj = building.modules && building.modules[0] && building.modules[0].data && building.modules[0].data[1] && building.modules[0].data[1].package
-        
-        return obj || []
-      },
       swipers() {
-        const cover = this.building && this.building.cover
-        const houseTypeImgs = this.houseTypeImgs || []
-        return [
-          {
-            name: '图片',
-            list: [cover]
-          },
-          {
-            name: '户型',
-            list: houseTypeImgs.map(item => item.screenage)
-          }
-        ]
+        const {img_arr, img_hx} = (this.building && this.building.building_info) || {}
+        // const houseTypeImgs = this.houseTypeImgs || []
+        const arr = []
+        const imgArrObj = {
+          name: '图片',
+          list: img_arr
+        }
+        const imgHxObj = {
+          name: '户型',
+          list: img_hx
+        }
+        img_arr && img_arr.length && arr.push(imgArrObj)
+        img_hx && img_hx.length && arr.push(img_hx)
+        return arr
       },
       swiperImgs() {
         return this.swipers.reduce((total, curr) => total.concat(curr.list), [])
@@ -170,15 +210,34 @@
         return val && val.modules && val.modules[0] && val.modules[0].data && val.modules[0].data[0] && val.modules[0].data[0].content
       }
     },
-    onLoad() {
-      console.log('text', app.globalData.text);
+    onLoad(option) {
+      const {id, mu, sf, at} = option
+      this.option = option
+      console.log('id, mu, sf, at', id, mu, sf, at);
+      // console.log('text', app.globalData.text);
       // const id = 1124
-      const id = 31
-      this.$api.getBuildingDetail(id).then(data => {
+      // const id = 31
+      this.$api.getBuildingDetail(id, mu, sf, at).then(async data => {
         // this.detail = data
         this.building = data || {}
         console.log('data', data);
+        const {lat, lng} = this.building.building_info || {}
+        const latlng = await this.$api.convertCoordinate(lat, lng)
+        console.log('latlng', latlng);
+        this.latlng = latlng
       })
+      this.$api.getHxDms(id, mu, sf, at).then(({list}) => {
+        // this.detail = data
+        this.hxDms = list
+      })
+      this.$api.getSpecialDms(id, mu, sf, at).then(({list}) => {
+        // this.detail = data
+        this.specialDms = list
+      })
+      this.$api.getHabitDms(id, mu, sf, at).then(({list}) => {
+        this.habitDms = list
+      })
+      
       this.$api.dmHouseTypeImgs(id).then(list => {
         this.houseTypeImgs = list
       })
@@ -187,16 +246,17 @@
         this.dmList = list
       })
     },
-    onReady() {
+    async onReady() {
+      // #ifdef H5
+      // const {lat, lng} = this.building && this.building.building_info
+      // const latlng = this.$api.convertCoordinate(lat, lng)
+      // console.log('latlng', latlng);
+      // #endif
     },
     methods: {
       isPano(obj) {
         const type = obj && obj.type
         return [21,22,23].includes(Number(type))
-      },
-      overviewNormalize(val) {
-        const obj = this.overview.find(item => item.key === val)
-        return obj && obj.value
       },
       switchSwiper(index) {
         this.swiperIndex = index

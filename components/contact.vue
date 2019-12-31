@@ -13,6 +13,12 @@
 
 <script>
 	export default {
+    props: {
+      phone: {
+        type: String,
+        default: ''
+      }
+    },
 		data() {
 			return {
 				height: 0
@@ -25,7 +31,7 @@
     methods: {
       call() {
         // location.href = `tel:${phone}`
-        uni.makePhoneCall({phoneNumber: '13322061910'})
+        uni.makePhoneCall({phoneNumber: this.phone})
       },
       resetHeight() {
         this.$nextTick(() => {
