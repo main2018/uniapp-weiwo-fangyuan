@@ -95,6 +95,12 @@ export default {
 					resolve(res && res.data);
 				} else {
 					reject(res)
+          uni.showToast({
+            title: (res && res.message) || '请求失败',
+            icon: 'none',
+            success() {
+            }
+          })
 				}
 			}
 

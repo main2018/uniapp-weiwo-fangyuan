@@ -3,7 +3,7 @@
     view.flex.center.padding-y-20.padding-x-40.contact-content
       image.margin-r-10(src="https://img-cdn-qiniu.dcloud.net.cn/tuku/img/dongwu08.jpg" mode="aspectFill")
       text.username.flex-1.font-size-30 小可
-      view.button.see.margin-r-10.flex.flex-y.center.center-x.bg-yellow-linear(@tap="$navigateTo({url: '/pages/building/subscribe'})")
+      view.button.see.margin-r-10.flex.flex-y.center.center-x.bg-yellow-linear(@tap="seeHouse")
         text.font-size-30 约看房
         text.font-size-22 快速预约看房
       view.button.call.flex.flex-y.center.center-x.bg-blue-linear(@tap="call")
@@ -12,8 +12,14 @@
 </template>
 
 <script>
+  import {generateGetUrl} from '@/api/index'
+  
 	export default {
     props: {
+      option: {
+        type: Object,
+        default: () => ({})
+      },
       phone: {
         type: String,
         default: ''
@@ -29,6 +35,9 @@
       console.log('$navigateTo', this.$navigateTo);
     },
     methods: {
+      seeHouse() {
+        this.$navigateTo({url: generateGetUrl('/pages/building/subscribe', this.option)})
+      },
       call() {
         // location.href = `tel:${phone}`
         uni.makePhoneCall({phoneNumber: this.phone})

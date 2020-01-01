@@ -1,5 +1,5 @@
 <template lang="pug">
-  view.card.margin-b-20.padding-b-30(:class="{'border-b-1': border}")
+  view.card.margin-b-20.padding-b-30(:class="{'border-b-1': border}"  v-if="data")
     view.card-content.flex
       view.card-content-view.margin-r-30
         view.card-content-view-rate.padding-x-18.padding-y-4.flex.center

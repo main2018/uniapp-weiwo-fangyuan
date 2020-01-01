@@ -41,6 +41,15 @@ function getBuildingDetail(id, mu, sf, at) {
   })
 }
 
+// 预约看房或图文传单底部的楼盘
+function getPresentBuildingDetail(id, mu, sf, at) {
+  return http.request({
+    method: 'get',
+    url: generateGetUrl(`site/${id}/agency_present_building`, {mu, sf, at})
+  })
+}
+
+
 function getHxDms(id, mu, sf, at) {
   return http.request({
     method: 'get',
@@ -69,6 +78,23 @@ function getPoster(id, mu, sf, at) {
   return http.request({
     method: 'get',
     url: generateGetUrl(`site/${id}/agency_poster`, {mu, sf, at})
+  })
+}
+
+// 活动详情
+function getActivity(id, mu, sf, at, dsoid) {
+  return http.request({
+    method: 'get',
+    url: generateGetUrl(`site/${id}/agency_discounts/${dsoid}`, {mu, sf, at})
+  })
+}
+
+// 活动报名
+function activityJoin(data) {
+  return http.request({
+    method: 'post',
+    url: `site/agency_appointed_apply`,
+    data
   })
 }
 
@@ -106,11 +132,14 @@ function statistics(type, idSubject, subject, terminal = 2) {
 
 export {
   dmDetail,
+  getPresentBuildingDetail,
   getBuildingDetail,
   getHxDms,
   getSpecialDms,
   getHabitDms,
   getPoster,
+  getActivity,
+  activityJoin,
   buildingDms,
   dmHouseTypeImgs,
   statistics

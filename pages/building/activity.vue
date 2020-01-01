@@ -1,22 +1,27 @@
 <template lang="pug">
-  view.activity.padding-x-40.padding-y-30
-    view.activity-title.font-weight-bold.font-size-36.margin-b-40 手动阀手动阀手动阀手动阀
+  empty(v-if="!loading && !activity")
+  view.activity.padding-x-40.padding-y-30(v-else)
+    view.activity-title.font-weight-bold.font-size-36.margin-b-40 {{activity && activity.title}}
     <!-- rich-text(:nodes="nodes") -->
     rich-text(:nodes="htmlNodes")
     fixed(hasBorder)
       view.padding-x-40.padding-y-20
-        view.btn.fullwidth.large.primary.bg-yellow-linear.btn-radius-xs(@click="$navigateTo({url: './activity-join'})") 活动报名
+        view.btn.fullwidth.large.primary.bg-yellow-linear.btn-radius-xs(@click="join") 活动报名
 </template>
 <script>
   import htmlParser from '@/common/js/html-parser';
   import Fixed from '@/components/fixed';
+  import empty from "@/components/empty";
   
   export default {
     components: {
-      Fixed
+      Fixed,
+      empty
     },
     data() {
       return {
+        loading: true,
+        activity: null,
         nodes: [
           {
             name: 'div',
@@ -37,10 +42,26 @@
     },
     computed: {
       htmlNodes() {
-        return htmlParser(this.strings)
+        const content = (this.activity && this.activity.content) || ''
+        return htmlParser(content)
       }
     },
-    onLoad() {
+    onLoad(option) {
+      const {id, mu, sf, at, dsoid} = option
+      this.option = option
+      
+      this.$api.getActivity(id, mu, sf, at, dsoid).then(data => {
+        console.log('data', data)
+        this.activity = data
+        this.loading = false
+      })
+    },
+    methods: {
+      join() {
+        const {id, mu, sf, at, dsoid} = this.option
+        const {openid} = this.activity || {}
+        this.$navigateTo({url: `./activity-join?id=${id}&mu=${mu}&sf=${sf}&at=${at}&dsoid=${dsoid}&openid=${openid}`})
+      }
     }
   }
 </script>

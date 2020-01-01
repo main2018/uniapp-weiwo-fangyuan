@@ -5,10 +5,11 @@ import store from './store'
 import * as api from '@/api';
 import {baseUrl} from '@/config';
 import uniRouterApis from '@/common/js/router';
+import publicFun from '@/common/js/public';
 
 // require('./assets/styles/vendor.css');
 // import 'http://at.alicdn.com/t/font_1495979_gj3et9fbpr9.css';
-console.log('uniRouterApis', uniRouterApis)
+// console.log('uniRouterApis', uniRouterApis)
 
 Vue.config.productionTip = false
 
@@ -17,6 +18,7 @@ Vue.prototype.$api = api
 Vue.prototype.$baseUrl = baseUrl
 
 Object.assign(Vue.prototype, uniRouterApis)
+Object.assign(Vue.prototype, publicFun)
 
 App.mpType = 'app'
 

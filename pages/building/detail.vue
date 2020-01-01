@@ -38,7 +38,7 @@
       view.building-detail-item-title.flex.center.margin-b-40
         text.flex-1 优惠活动
         view.button.font-size-24.padding-x-14.padding-y-5.font-color-primary 活动报名
-      image(:src="$baseUrl + building.activity_info.cover" mode="aspectFill" lazy-load @tap="navigateTo({url: './activity'})")
+      image(:src="$baseUrl + building.activity_info.cover" mode="aspectFill" lazy-load @tap="navigateTo({url: `./activity?id=${option.id}&mu=${option.mu}&sf=${option.sf}&at=${option.at}&dsoid=${building.activity_info.dsoid}`})")
     view.building-detail-item.house-type.padding-40(v-if="hxDms && hxDms.length")
       view.building-detail-item-title.flex.center.margin-b-40
         text.flex-1 主力户型({{hxDms.length}})
@@ -95,7 +95,7 @@
         text.flex-1 看了又看
       card(v-for="item in habitDms" :data="item" border)
           
-    contact(:phone="phone")
+    contact(:phone="phone" :option="contactOption")
       
 </template>
 
@@ -137,6 +137,10 @@
       }
     },
     computed: {
+      contactOption() {
+        const {openid} = this.building || {}
+        return {...this.option, openid}
+      },
       phone() {
         const {mobile} = this.building && this.building.contact_info || {}
         return mobile
@@ -213,6 +217,8 @@
     onLoad(option) {
       const {id, mu, sf, at} = option
       this.option = option
+      
+      if (!id || !mu || !sf || !at) return
       console.log('id, mu, sf, at', id, mu, sf, at);
       // console.log('text', app.globalData.text);
       // const id = 1124
