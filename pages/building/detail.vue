@@ -1,9 +1,9 @@
 <template lang="pug">
-  empty(v-if="!building")
-  view.building-detail(v-else)
+  empty(v-if="!loading && !building")
+  view.building-detail(v-else): template(v-if="building")
     view.building-detail-header(@tap="navigateTo({url: `./album?id=${option.id}&mu=${option.mu}&sf=${option.sf}&at=${option.at}`})")
       swiper.swiper(:indicator-dots="false" :circular="true" :autoplay="false" :interval="2000" :duration="500" :current="currIndex")
-        swiper-item.swiper-item(v-for="url in swiperImgs" :key="url")
+        swiper-item.swiper-item(v-for="(url, index) in swiperImgs" :key="index")
           image(:src="$baseUrl + url" mode="aspectFill" lazy-load)
       view.swiper-bar.font-size-sm-s
         view.swiper-bar-switch
@@ -33,11 +33,13 @@
       view.building-detail-overview-item.margin-y-15
         text.font-color-grey.margin-r-20(:decode="true" @tap="navigateTo({url: './nearby'})") {{`售楼处&emsp;`}}
         text.font-color-link(@tap="navigateTo({url: './nearby'})") {{building.building_info.province_name + building.building_info.city_name + building.building_info.sales_office_address}}
-      view.font-size-sm.font-align-center.font-color-primary.btn-grey.margin-t-40.padding-y-20(@tap="navigateTo({url: './info'})") 更多信息
+      view.font-size-sm.font-align-center.font-color-primary.btn-grey.margin-t-40.padding-y-20(
+        @tap="navigateTo({url: `./info?id=${option.id}&mu=${option.mu}&sf=${option.sf}&at=${option.at}`})"
+        ) 更多信息
     view.building-detail-item.activity.padding-x-40(v-if="building.activity_info && building.activity_info.dsoid")
       view.building-detail-item-title.flex.center.margin-b-40
         text.flex-1 优惠活动
-        view.button.font-size-24.padding-x-14.padding-y-5.font-color-primary 活动报名
+        view.button.font-size-24.padding-x-14.padding-y-5.font-color-primary(@tap="join") 活动报名
       image(:src="$baseUrl + building.activity_info.cover" mode="aspectFill" lazy-load @tap="navigateTo({url: `./activity?id=${option.id}&mu=${option.mu}&sf=${option.sf}&at=${option.at}&dsoid=${building.activity_info.dsoid}`})")
     view.building-detail-item.house-type.padding-40(v-if="hxDms && hxDms.length")
       view.building-detail-item-title.flex.center.margin-b-40
@@ -46,7 +48,7 @@
           text(@tap="navigateTo({url: './housetypelist'})") 查看更多
           text.iconfont.font-size-sm-s &#xe62a;
       scroll-view.scroll-view.font-size-sm(scroll-x="true")
-        view.scroll-view-item(v-for="item in hxDms" @tap="navigateTo({url: './house'})")
+        view.scroll-view-item(v-for="item in hxDms" @tap="navigateTo({url: `./house?dmid=${item.id}&id=${option.id}&mu=${option.mu}&sf=${option.sf}&at=${option.at}`})")
           image(:src="$baseUrl + item.gallery" mode="aspectFill")
           text.scroll-view-item-pano.iconfont.font-size-42(v-show="item.panorama") &#xe7bc;
           .scroll-view-item-title.padding-x-20.padding-y-30.line-h1
@@ -114,6 +116,7 @@
     },
     data() {
       return {
+        loading: true,
         option: {},
         latlng: null,
         currIndex: 0,
@@ -202,7 +205,8 @@
           list: img_hx
         }
         img_arr && img_arr.length && arr.push(imgArrObj)
-        img_hx && img_hx.length && arr.push(img_hx)
+        img_hx && img_hx.length && arr.push(imgHxObj)
+        console.log('arr', arr)
         return arr
       },
       swiperImgs() {
@@ -226,11 +230,10 @@
       this.$api.getBuildingDetail(id, mu, sf, at).then(async data => {
         // this.detail = data
         this.building = data || {}
-        console.log('data', data);
         const {lat, lng} = this.building.building_info || {}
         const latlng = await this.$api.convertCoordinate(lat, lng)
-        console.log('latlng', latlng);
         this.latlng = latlng
+        this.loading = false
       })
       this.$api.getHxDms(id, mu, sf, at).then(({list}) => {
         // this.detail = data
@@ -260,6 +263,12 @@
       // #endif
     },
     methods: {
+      join() {
+        const {id, mu, sf, at} = this.option
+        const {openid} = this.building || {}
+        const dsoid = this.building && this.building.activity_info && this.building.activity_info.dsoid
+        this.$navigateTo({url: `./activity-join?id=${id}&mu=${mu}&sf=${sf}&at=${at}&dsoid=${dsoid}&openid=${openid}`})
+      },
       isPano(obj) {
         const type = obj && obj.type
         return [21,22,23].includes(Number(type))

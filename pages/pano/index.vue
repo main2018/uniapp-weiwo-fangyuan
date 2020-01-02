@@ -9,7 +9,7 @@
             </div>
           </section>
           <view class="building-name font-size-sm font-color-white padding-x-20 padding-y-10">
-            {{'【 ' + (panoData.location_province || '') + ' · ' + (panoData.location_city || '') + ' 】 ' + (panoData.name_project || panoData.name_house || '')}}
+            {{'【 ' + (panoData.province_name || '') + ' · ' + (panoData.city_name || '') + ' 】 ' + (panoData.name_project || panoData.name_house || '')}}
           </view>
           <!-- <section class="pos_a of_h right0 top30">
             <div>
@@ -68,7 +68,9 @@
               <text class="iconfont">&#xe641;</text>
               <text class="font-size-sm-s">有奖转发</text>
             </view>
-            <view >
+            <view
+              @tap="$navigateTo({url: generateGetUrl('/pages/building/house', option)})"
+              >
               <text class="iconfont">&#xe641;</text>
               <text class="font-size-sm-s">
                 {{panoData.type == 21?'项目':panoData.type == 22?'区位':panoData.type == 23?'户型':'户型'}}介绍
@@ -569,7 +571,7 @@
 <script>
   import PANOLENS, {demo} from './panolens/panolens'
   //  import panoramaData from '../../../pano/data.json'
-  import { dmDetail, statistics } from '@/api'
+  import { dmDetail, statistics, generateGetUrl } from '@/api'
   import model from './model'
   import renderer from './renderer'
   console.log('PANOLENS', PANOLENS, demo);
@@ -609,6 +611,8 @@
     },
     data () {
       return {
+        generateGetUrl,
+        detail: null,
         title: '全景图详情',
         setBackTexts: '你好',
         routerLink: '/DM-list',
@@ -859,21 +863,36 @@
       },
       //      拨打电话及统计
       statistics (type, id, sub) {
-        statistics(type, (id || this.panoData.id), (sub || (this.$route.query.share === "my" ? 3 : 1))).then(() => {
-          if (type === 3) {
-            // location.href = `tel:${this.config.mem.sc.mobile}`
-          }
+        
+        const {openid} = this.detail || {}
+        const {mobile: phoneNumber} = (this.detail && this.detail.contact_info) || {}
+        const {id: id_subject, mu, sf, at} = this.option || {}
+        
+        const data = {
+          id_subject,
+          mu,
+          sf,
+          at,
+          openid
+        }
+        statistics(data).then(() => {
+          // location.href = `tel:${this.config.mem.sc.mobile}`
+          uni.makePhoneCall({phoneNumber})
         })
       },
     },
     /* 创建前 */
     onLoad (option) {
+      const {id, mu, sf, at, dmid} = option
+      this.option = option
       //      console.log(this.RealEstate, this.$route.query.lp, this.$route.query.$route.query.display_area)
       this.panoLoadingShow = true
       let self = this;
       let Detail = null;
-      Detail = dmDetail(option.id)
-      Detail.then(data => {
+      Detail = dmDetail(dmid, mu, sf, at)
+      Detail.then(res => {
+        this.detail = res
+        const data = res.info
         data.panoramas_map = data.panoramas_map[0]
         self.panoData = model.apply(data, {
           anonymous: [

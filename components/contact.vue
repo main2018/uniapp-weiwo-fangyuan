@@ -30,9 +30,11 @@
 				height: 0
 			};
 		},
+    created() {
+      // this.option = this.$route.query
+    },
     mounted() {
       this.resetHeight()
-      console.log('$navigateTo', this.$navigateTo);
     },
     methods: {
       seeHouse() {
@@ -40,7 +42,19 @@
       },
       call() {
         // location.href = `tel:${phone}`
-        uni.makePhoneCall({phoneNumber: this.phone})
+        const {id: id_subject, mu, sf, at, openid} = this.option || {}
+        
+        const data = {
+          id_subject,
+          mu,
+          sf,
+          at,
+          openid
+        }
+        this.$api.statistics(data).then(() => {
+          // location.href = `tel:${this.config.mem.sc.mobile}`
+          uni.makePhoneCall({phoneNumber: this.phone})
+        })
       },
       resetHeight() {
         this.$nextTick(() => {

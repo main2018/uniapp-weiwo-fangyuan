@@ -1,19 +1,23 @@
 <template lang="pug">
-  view.budling-house
+  empty(v-if="!loading && !detail")
+  view.budling-house(v-else): template(v-if="detail && detail.info")
     view.budling-house-header
-      image(:src="$baseUrl + detail.cover" mode="aspectFill")
-      text.is-pano.iconfont.font-size-42(v-show="isPano(detail)" @tap="navigateTo({url: `../pano/index?id=2248`})") &#xe7bc;
+      image(:src="$baseUrl + detail.info.cover" mode="aspectFill")
+      text.is-pano.iconfont.font-size-42(
+        v-show="detail.info.panoramas_hx_num"
+        @tap="navigateTo({url: generateGetUrl('/pages/building/panoList', option)})"
+        ) &#xe7bc;
     view.budling-house-overview.padding-x-40.padding-t-60
-      view.budling-house-overview-title.font-size-36.font-weight-bold {{detail.title}}
+      view.budling-house-overview-title.font-size-36.font-weight-bold {{detail.info.title}}
       view.budling-house-overview-top.flex.padding-y-40.border-b-1
         view.budling-house-overview-top-item.flex-1.flex.flex-y
-          text.font-color-primary.margin-b-10 {{detail.all_room}}
+          text.font-color-primary.margin-b-10 {{detail.info.all_room}}
           text.font-color-grey.font-size-sm-s 居室
         view.budling-house-overview-top-item.flex-1.flex.flex-y
-          text.font-color-primary.margin-b-10 {{detail.area_built}}㎡
+          text.font-color-primary.margin-b-10 {{detail.info.area_built}}
           text.font-color-grey.font-size-sm-s 建筑面积
         view.budling-house-overview-top-item.flex-1.flex.flex-y
-          text.font-color-primary.margin-b-10 {{detail.price_starting || '暂无'}}
+          text.font-color-primary.margin-b-10 {{detail.info.price_starting || '暂无'}}
           text.font-color-grey.font-size-sm-s 参考均价
       view.budling-house-overview-content.padding-y-40.border-b-1
         view.font-size-sm(v-for="item in overviews")
@@ -27,7 +31,10 @@
           text.font-color-link 新秀海湾
     view.budling-house-item.analyse.padding-y-40.margin-x-40.border-b-1
       view.budling-house-item-title.font-weight-bold.margin-b-40 户型分析
-      |sdfsdfgsdg
+      view(v-html="detail.info.introduction").margin-b-20
+      view(v-for="item in detail.info.package")
+        image(:src="$baseUrl + item.gallery" mode="aspectFill")
+        view(v-html="item.introduction")
       <!-- image(:src="detail.imgs1[0]" mode="aspectFill") -->
     view.budling-house-item.hint.padding-y-40.margin-x-40.border-b-1
       view.budling-house-item-title.margin-b-30.font-weight-bold 温馨提示
@@ -35,28 +42,32 @@
     view.budling-house-item.house-type.padding-40
       view.budling-house-item-title.margin-b-10.font-weight-bold.margin-b-40 本楼盘其他户型
       scroll-view.scroll-view.font-size-sm(scroll-x="true")
-        view.scroll-view-item(v-for="item in houseTypes")
-          image(:src="$baseUrl + item.cover" mode="aspectFill")
-          text.is-pano.iconfont.font-size-42(v-show="isPano(item)") &#xe7bc;
+        view.scroll-view-item(v-for="item in dmList")
+          image(:src="$baseUrl + item.gallery" mode="aspectFill")
+          text.is-pano.iconfont.font-size-42(v-show="item.panorama") &#xe7bc;
           .scroll-view-item-title.padding-x-20.padding-y-30.line-h1.border-1
-            text(decode) {{`${item.defective_room}&nbsp;${Math.round(item.area_built || 0)}㎡`}}
-            view.font-color-red.margin-t-20 {{item.total_price_min || 0}}万起
+            text(decode) {{`${item.defective_room}&nbsp;${item.area_built}`}}
+            view.font-color-red.margin-t-20 {{item.price_total || 0}}
     contact
         
 </template>
 
 <script>
   import contact from "@/components/contact";
+  import empty from "@/components/empty";
   
-  import {dmDetail} from '@/api';
+  import {dmDetail, generateGetUrl} from '@/api';
   
 	export default {
     components: {
-      contact
+      contact,
+      empty
     },
 		data() {
 			return {
-				detail: {},
+        generateGetUrl,
+        loading: true,
+				detail: null,
         dmList: []
 			};
 		},
@@ -65,28 +76,34 @@
         return this.dmList.filter(item => [8,23].includes(Number(item.type)))
       },
       overviews() {
-        const {area_built, public_area, clear_height, state_decoration, name_units} = this.detail
+        function normalizeVal(val, unit = '', defat = '未知') {
+          return val ? val + unit : defat
+        }
+        const {average_huxing, area_built, public_area, clear_height, state_decoration, name_units, inside_space, orientations, house_usage} = (this.detail && this.detail.info) || {}
         
         return [
-          {name: '套内面积', value: (area_built - public_area) || 0},
-          {name: '套内面积', value: clear_height || 0},
-          {name: '装修标准', value: state_decoration || '未知'},
-          {name: '户型朝向', value: clear_height || 0},
-          {name: '户型名称', value: 'B'},
-          {name: '所在楼栋', value: name_units || '未知'},
-          {name: '房屋用途', value: '住宅'},
+          {name: '套内面积', value: normalizeVal(inside_space || 0)},
+          {name: '户型净高', value: normalizeVal(clear_height || 0)},
+          {name: '装修标准', value: normalizeVal(state_decoration)},
+          {name: '户型朝向', value: normalizeVal(orientations)},
+          {name: '户型名称', value: normalizeVal(average_huxing)},
+          {name: '所在楼栋', value: normalizeVal(name_units)},
+          {name: '房屋用途', value: normalizeVal(house_usage)},
         ]
       }
     },
-    async onLoad() {
-      const id = 31
-      const detail = await dmDetail(698)
+    async onLoad(option) {
+      const {id, mu, sf, at, dmid} = option
+      this.option = option
+      const detail = await this.$api.dmDetail(dmid, mu, sf, at)
+      console.log('detail', detail)
       this.detail = detail || {}
-      console.log('detail',detail);
-      this.$api.buildingDms(id).then(({list}) => {
+      this.loading = false
+      this.$api.getHxDms(id, mu, sf, at, dmid).then(({list}) => {
         console.log('list', list);
         this.dmList = list || []
       })
+      
     },
     methods: {
       isPano(obj) {

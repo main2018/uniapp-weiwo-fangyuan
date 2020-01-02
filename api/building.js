@@ -5,13 +5,10 @@ import {generateGetUrl} from './index'
  * DM详情
  * @returns {AxiosPromise}
  */
-function dmDetail(id, daid) {
+function dmDetail(dmid, mu, sf, at) {
   return http.request({
     method: 'get',
-    url: `consultant/dm/${id}`,
-    data: {
-      daid
-    },
+    url: generateGetUrl(`site/${dmid}/agency_dm_details`, {mu, sf, at})
   })
 }
 
@@ -50,10 +47,10 @@ function getPresentBuildingDetail(id, mu, sf, at) {
 }
 
 
-function getHxDms(id, mu, sf, at) {
+function getHxDms(id, mu, sf, at, dmid, room_num) {
   return http.request({
     method: 'get',
-    url: generateGetUrl(`site/${id}/agency_hx_dm`, {mu, sf, at})
+    url: generateGetUrl(`site/${id}/agency_hx_dm`, {mu, sf, at, dmid, room_num})
   })
 }
 
@@ -98,6 +95,24 @@ function activityJoin(data) {
   })
 }
 
+// 项目数据
+function getProjectData(id, mu, sf, at) {
+  return http.request({
+    method: 'get',
+    url: generateGetUrl(`site/${id}/agency_project_data`, {mu, sf, at})
+  })
+}
+
+// 户型全景列表
+function getHxPanos(id, mu, sf, at, dmid) {
+  return http.request({
+    method: 'get',
+    url: generateGetUrl(`site/${id}/agency_hx_panoramas/${dmid}`, {mu, sf, at})
+  })
+}
+
+
+
 // 获取户型图
 function dmHouseTypeImgs(id) {
   return new Promise(resolve => {
@@ -117,16 +132,28 @@ function dmHouseTypeImgs(id) {
  * DM相关统计
  * @returns {Promise.<*>}
  */
-function statistics(type, idSubject, subject, terminal = 2) {
+// function statistics(type, idSubject, subject, terminal = 2) {
+//   return http.request({
+//     method: 'post',
+//     url: `home/api/dm_statistics`,
+//     data: {
+//       id_subject: idSubject,
+//       subject: subject, // {1:公共DM, 3:私人DM}
+//       type: type, // {1:浏览, 2:转发, 3:来电, 4:评论, 5:使用}
+//       terminal: terminal
+//     },
+//   })
+// }
+function statistics(data) {
+  const baseData = {
+    subject: 2, // 1 传单 2 楼盘
+    type: 4 // 2转发 4来电
+  }
+  
   return http.request({
     method: 'post',
-    url: `home/api/dm_statistics`,
-    data: {
-      id_subject: idSubject,
-      subject: subject, // {1:公共DM, 3:私人DM}
-      type: type, // {1:浏览, 2:转发, 3:来电, 4:评论, 5:使用}
-      terminal: terminal
-    },
+    url: `site/agency_behaviour`,
+    data: Object.assign(baseData, data)
   })
 }
 
@@ -139,8 +166,10 @@ export {
   getHabitDms,
   getPoster,
   getActivity,
+  getHxPanos,
   activityJoin,
   buildingDms,
+  getProjectData,
   dmHouseTypeImgs,
   statistics
 }

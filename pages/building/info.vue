@@ -9,118 +9,100 @@
         view.title 项目数据
         view.x-form-item
           label.x-form-label 最新开盘：
-          view.x-form-content 2019-11-20
+          view.x-form-content {{projectData.opening_date || '未知'}}
         view.x-form-item
           label.x-form-label 预计交房：
-          view.x-form-content 2019-11-20
+          view.x-form-content {{projectData.house_delivery || '未知'}}
         view.x-form-item
           label.x-form-label 装修情况：
-          view.x-form-content 精装
+          view.x-form-content {{projectData.decoration_state || '未知'}}
         view.x-form-item
           label.x-form-label 销售状态：
-          view.x-form-content 在售
+          view.x-form-content {{projectData.building_status || '未知'}}
         view.x-form-item
           label.x-form-label 楼盘类型：
-          view.x-form-content 未知
+          view.x-form-content {{projectData.building_type || '未知'}}
         view.x-form-item
-          label.x-form-label 产权年限：
-          view.x-form-content 70
+          label.x-form-label(v-if="projectData.property_limit") 产权年限：
+          view.x-form-content {{projectData.property_limit+'年' || '未知'}}
         view.x-form-item
           label.x-form-label 建筑类型：
-          view.x-form-content 高层、住宅
+          view.x-form-content {{projectData.houses_type || '未知'}}
         view.x-form-item
           label.x-form-label 占地面积：
-          view.x-form-content 8111.12㎡
+          view.x-form-content {{projectData.floor_space+'㎡' || '未知'}}
         view.x-form-item
           label.x-form-label 建筑面积：
-          view.x-form-content 8111.12㎡
+          view.x-form-content {{projectData.build_area+'㎡' || '未知'}}
         view.x-form-item
           label.x-form-label 容积率：
-          view.x-form-content 容积率：
+          view.x-form-content {{projectData.plot_ratio || '未知'}}
         view.x-form-item
           label.x-form-label 绿化率：
-          view.x-form-content 25%
+          view.x-form-content {{projectData.greening_rate+'%' || '未知'}}
         view.x-form-item
           label.x-form-label 得房率：
-          view.x-form-content 25%
+          view.x-form-content {{projectData.house_rate+'%' || '未知'}}
         view.x-form-item
           label.x-form-label 规划栋数：
-          view.x-form-content 3栋
+          view.x-form-content {{projectData.build_num+'栋' || '未知'}}
         view.x-form-item
           label.x-form-label 规划户数：
-          view.x-form-content 300栋
+          view.x-form-content {{projectData.planning_num+'户' || '未知'}}
         view.x-form-item
           label.x-form-label 车位数：
-          view.x-form-content 300位
+          view.x-form-content {{projectData.carport_num+'位' || '未知'}}
         view.x-form-item
           label.x-form-label 车位配比：
-          view.x-form-content 1:1
+          view.x-form-content {{projectData.parking_ratio || '未知'}}
         view.x-form-item
           label.x-form-label 物业费：
-          view.x-form-content 2.0元/平方/月
+          view.x-form-content {{projectData.property_fee || '未知'}}
         view.x-form-item
           label.x-form-label 物业公司：
-          view.x-form-content 暂无
+          view.x-form-content {{projectData.property_company || '未知'}}
         view.x-form-item
           label.x-form-label 小区配套：
-          view.x-form-content 未知
+          view.x-form-content {{projectData.estate_mating || '未知'}}
         view.x-form-item
           label.x-form-label 开发商：
-          view.x-form-content 海南微窝
+          view.x-form-content {{projectData.name_developer || '未知'}}
         view.x-form-item
           label.x-form-label 售楼处：
-          view.x-form-content.color-deep 海南海口龙华区
+          view.x-form-content.color-deep {{projectData.sales_office_address || '未知'}}
       //- 预售许可证    
       view.x-form.mod-bg#floor-2
         view.title 预售许可证
-        view.x-form-item
-          label.x-form-label 预售证号：
-          view.x-form-content.color-deep 【2019】房预字(0047)号
-        view.x-form-item
-          label.x-form-label 发证时间：
-          view.x-form-content {{"2019-05-01"}}
-        view.x-form-item
-          label.x-form-label 绑定楼栋：
-          view.x-form-content 暂无
+        view.x-form-list(v-for="(item, index) in projectData.presales" :key="index")
+          view.x-form-item(@click="isShowGallery = !isShowGallery")
+            label.x-form-label 预售证号：
+            view.x-form-content.color-deep {{item.cardno || '暂无'}}
+          view.x-form-item(v-show="isShowGallery && item.gallery")
+            image(:src="$baseUrl + item.gallery" mode="aspectFit")
+          view.x-form-item
+            label.x-form-label 发证时间：
+            view.x-form-content {{item.opening_date || '暂无'}}
+          view.x-form-item
+            label.x-form-label 绑定楼栋：
+            view.x-form-content {{item.building || '暂无'}}
       //- 楼盘介绍        
       view.x-form.mod-bg#floor-3
         view.title 楼盘介绍
         view.margin-b-40
-          |项目位于海口西海岸片区， 海南十里繁华地，东十里是海南商务区，西十里是海口行政区，北走1000步是大海，南靠秀英老城区。“十里繁华，宁静海生活”，闹市区选择这安静的生活空间，无论出租、自主、投资都是首选
+          |{{projectData.intro}}
       //- 楼盘证件
       view.container.mod-bg#floor-4
         view.title 楼盘证件
         view.papers-list
-          view.papers-item
+          view.papers-item(v-for="(item, index) in projectData.zhengshu" :key="index")
             view.img-wrap
               image.img(
-              src="https://img-cdn-qiniu.dcloud.net.cn/tuku/img/dongwu05-l.jpg"
+              :src="$baseUrl+ item.list[0]"
               mode="aspectFill"
+              @click="certificateShow(index)"
               )
-            view.aux.ellipsis 《营业执照》
-          view.papers-item
-            view.img-wrap
-              image.img(
-              src="https://img-cdn-qiniu.dcloud.net.cn/tuku/img/dongwu05-l.jpg"
-              mode="aspectFill"
-              )
-            view.aux.ellipsis 《国有土地使用证》
-          view.papers-item
-            view.img-wrap
-              image.img(
-              src="https://img-cdn-qiniu.dcloud.net.cn/tuku/img/dongwu05-l.jpg"
-              mode="aspectFill"
-              )
-            view.aux.ellipsis 《建设用地规划许可证》
-          view.papers-item
-            view.img-wrap
-              image.img(
-              src="https://img-cdn-qiniu.dcloud.net.cn/tuku/img/dongwu05-l.jpg"
-              mode="aspectFill")
-            view.aux.ellipsis 《建筑工程规划许可证》
-      //- 看了又看
-      //- 看了又看
-      view.lookagain.mod-bg
+            view.aux.ellipsis.font-size-28 《{{item.title}}》
+      //- 没有了
         view.title 看了又看
         view.ptl-list
           view.ptl-item
@@ -173,8 +155,21 @@
 <script>
   import contact from "@/components/contact";
 	export default {
+    components: {
+      contact
+    },
 		data() {
 			return {
+        projectData: {},
+        isShowGallery: false,
+        certificateNames: {
+          licence_business: "营业执照",
+          licence_constructor: "建筑工程施工许可证",
+          licence_land: "国有土地使用证",
+          licence_planning: "建设用地规划许可证",
+          licence_project: "建筑工程规划许可证",
+          licence_presale: "商品房预售许可证"
+        },
         tabScrollTop: 0,
         navCurrIndex: 0,
         sizeCalcState:false,
@@ -197,9 +192,37 @@
           }
         ]
 			}
-		},
-    components: {
-      contact
+		}, 
+    onLoad(option) {
+      const {id, mu, sf, at} = option
+      this.$api.getProjectData(id, mu, sf, at).then( data => {
+        // console.log('getProjectData', data)
+         data.project_data.zhengshu = []
+         for (let [key, value] of Object.entries(data.project_data)) {
+           if (key === 'licence_business' ||
+             key === 'licence_constructor' ||
+             key === 'licence_land' ||
+             key === 'licence_planning' ||
+             key === 'licence_project'
+           ) {
+            if (value.length >0) {
+              data.project_data.zhengshu.push({
+                title: this.certificateNames[key],
+                name: key,
+                list: value
+              })
+              // value.forEach ((val, i)=> { value[i] = {src: $baseUrl(val)}})
+              // data.zhengshu.push({
+              //   title: this.certificateNames[k],
+              //   name: key,
+              //   list: value
+              // })
+            }
+           }
+         }
+        this.projectData = data.project_data
+        console.log('projectData', this.projectData)
+      })
     },
 		methods: {
       //一级分类点击
@@ -236,8 +259,20 @@
         	this.navCurrIndex = tabs[0].id-1;
           this.tabScrollTop = scrollTop
         }
-      }
-			
+      },
+      // 证书预览
+      certificateShow (index) {
+        // console.log(this.projectData.zhengshu[index].list)
+        let list = this.projectData.zhengshu[index].list.map( p => {
+          return this.$baseUrl + p;
+        });
+        uni.previewImage({
+          current: list[0],
+          indicator: "number",
+          urls: list
+        })
+        // this.$refs.certificatePreviewer[key].show(0)
+      },
 		}
 	}
 </script>

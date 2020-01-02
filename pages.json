@@ -114,6 +114,12 @@
       "style": {
         "navigationBarTitleText": "登录模板"
       }
+    },
+    {
+      "path" : "pages/building/panoList",
+      "style" : {
+        "navigationBarTitleText": "全景列表"
+      }
     }
   ],
   "tabBar": {
