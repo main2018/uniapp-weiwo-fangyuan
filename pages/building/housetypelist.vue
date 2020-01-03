@@ -12,7 +12,11 @@
         
       view.house-list.ptl-list
         view.ptl-list
-          view.ptl-item(v-for="(item, index) in hxDm.list" :key="index")
+          view.ptl-item(
+            v-for="(item, index) in hxDm.list"
+            :key="index"
+            @tap="$navigateTo({url: `./house?dmid=${item.id}&id=${option.id}&mu=${option.mu}&sf=${option.sf}&at=${option.at}`})"
+            )
             view.flex
               view.pic-wrap
                 image.pic(:src="$baseUrl + item.gallery" mode="aspectFill")
@@ -31,12 +35,15 @@
 
 <script>
   import contact from "@/components/contact";
+  import {generateGetUrl} from '@/api';
+  
   export default {
     components:{
       contact
     },
     data() {
       return {
+        generateGetUrl,
         option: {},
         hxDm: {},
         currentId: 0,
@@ -70,6 +77,7 @@
       }
     },
     onLoad(option){
+      this.option = option
       this.getHx_dm(option)
     },
     methods: {

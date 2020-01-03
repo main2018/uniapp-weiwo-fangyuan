@@ -74,10 +74,10 @@
           view.font-size-sm.font-color-grey {{item.intro}}
     view.building-detail-item.nearby.padding-40(v-if="latlng")
       view.building-detail-item-title.flex.margin-b-40
-        text.flex-1
+        text.flex-1 周边配套
       map#map(
         ref="map"
-        @tap="$navigateTo({url: `./nearby?lat=${latlng.lat}&lng=${latlng.lng}`})"
+        @tap="toNearby"
         :center="[latlng.lat, latlng.lng]"
         :latitude="latlng.lat"
         :longitude="latlng.lng"
@@ -123,6 +123,7 @@
   const app = getApp()
   
   export default {
+    name: 'BuildingDetail',
     components: {
       contact,
       card,
@@ -224,15 +225,21 @@
         return val && val.modules && val.modules[0] && val.modules[0].data && val.modules[0].data[0] && val.modules[0].data[0].content
       }
     },
+    onShow() {
+      // 监听页面显示。页面每次出现在屏幕上都触发，包括从下级页面点返回露出当前页面
+    },
     watch: {
       '$route.query': {
         handler(option) {
+          const pageName = 'pages-building-detail'
+          const currPageName = this.$route.meta.name
+          if (currPageName != pageName) return
           const {id, mu, sf, at} = option
           this.option = option
           
           // if (!id || !mu || !sf || !at) return
           if (!id) return
-          console.log('id, mu, sf, at', id, mu, sf, at);
+          // console.log('id, mu, sf, at', id, mu, sf, at);
           // console.log('text', app.globalData.text);
           this.$api.getBuildingDetail(id, mu, sf, at).then(async data => {
             // this.detail = data
@@ -293,9 +300,13 @@
       // #endif
     },
     activated() {
-      console.log(333333333333)
     },
     methods: {
+      toNearby() {
+        const latlng = this.latlng || {}
+        // `./nearby?lat=${latlng.lat}&lng=${latlng.lng}`
+        this.$navigateTo({url: generateGetUrl('./nearby', {...latlng, ...this.option || {}})})
+      },
       toSpecialDetail(item) {
         const isPano = [21, 22].includes(item && item.type)
         const data = {

@@ -11,10 +11,10 @@
       view.budling-house-overview-title.font-size-36.font-weight-bold {{detail.info.title}}
       view.budling-house-overview-top.flex.padding-y-40.border-b-1
         view.budling-house-overview-top-item.flex-1.flex.flex-y
-          text.font-color-primary.margin-b-10 {{detail.info.all_room}}
+          text.font-color-primary.margin-b-10 {{detail.info.all_room || '暂无'}}
           text.font-color-grey.font-size-sm-s 居室
         view.budling-house-overview-top-item.flex-1.flex.flex-y
-          text.font-color-primary.margin-b-10 {{detail.info.area_built}}
+          text.font-color-primary.margin-b-10 {{detail.info.area_built || '暂无'}}
           text.font-color-grey.font-size-sm-s 建筑面积
         view.budling-house-overview-top-item.flex-1.flex.flex-y
           text.font-color-primary.margin-b-10 {{detail.info.price_starting || '暂无'}}
@@ -25,10 +25,10 @@
           text {{item.value}}
         view.font-size-sm
           text.font-color-grey.margin-r-20 建筑类型:
-          text 多层 复式 洋房
+          text {{detail.info.building_type || '未知'}}
         view.font-size-sm
-          text.font-color-grey.margin-r-20 所属楼盘:
-          text.font-color-link 新秀海湾
+          text.font-color-grey.margin-r-20(@tap="$navigateBack()") 所属楼盘:
+          text.font-color-link {{detail.info.name_project || '未知'}}
     view.budling-house-item.analyse.padding-y-40.margin-x-40.border-b-1
       view.budling-house-item-title.font-weight-bold.margin-b-40 户型分析
       view(v-html="detail.info.introduction").margin-b-20
@@ -148,6 +148,7 @@
       >view{
         display: inline-block;
         width: 50%;
+        vertical-align: top;
       }
     }
   }

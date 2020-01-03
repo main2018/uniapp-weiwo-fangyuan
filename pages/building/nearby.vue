@@ -2,7 +2,7 @@
   view.nearby
     web-view(:src="tecentMap")
     scroll-view(scroll-x="true").nearby-bar.font-align-center
-      view.nearby-bar-item(v-for="(item, index) in nearby" @tap="currIndex = index" :class="{active: currIndex === index}")
+      view.nearby-bar-item(v-for="(item, index) in nearby" @tap="changeIndex(index)" :class="{active: currIndex === index}")
         text.iconfont.margin-r-8(decode :style="{color: item.color}") {{unicodeToZh(item.icon)}}
         |{{item.name}}
       <!-- text.padding-x-50.padding-y-40(v-for="(item, index) in nearby" @tap="currIndex = index") {{item.name}} -->
@@ -10,12 +10,14 @@
 
 <script>
   import {unicodeToZh} from '@/common/js/util';
+  import {generateGetUrl} from '@/api';
   
 	export default {
 		data() {
 			return {
         unicodeToZh,
         currIndex: 0,
+        total: 1,
         nearby: [
           {name: '公交', icon: '&#xe614;', color: '#22c392'},
           {name: '地铁', icon: '&#xe6f3;', color: '#66a2fe'},
@@ -39,12 +41,33 @@
       }
     },
     onLoad(option) {
+      this.option = option
       const {lat, lng} = option
       this.lat = lat
       this.lng = lng
     },
-    methods: {
+    onBackPress(options) {
       
+      if (options.from === 'navigateBack') {
+        return false;  
+      }
+      const {id, mu, sf, at} = this.option || {}
+      if (!id || (this.total == 1)) {
+        return false
+      };
+      // this.$navigateBack({delta: this.total})
+      uni.navigateTo({
+        url: generateGetUrl('/pages/building/detail', {id, mu, sf, at})
+      })
+      return true
+    },
+    methods: {
+      changeIndex(index) {
+        if (index == this.currIndex) return
+        
+        this.currIndex = index;
+        this.total += 1;
+      }
     }
 	}
 </script>

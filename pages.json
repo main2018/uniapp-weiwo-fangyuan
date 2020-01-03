@@ -101,7 +101,9 @@
     },
     {
           "path" : "pages/building/nearby",
-          "style" : {}
+          "style" : {
+            "navigationBarTitleText": "周边配套"
+          }
     },
     {
       "path" : "pages/building/subscribe",
