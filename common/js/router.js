@@ -5,8 +5,9 @@ function $navigateTo(obj) {
   }
   uni.navigateTo(Object.assign(baseObj, obj));
 }
-function $navigateBack(obj) {
+function $navigateBack(obj = {}) {
   const baseObj = {
+    delta: 1
     // animationType: 'pop-in',
     // animationDuration: 200
   }

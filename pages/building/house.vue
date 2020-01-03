@@ -26,8 +26,8 @@
         view.font-size-sm
           text.font-color-grey.margin-r-20 建筑类型:
           text {{detail.info.building_type || '未知'}}
-        view.font-size-sm
-          text.font-color-grey.margin-r-20(@tap="$navigateBack()") 所属楼盘:
+        view.font-size-sm(@tap="$navigateBack()")
+          text.font-color-grey.margin-r-20 所属楼盘:
           text.font-color-link {{detail.info.name_project || '未知'}}
     view.budling-house-item.analyse.padding-y-40.margin-x-40.border-b-1
       view.budling-house-item-title.font-weight-bold.margin-b-40 户型分析
