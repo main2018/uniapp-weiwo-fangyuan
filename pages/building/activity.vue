@@ -4,7 +4,7 @@
     view.activity-title.font-weight-bold.font-size-36.margin-b-40 {{activity && activity.title}}
     <!-- rich-text(:nodes="nodes") -->
     rich-text(:nodes="htmlNodes")
-    fixed(hasBorder)
+    fixed(hasBorder v-show="contact")
       view.padding-x-40.padding-y-20
         view.btn.fullwidth.large.primary.bg-yellow-linear.btn-radius-xs(@click="join") 活动报名
 </template>
@@ -44,7 +44,11 @@
       htmlNodes() {
         const content = (this.activity && this.activity.content) || ''
         return htmlParser(content)
-      }
+      },
+      contact() {
+        const contact = this.activity && this.activity.contact_info
+        return (contact && contact.name) ? contact : null
+      },
     },
     onLoad(option) {
       const {id, mu, sf, at, dsoid} = option

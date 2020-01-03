@@ -120,6 +120,12 @@
       "style" : {
         "navigationBarTitleText": "全景列表"
       }
+    },
+    {
+      "path" : "pages/user/card-consultant",
+      "style" : {
+        "navigationBarTitleText": "置业顾问名片"
+      }
     }
   ],
   "tabBar": {

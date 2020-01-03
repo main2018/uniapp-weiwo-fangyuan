@@ -2,6 +2,7 @@ export * from './map.js'
 
 export * from './auth.js'
 export * from './building.js'
+export * from './user.js'
 
 export function generateGetUrl (url, obj = {}) {
   if (!isJson(obj)) return ''

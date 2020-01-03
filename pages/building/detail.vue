@@ -39,13 +39,18 @@
     view.building-detail-item.activity.padding-x-40(v-if="building.activity_info && building.activity_info.dsoid")
       view.building-detail-item-title.flex.center.margin-b-40
         text.flex-1 优惠活动
-        view.button.font-size-24.padding-x-14.padding-y-5.font-color-primary(@tap="join") 活动报名
+        view.button.font-size-24.padding-x-14.padding-y-5.font-color-primary(
+          v-show="contact"
+          @tap="join"
+          ) 活动报名
       image(:src="$baseUrl + building.activity_info.cover" mode="aspectFill" lazy-load @tap="navigateTo({url: `./activity?id=${option.id}&mu=${option.mu}&sf=${option.sf}&at=${option.at}&dsoid=${building.activity_info.dsoid}`})")
     view.building-detail-item.house-type.padding-40(v-if="hxDms && hxDms.length")
       view.building-detail-item-title.flex.center.margin-b-40
         text.flex-1 主力户型({{hxDms.length}})
         .view.font-size-sm-s.font-color-grey
-          text(@tap="navigateTo({url: './housetypelist'})") 查看更多
+          text(
+            @tap="navigateTo({url: generateGetUrl('/pages/building/housetypelist', option)})"
+            ) 查看更多
           text.iconfont.font-size-sm-s &#xe62a;
       scroll-view.scroll-view.font-size-sm(scroll-x="true")
         view.scroll-view-item(v-for="item in hxDms" @tap="navigateTo({url: `./house?dmid=${item.id}&id=${option.id}&mu=${option.mu}&sf=${option.sf}&at=${option.at}`})")
@@ -57,7 +62,10 @@
     view.building-detail-item.special.padding-40(v-if="specialDms")
       view.building-detail-item-title.flex.margin-b-40
         text.flex-1 特色解读
-      view.special-item.flex.margin-b-20.padding-b-20.border-b-1(v-for="item in specialDms" @tap="navigateTo({url: '../DM/detail'})")
+      view.special-item.flex.margin-b-20.padding-b-20.border-b-1(
+        v-for="item in specialDms"
+        @tap="toSpecialDetail(item)"
+        )
         text.iconfont.font-size-28(v-show="item.panorama") &#xe7bc;
         image.margin-r-20(:src="$baseUrl + item.cover" mode="aspectFill")
         view.flex-1
@@ -95,9 +103,14 @@
     view.building-detail-item.habit.padding-40(v-if="habitDms && habitDms.length")
       view.building-detail-item-title.flex.margin-b-40
         text.flex-1 看了又看
-      card(v-for="item in habitDms" :data="item" border)
+      card(
+        v-for="item in habitDms"
+        :data="item"
+        border
+        @click.native="navigateTo({url: generateGetUrl('./detail', Object.assign({}, option, {id: item.id}))})"
+        )
           
-    contact(:phone="phone" :option="contactOption")
+    contact(:contact="contact" :option="contactOption")
       
 </template>
 
@@ -105,6 +118,7 @@
   import contact from "@/components/contact";
   import card from "@/components/card";
   import empty from "@/components/empty";
+  import {generateGetUrl} from '@/api';
   
   const app = getApp()
   
@@ -116,6 +130,7 @@
     },
     data() {
       return {
+        generateGetUrl,
         loading: true,
         option: {},
         latlng: null,
@@ -125,8 +140,6 @@
         hxDms: null,
         specialDms: null,
         habitDms: null,
-        dmList: [],
-        houseTypeImgs: null,
         detail: {
           imgs1: [
             'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1574153459148&di=aa8c0bbb7f822cea1812ff137c6bb419&imgtype=0&src=http%3A%2F%2Fi8.qhimg.com%2Ft014c0bef2485acc973.jpg',
@@ -144,9 +157,9 @@
         const {openid} = this.building || {}
         return {...this.option, openid}
       },
-      phone() {
-        const {mobile} = this.building && this.building.contact_info || {}
-        return mobile
+      contact() {
+        const contact = this.building && this.building.contact_info
+        return (contact && contact.name) ? contact : null
       },
       tags() {
         const {building_status, building_type, feature_arr} = this.building && this.building.building_info || {}
@@ -186,15 +199,8 @@
           }
         ]
       },
-      specials() {
-        return this.dmList.filter(item => [3,21,22].includes(Number(item.type)))
-      },
-      houseTypes() {
-        return this.dmList.filter(item => [8,23].includes(Number(item.type)))
-      },
       swipers() {
         const {img_arr, img_hx} = (this.building && this.building.building_info) || {}
-        // const houseTypeImgs = this.houseTypeImgs || []
         const arr = []
         const imgArrObj = {
           name: '图片',
@@ -218,42 +224,66 @@
         return val && val.modules && val.modules[0] && val.modules[0].data && val.modules[0].data[0] && val.modules[0].data[0].content
       }
     },
+    watch: {
+      '$route.query': {
+        handler(option) {
+          const {id, mu, sf, at} = option
+          this.option = option
+          
+          // if (!id || !mu || !sf || !at) return
+          if (!id) return
+          console.log('id, mu, sf, at', id, mu, sf, at);
+          // console.log('text', app.globalData.text);
+          this.$api.getBuildingDetail(id, mu, sf, at).then(async data => {
+            // this.detail = data
+            this.building = data || {}
+            const {lat, lng} = this.building.building_info || {}
+            const latlng = await this.$api.convertCoordinate(lat, lng)
+            this.latlng = latlng
+            this.loading = false
+          })
+          this.$api.getHxDms(id, mu, sf, at).then(({list}) => {
+            // this.detail = data
+            this.hxDms = list
+          })
+          this.$api.getSpecialDms(id, mu, sf, at).then(({list}) => {
+            // this.detail = data
+            this.specialDms = list
+          })
+          this.$api.getHabitDms(id, mu, sf, at).then(({list}) => {
+            this.habitDms = list
+          })
+        },
+        immediate: true
+      }
+    },
     onLoad(option) {
-      const {id, mu, sf, at} = option
-      this.option = option
+      // const {id, mu, sf, at} = option
+      // this.option = option
       
-      if (!id || !mu || !sf || !at) return
-      console.log('id, mu, sf, at', id, mu, sf, at);
-      // console.log('text', app.globalData.text);
-      // const id = 1124
-      // const id = 31
-      this.$api.getBuildingDetail(id, mu, sf, at).then(async data => {
-        // this.detail = data
-        this.building = data || {}
-        const {lat, lng} = this.building.building_info || {}
-        const latlng = await this.$api.convertCoordinate(lat, lng)
-        this.latlng = latlng
-        this.loading = false
-      })
-      this.$api.getHxDms(id, mu, sf, at).then(({list}) => {
-        // this.detail = data
-        this.hxDms = list
-      })
-      this.$api.getSpecialDms(id, mu, sf, at).then(({list}) => {
-        // this.detail = data
-        this.specialDms = list
-      })
-      this.$api.getHabitDms(id, mu, sf, at).then(({list}) => {
-        this.habitDms = list
-      })
-      
-      this.$api.dmHouseTypeImgs(id).then(list => {
-        this.houseTypeImgs = list
-      })
-      this.$api.buildingDms(id).then(({list}) => {
-        console.log('list', list);
-        this.dmList = list
-      })
+      // // if (!id || !mu || !sf || !at) return
+      // if (!id) return
+      // console.log('id, mu, sf, at', id, mu, sf, at);
+      // // console.log('text', app.globalData.text);
+      // this.$api.getBuildingDetail(id, mu, sf, at).then(async data => {
+      //   // this.detail = data
+      //   this.building = data || {}
+      //   const {lat, lng} = this.building.building_info || {}
+      //   const latlng = await this.$api.convertCoordinate(lat, lng)
+      //   this.latlng = latlng
+      //   this.loading = false
+      // })
+      // this.$api.getHxDms(id, mu, sf, at).then(({list}) => {
+      //   // this.detail = data
+      //   this.hxDms = list
+      // })
+      // this.$api.getSpecialDms(id, mu, sf, at).then(({list}) => {
+      //   // this.detail = data
+      //   this.specialDms = list
+      // })
+      // this.$api.getHabitDms(id, mu, sf, at).then(({list}) => {
+      //   this.habitDms = list
+      // })
     },
     async onReady() {
       // #ifdef H5
@@ -262,7 +292,23 @@
       // console.log('latlng', latlng);
       // #endif
     },
+    activated() {
+      console.log(333333333333)
+    },
     methods: {
+      toSpecialDetail(item) {
+        const isPano = [21, 22].includes(item && item.type)
+        const data = {
+          dmid: item && item.id,
+          ...this.option
+        }
+        if (isPano) {
+          
+          this.$navigateTo({url: generateGetUrl('/pages/pano/index', data)})
+        } else {
+          this.$navigateTo({url: generateGetUrl('/pages/DM/detail', data)})
+        }
+      },
       join() {
         const {id, mu, sf, at} = this.option
         const {openid} = this.building || {}

@@ -6,7 +6,7 @@
           text.iconfont.font-size-18 &#xe671;
           text.iconfont.font-size-18 &#xe671;
           text.iconfont.font-size-18 &#xe671;
-        text.iconfont.font-size-20(v-show="isPano(data)") &#xe7bc;
+        text.iconfont.font-size-20(v-show="data.panorama") &#xe7bc;
         image(:src="$baseUrl + data.cover" mode="aspectFill")
       view.flex-1
         view.margin-b-10 {{data.name_project}}
@@ -15,9 +15,9 @@
           |{{data.county_name}} {{data.city_name}}/
           |{{data.room_num}} {{data.area_built}}
         view.btn.btn-sm.btn-grey(v-for="item in tags") {{item}}
-    view.card-bottom.flex.center.margin-t-18
+    view.card-bottom.flex.center.margin-t-18(v-show="data.markedness")
       text.iconfont.font-color-primary.margin-r-10 &#xe605;
-      text.font-size-24 活动活动活动活动活动活动活动活动活动活动
+      text.font-size-24 {{data.markedness}}
 </template>
 <script>
   export default {

@@ -1,132 +1,105 @@
 <template lang="pug">
-  view.page-bg-grey
-    //- 户型
+  view
     //- 顶部选项
     view.house-wrap.mod-bg
       view.top-tab.mod-bg
-        view.tab-item.curr 全部(10)
-        view.tab-item 一室(3)
-        view.tab-item 二室(3)
-        view.tab-item 三室(2)
-        view.tab-item 其他(2)
+        view.tab-item(
+        v-for="(item, index) in hxtype"
+        :class="{curr: index == currentId}"
+        :key="index"
+        @click="tabtap(index)"
+        ) {{item.title}}({{item.total}})
+        
       view.house-list.ptl-list
         view.ptl-list
-          view.ptl-item
+          view.ptl-item(v-for="(item, index) in hxDm.list" :key="index")
             view.flex
               view.pic-wrap
-                image.pic(src="https://img-cdn-qiniu.dcloud.net.cn/tuku/img/dongwu06.jpg" mode="aspectFill")
-                view.sign-center 
+                image.pic(:src="$baseUrl + item.gallery" mode="aspectFill")
+                view.sign-center(v-if="item.panorama") 
                   text.iconfont &#xe7bc;
               view.text-wrap
-                view.margin-b-12.font-weight-bold.ellipsis 恒大海口文化
+                view.margin-b-12.font-weight-bold.ellipsis {{item.defective_room}}
                 view.flex.margin-b-12
-                  text.font-color-red.font-size-30 72万元起
+                  text.font-color-red.font-size-30 {{item.price_total}}
                 view.margin-b-12
-                  text.font-size-24 建面72㎡/朝南
+                  text.font-size-24 建面{{item.area_built+(item.area_built && item.orientations? '/': '')+item.orientations}}
                 view.margin-b-12.font-align-right
-                  text.font-color-red 转发
-          view.ptl-item
-            view.flex
-              view.pic-wrap
-                image.pic(src="https://img-cdn-qiniu.dcloud.net.cn/tuku/img/dongwu06.jpg" mode="aspectFill")
-              view.text-wrap
-                view.margin-b-12.font-weight-bold.ellipsis 恒大海口文化
-                view.flex.margin-b-12
-                  text.font-color-red.font-size-30 72万元起
-                view.margin-b-12
-                  text.font-size-24 建面72㎡/朝南
-                view.margin-b-12.font-align-right
-                  text.font-color-red 转发
-    //- 看了又看
-    view.lookagain.mod-bg
-      view.title 看了又看
-      view.ptl-list
-        view.ptl-item
-          view.flex
-            view.pic-wrap
-              image.pic(src="https://img-cdn-qiniu.dcloud.net.cn/tuku/img/dongwu06.jpg" mode="aspectFill")
-              view.sign-bl
-                text.iconfont &#xe7bc;
-              view.star-wrap
-                text.iconfont.font-size-24 &#xe671;
-                text.iconfont.font-size-24 &#xe671;
-                text.iconfont.font-size-24 &#xe61c;
-            view.text-wrap
-              view.margin-b-12.font-weight-bold.ellipsis 恒大海口文化
-              view.flex.margin-b-12
-                text.font-color-red.font-size-30 1000元/㎡
-              view.margin-b-12
-                text.font-size-24 龙华区/1-4室 24-122㎡
-              view
-                text.btn.btn-sm.btn-danger 在售
-                text.btn.btn-sm.btn-grey 商住
-                text.btn.btn-sm.btn-grey 首付低
-                text.btn.btn-sm.btn-grey 大型社区
-          view
-            text.iconfont.color-yellow.margin-r-6 &#xe605;
-            text 活动描述
-
-        view.ptl-item
-          view.flex
-            view.pic-wrap
-              image.pic(src="https://img-cdn-qiniu.dcloud.net.cn/tuku/img/dongwu06.jpg" mode="aspectFill")
-              view.star-wrap
-                text.iconfont.font-size-24 &#xe671;
-                text.iconfont.font-size-24 &#xe671;
-                text.iconfont.font-size-24 &#xe61c;
-            view.text-wrap
-              view.margin-b-12.font-weight-bold.ellipsis 恒大海口文化
-              view.flex.margin-b-12
-                text.font-color-red.font-size-30 1000元/㎡
-              view.margin-b-12
-                text.font-size-24 龙华区/1-4室 24-122㎡
-              view
-                text.btn.btn-sm.btn-danger 在售
-                text.btn.btn-sm.btn-grey 商住
-                text.btn.btn-sm.btn-grey 首付低
-                text.btn.btn-sm.btn-grey 大型社区
-          view
-            text.iconfont.color-yellow.margin-r-6 &#xe605;
-            text 活动描述
-        view.ptl-item
-          view.flex
-            view.pic-wrap
-              image.pic(src="https://img-cdn-qiniu.dcloud.net.cn/tuku/img/dongwu06.jpg" mode="aspectFill")
-              view.star-wrap
-                text.iconfont.font-size-24 &#xe671;
-                text.iconfont.font-size-24 &#xe671;
-                text.iconfont.font-size-24 &#xe61c;
-            view.text-wrap
-              view.margin-b-12.font-weight-bold.ellipsis 恒大海口文化
-              view.flex.margin-b-12
-                text.font-color-red.font-size-30 1000元/㎡
-              view.margin-b-12
-                text.font-size-24 龙华区/1-4室 24-122㎡
-              view
-                text.btn.btn-sm.btn-danger 在售
-                text.btn.btn-sm.btn-grey 商住
-                text.btn.btn-sm.btn-grey 首付低
-                text.btn.btn-sm.btn-grey 大型社区
-          view
-            text.iconfont.color-yellow.margin-r-6 &#xe605;
-            text 活动描述
+                  //- text.font-color-red.font-size-24 转发
     contact
 </template>
 
 <script>
   import contact from "@/components/contact";
   export default {
-    data() {
-      return {
-      }
-    },
     components:{
       contact
+    },
+    data() {
+      return {
+        option: {},
+        hxDm: {},
+        currentId: 0,
+        hxtype: [
+          {
+            title: '全部',
+            id: 0,
+            total: null
+          },
+          {
+            title: '一室',
+            id: 1,
+            total: null
+          },
+          {
+            title: '二室',
+            id: 2,
+            total: null
+          },
+          {
+            title: '三室',
+            id: 3,
+            total: null
+          },
+          {
+            title: '四室',
+            id: 4,
+            total: null
+          }
+        ]
+      }
+    },
+    onLoad(option){
+      this.getHx_dm(option)
+    },
+    methods: {
+      tabtap(index) {
+        this.option.room_num = index
+        this.currentId = index
+        const {id, mu, sf, at, dmid, room_num} = this.option
+        console.log('room_num', room_num)
+        this.getHx_dm(this.option)
+      },
+      getHx_dm(option){
+        const {id, mu, sf, at, dmid, room_num} = option
+        this.option = option
+        this.$api.getHxDms(id, mu, sf, at, dmid, room_num).then(data => {
+          this.hxDm = data
+          this.hxtype[0].total = data.total
+          this.hxtype[1].total = data.one_total
+          this.hxtype[2].total = data.two_total
+          this.hxtype[3].total = data.three_total
+          this.hxtype[4].total = data.other_total
+        })
+      }
     }
   }
 </script>
 
 <style lang="scss">
+.uni-view {
+  line-height: inherit;
+}
 .color-yellow {
   color: #fda84e;
 }
@@ -265,6 +238,10 @@
     .text-wrap {
       flex: 1;
       line-height: 1;
+      .margin-b-12 {
+        line-height: 1;
+      }
+      
     }
   }
 }

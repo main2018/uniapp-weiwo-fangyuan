@@ -42,7 +42,9 @@
     view.budling-house-item.house-type.padding-40
       view.budling-house-item-title.margin-b-10.font-weight-bold.margin-b-40 本楼盘其他户型
       scroll-view.scroll-view.font-size-sm(scroll-x="true")
-        view.scroll-view-item(v-for="item in dmList")
+        view.scroll-view-item(
+          v-for="item in dmList"
+          @tap="navigateTo({url: `./house?dmid=${item.id}&id=${option.id}&mu=${option.mu}&sf=${option.sf}&at=${option.at}`})")
           image(:src="$baseUrl + item.gallery" mode="aspectFill")
           text.is-pano.iconfont.font-size-42(v-show="item.panorama") &#xe7bc;
           .scroll-view-item-title.padding-x-20.padding-y-30.line-h1.border-1
