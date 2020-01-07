@@ -24,7 +24,7 @@
         view.tag.btn.btn-grey.btn-sm.margin-b-10(v-for="tag in tags") {{tag}}
       view.building-detail-overview-item.margin-y-15
         text.font-color-grey.margin-r-20 参考均价
-        text.font-color-red.font-size-38 {{building.building_info.average_price}}元/㎡
+        text.font-color-red.font-size-38 {{building.building_info.average_price ? `${building.building_info.average_price}元/㎡` : '待定'}}
       view.building-detail-overview-item.margin-y-15
         text.font-color-grey.margin-r-20 最新开盘
         text {{building.building_info.opening_date}}
@@ -32,7 +32,9 @@
         text {{building.building_info.property_limit || '未知'}}
       view.building-detail-overview-item.margin-y-15
         text.font-color-grey.margin-r-20(:decode="true" @tap="navigateTo({url: './nearby'})") {{`售楼处&emsp;`}}
-        text.font-color-link(@tap="navigateTo({url: './nearby'})") {{building.building_info.province_name + building.building_info.city_name + building.building_info.sales_office_address}}
+        text.font-color-link(
+          @tap="toNearby"
+          ) {{building.building_info.province_name + building.building_info.city_name + building.building_info.sales_office_address}}
       view.font-size-sm.font-align-center.font-color-primary.btn-grey.margin-t-40.padding-y-20(
         @tap="navigateTo({url: `./info?id=${option.id}&mu=${option.mu}&sf=${option.sf}&at=${option.at}`})"
         ) 更多信息
@@ -59,7 +61,7 @@
           .scroll-view-item-title.padding-x-20.padding-y-30.line-h1
             text(decode) {{`${item.defective_room}&nbsp;${item.area_built}`}}
             view.font-color-red.margin-t-20 {{item.price_total || 0}}
-    view.building-detail-item.special.padding-40(v-if="specialDms")
+    view.building-detail-item.special.padding-40(v-if="specialDms && specialDms.length")
       view.building-detail-item-title.flex.margin-b-40
         text.flex-1 特色解读
       view.special-item.flex.margin-b-20.padding-b-20.border-b-1(
@@ -119,6 +121,7 @@
   import card from "@/components/card";
   import empty from "@/components/empty";
   import {generateGetUrl} from '@/api';
+  import weixin from '@/common/js/weixin';
   
   const app = getApp()
   
@@ -291,6 +294,11 @@
       // this.$api.getHabitDms(id, mu, sf, at).then(({list}) => {
       //   this.habitDms = list
       // })
+      
+      weixin.share({
+        title: '测试微窝分享',
+        imgUrl: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1574153459148&di=aa8c0bbb7f822cea1812ff137c6bb419&imgtype=0&src=http%3A%2F%2Fi8.qhimg.com%2Ft014c0bef2485acc973.jpg'
+      })
     },
     async onReady() {
       // #ifdef H5

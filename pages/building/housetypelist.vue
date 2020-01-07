@@ -30,22 +30,34 @@
                   text.font-size-24 建面{{item.area_built+(item.area_built && item.orientations? '/': '')+item.orientations}}
                 view.margin-b-12.font-align-right
                   //- text.font-color-red.font-size-24 转发
+    view.padding-40
+      view.building-detail-item-title.flex.margin-b-40.font-size-36
+        text.flex-1 看了又看
+      card(
+        v-for="item in habitDms"
+        :data="item"
+        border
+        @click.native="$navigateTo({url: generateGetUrl('./detail', Object.assign({}, option, {id: item.id}))})"
+        )
     contact
 </template>
 
 <script>
   import contact from "@/components/contact";
+  import card from "@/components/card";
   import {generateGetUrl} from '@/api';
   
   export default {
     components:{
-      contact
+      contact,
+      card
     },
     data() {
       return {
         generateGetUrl,
         option: {},
         hxDm: {},
+        habitDms: null,
         currentId: 0,
         hxtype: [
           {
@@ -77,8 +89,12 @@
       }
     },
     onLoad(option){
+      const {id, mu, sf, at} = option
       this.option = option
       this.getHx_dm(option)
+      this.$api.getHabitDms(id, mu, sf, at).then(({list}) => {
+        this.habitDms = list
+      })
     },
     methods: {
       tabtap(index) {

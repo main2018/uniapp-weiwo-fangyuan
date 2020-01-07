@@ -1,19 +1,27 @@
 <template lang="pug">
   view.dm-detail.padding-40
-    view.dm-detail-title.font-size-36.font-weight-bold {{DmDetailInfo.title}}{{DmDetailInfo.type}}
-    view.tags.padding-y-40.border-b-1
-      view.btn.btn-sm(v-for="(item, index) in DmDetailInfo.feature_arr" :class="index %2 == 0 ? 'btn-danger' : 'btn-grey'") {{item.tag_name}}
-    view.dm-detail-content.margin-b-40.padding-y-40.border-b-1 
-      u-parse(:content="DmDetailInfo.introduction || ' '" @preview="preview" @navigate="navigate")
+    template(v-if="!isPano")
+      view.dm-detail-title.font-size-36.font-weight-bold {{DmDetailInfo.title}}{{DmDetailInfo.type}}
+      view.tags.padding-y-40.border-b-1
+        view.btn.btn-sm(v-for="(item, index) in DmDetailInfo.feature_arr" :class="index %2 == 0 ? 'btn-danger' : 'btn-grey'") {{item.tag_name}}
+      view.dm-detail-content.margin-b-40.padding-y-40.border-b-1 
+        u-parse(:content="DmDetailInfo.introduction || ' '" @preview="preview" @navigate="navigate")
+    view.border-b-1.margin-b-20(v-else)
+      view.margin-b-20(v-for="item in DmDetailInfo.package")
+        view.margin-b-20 {{item.title}}
+        image(:src="$baseUrl + item.gallery" mode="aspectFill")
+        view(v-html="item.introduction")
     card(
     @click.native="$navigateTo({url: '../building/detail'})"
     :data="building")
-    contact
+    contact(:contact="contact" :option="contactOption")
 </template>
 <script>
   import card from "@/components/card";
   import contact from "@/components/contact";
   import uParse from '@/components/gaoyia-parse/parse.vue'
+  
+  import weixin from '@/common/js/weixin';
   
   export default {
     components: {
@@ -24,7 +32,23 @@
     data() {
       return {
         building: {},
-        DmDetailInfo: {}
+        DmDetailInfo: {},
+        DmDetail: null
+      }
+    },
+    computed: {
+      contactOption() {
+        const {openid} = this.DmDetail || {}
+        return {...this.option, openid}
+      },
+      contact() {
+        const contact = this.DmDetail && this.DmDetail.contact_info
+        return (contact && contact.name) ? contact : null
+      },
+      isPano() {
+        const types = [21, 22, 23]
+        const {type} = this.DmDetailInfo || {}
+        return types.includes(type)
       }
     },
     methods: {
@@ -37,16 +61,23 @@
     },
     onLoad(option){
       const {dmid, mu, sf, at} = option
+      this.option = option
       this.$api.dmDetail(dmid, mu, sf, at).then( data =>{
         this.DmDetailInfo = data.info
-        console.log('11111222222222', this.DmDetailInfo.did)
+        uni.setNavigationBarTitle({
+          title: data.info && data.info.title
+        });
         // 楼盘详情
         this.$api.getPresentBuildingDetail(this.DmDetailInfo.did, mu, sf, at).then(async data => {
           this.building = data.info || {}
-          console.log('this.building111111111111111', this.building)
         })
+        console.log('DmDetailInfo', this.DmDetailInfo);
+        this.DmDetail = data
       })
-     
+      weixin.share({
+        title: '测试微窝分享',
+        imgUrl: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1574153459148&di=aa8c0bbb7f822cea1812ff137c6bb419&imgtype=0&src=http%3A%2F%2Fi8.qhimg.com%2Ft014c0bef2485acc973.jpg'
+      })
     }
   }
 </script>

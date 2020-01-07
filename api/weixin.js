@@ -1,13 +1,20 @@
 import http from '@/config/http'
 
-function wxConfig(url) {
+function wxConfig(addr) {
   console.log('http', http);
-  return http.request({
-    method: 'post',
-    url: 'consultant/session',
-    data: {
-      url
-    },
+  return new Promise((resolve, reject) => {
+    http.request({
+      method: 'get',
+      url: 'site/agency_get_package',
+      data: {
+        addr
+      },
+    })
+      .then(res => {
+        const sign_package = res && res.sign_package
+        sign_package ? resolve(JSON.parse(sign_package)) : reject()
+      })
+      .catch(reject)
   })
 }
 

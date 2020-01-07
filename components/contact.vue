@@ -76,6 +76,7 @@
           dom.boundingClientRect(data => {
             const {height} = data || {}
             this.height = height
+            console.log('height', height)
           }).exec()
         })
       }

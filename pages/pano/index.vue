@@ -69,7 +69,7 @@
               <text class="font-size-sm-s">有奖转发</text>
             </view>
             <view
-              @tap="$navigateTo({url: generateGetUrl('/pages/building/house', option)})"
+              @tap="$navigateTo({url: generateGetUrl('/pages/DM/detail', option)})"
               >
               <text class="iconfont">&#xe641;</text>
               <text class="font-size-sm-s">
@@ -900,7 +900,7 @@
               field: 'gallery',
               call (gallery) {
                 let galleryNew = []
-                for (let path of gallery) galleryNew.push(model.cdnPath(path))
+                if (gallery) { for (let path of gallery) galleryNew.push(model.cdnPath(path)) }
                 return galleryNew
               }
             },
@@ -938,6 +938,7 @@
           renderer: renderer,
           canvasId: "canvasId"
         })
+        console.log('self.panoData', self.panoData)
         let panoramas = self.panoData.panoramas[0];
         let panoObj = self.panoramas[panoramas.id] = new PANOLENS["ImagePanorama"](panoramas["path"]);
         panoObj.addEventListener('progress', this.onProgress)

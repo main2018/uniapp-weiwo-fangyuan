@@ -20,7 +20,7 @@
           text.font-color-primary.margin-b-10 {{detail.info.price_starting || '暂无'}}
           text.font-color-grey.font-size-sm-s 参考均价
       view.budling-house-overview-content.padding-y-40.border-b-1
-        view.font-size-sm(v-for="item in overviews")
+        view.font-size-sm.item(v-for="item in overviews")
           text.font-color-grey.margin-r-20 {{item.name}}:
           text {{item.value}}
         view.font-size-sm
@@ -29,7 +29,7 @@
         view.font-size-sm(@tap="$navigateBack()")
           text.font-color-grey.margin-r-20 所属楼盘:
           text.font-color-link {{detail.info.name_project || '未知'}}
-    view.budling-house-item.analyse.padding-y-40.margin-x-40.border-b-1
+    view.budling-house-item.analyse.padding-y-40.margin-x-40.border-b-1(v-show="detail.info.introduction")
       view.budling-house-item-title.font-weight-bold.margin-b-40 户型分析
       view(v-html="detail.info.introduction").margin-b-20
       view(v-for="item in detail.info.package")
@@ -50,7 +50,7 @@
           .scroll-view-item-title.padding-x-20.padding-y-30.line-h1.border-1
             text(decode) {{`${item.defective_room}&nbsp;${item.area_built}`}}
             view.font-color-red.margin-t-20 {{item.price_total || 0}}
-    contact
+    contact(:contact="contact" :option="contactOption")
         
 </template>
 
@@ -74,6 +74,14 @@
 			};
 		},
     computed: {
+      contactOption() {
+        const {openid} = this.detail || {}
+        return {...this.option, openid}
+      },
+      contact() {
+        const contact = this.detail && this.detail.contact_info
+        return (contact && contact.name) ? contact : null
+      },
       houseTypes() {
         return this.dmList.filter(item => [8,23].includes(Number(item.type)))
       },
@@ -145,7 +153,7 @@
   &-overview{
     &-content{
       line-height: 2;
-      >view{
+      >view.item{
         display: inline-block;
         width: 50%;
         vertical-align: top;

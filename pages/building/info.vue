@@ -7,73 +7,22 @@
       //- 数据详情
       view.x-form.mod-bg#floor-1
         view.title 项目数据
-        view.x-form-item
-          label.x-form-label 最新开盘：
-          view.x-form-content {{projectData.opening_date || '未知'}}
-        view.x-form-item
-          label.x-form-label 预计交房：
-          view.x-form-content {{projectData.house_delivery || '未知'}}
-        view.x-form-item
-          label.x-form-label 装修情况：
-          view.x-form-content {{projectData.decoration_state || '未知'}}
-        view.x-form-item
-          label.x-form-label 销售状态：
-          view.x-form-content {{projectData.building_status || '未知'}}
-        view.x-form-item
-          label.x-form-label 楼盘类型：
-          view.x-form-content {{projectData.building_type || '未知'}}
-        view.x-form-item
-          label.x-form-label(v-if="projectData.property_limit") 产权年限：
-          view.x-form-content {{projectData.property_limit+'年' || '未知'}}
-        view.x-form-item
-          label.x-form-label 建筑类型：
-          view.x-form-content {{projectData.houses_type || '未知'}}
-        view.x-form-item
-          label.x-form-label 占地面积：
-          view.x-form-content {{projectData.floor_space+'㎡' || '未知'}}
-        view.x-form-item
-          label.x-form-label 建筑面积：
-          view.x-form-content {{projectData.build_area+'㎡' || '未知'}}
-        view.x-form-item
-          label.x-form-label 容积率：
-          view.x-form-content {{projectData.plot_ratio || '未知'}}
-        view.x-form-item
-          label.x-form-label 绿化率：
-          view.x-form-content {{projectData.greening_rate+'%' || '未知'}}
-        view.x-form-item
-          label.x-form-label 得房率：
-          view.x-form-content {{projectData.house_rate+'%' || '未知'}}
-        view.x-form-item
-          label.x-form-label 规划栋数：
-          view.x-form-content {{projectData.build_num+'栋' || '未知'}}
-        view.x-form-item
-          label.x-form-label 规划户数：
-          view.x-form-content {{projectData.planning_num+'户' || '未知'}}
-        view.x-form-item
-          label.x-form-label 车位数：
-          view.x-form-content {{projectData.carport_num+'位' || '未知'}}
-        view.x-form-item
-          label.x-form-label 车位配比：
-          view.x-form-content {{projectData.parking_ratio || '未知'}}
-        view.x-form-item
-          label.x-form-label 物业费：
-          view.x-form-content {{projectData.property_fee || '未知'}}
-        view.x-form-item
-          label.x-form-label 物业公司：
-          view.x-form-content {{projectData.property_company || '未知'}}
-        view.x-form-item
-          label.x-form-label 小区配套：
-          view.x-form-content {{projectData.estate_mating || '未知'}}
-        view.x-form-item
-          label.x-form-label 开发商：
-          view.x-form-content {{projectData.name_developer || '未知'}}
+        view.x-form-item(v-for="val, name in dataList")
+          label.x-form-label {{name}}：
+          view.x-form-content {{val}}
         view.x-form-item
           label.x-form-label 售楼处：
-          view.x-form-content.color-deep {{projectData.sales_office_address || '未知'}}
+          view.x-form-content(v-if="projectData.sales_office_address") 暂无
+          view.x-form-content.color-deep(
+            v-else
+            @tap="toNearby"
+            ) {{projectData.sales_office_address}}
+
       //- 预售许可证    
       view.x-form.mod-bg#floor-2
         view.title 预售许可证
-        view.x-form-list(v-for="(item, index) in projectData.presales" :key="index")
+        view.margin-b-20(v-if="!projectData.presales || !projectData.presales.length") 暂无
+        view.x-form-list(v-else v-for="(item, index) in projectData.presales" :key="index")
           view.x-form-item(@click="isShowGallery = !isShowGallery")
             label.x-form-label 预售证号：
             view.x-form-content.color-deep {{item.cardno || '暂无'}}
@@ -89,11 +38,12 @@
       view.x-form.mod-bg#floor-3
         view.title 楼盘介绍
         view.margin-b-40
-          |{{projectData.intro}}
+          |{{projectData.intro || '暂无'}}
       //- 楼盘证件
       view.container.mod-bg#floor-4
         view.title 楼盘证件
         view.papers-list
+          view.papers-item(v-if="!projectData.zhengshu || !projectData.zhengshu.length") 暂无
           view.papers-item(v-for="(item, index) in projectData.zhengshu" :key="index")
             view.img-wrap
               image.img(
@@ -102,64 +52,34 @@
               @click="certificateShow(index)"
               )
             view.aux.ellipsis.font-size-28 《{{item.title}}》
-      //- 没有了
+      view.container.mod-bg
         view.title 看了又看
-        view.ptl-list
-          view.ptl-item
-            view.flex
-              view.pic-wrap
-                image.pic(src="https://img-cdn-qiniu.dcloud.net.cn/tuku/img/dongwu06.jpg" mode="aspectFill")
-                view.star-wrap
-                  text.iconfont.font-size-24 &#xe671;
-                  text.iconfont.font-size-24 &#xe671;
-                  text.iconfont.font-size-24 &#xe61c;
-              view.text-wrap
-                view.margin-b-12.font-weight-bold.ellipsis 恒大海口文化
-                view.flex.margin-b-12
-                  text.font-color-red.font-size-30 1000元/㎡
-                view.margin-b-12
-                  text.font-size-24 龙华区/1-4室 24-122㎡
-                view
-                  text.btn.btn-sm.btn-danger 在售
-                  text.btn.btn-sm.btn-grey 商住
-                  text.btn.btn-sm.btn-grey 首付低
-                  text.btn.btn-sm.btn-grey 大型社区
-            view.flex.center.padding-t-10
-              text.iconfont.color-yellow.margin-r-6 &#xe605;
-              text.font-size-24 活动描述活动描述活动描述活动描述活动描述活动描述
-          view.ptl-item
-            view.flex
-              view.pic-wrap
-                image.pic(src="https://img-cdn-qiniu.dcloud.net.cn/tuku/img/dongwu06.jpg" mode="aspectFill")
-                view.star-wrap
-                  text.iconfont.font-size-24 &#xe671;
-                  text.iconfont.font-size-24 &#xe671;
-                  text.iconfont.font-size-24 &#xe61c;
-              view.text-wrap
-                view.margin-b-12.font-weight-bold.ellipsis 恒大海口文化
-                view.flex.margin-b-12
-                  text.font-color-red.font-size-30 1000元/㎡
-                view.margin-b-12
-                  text.font-size-24 龙华区/1-4室 24-122㎡
-                view
-                  text.btn.btn-sm.btn-danger 在售
-                  text.btn.btn-sm.btn-grey 商住
-                  text.btn.btn-sm.btn-grey 首付低
-                  text.btn.btn-sm.btn-grey 大型社区
-            view.flex.center.padding-t-18
-              text.iconfont.color-yellow.margin-r-6 &#xe605;
-              text.font-size-24 活动描述活动描述活动描述活动描述活动描述活动描述    
-    contact
+        card(
+          v-for="item in habitDms"
+          :data="item"
+          border
+          @click.native="$navigateTo({url: generateGetUrl('./detail', Object.assign({}, option, {id: item.id}))})"
+          )
+        
+        
+    contact(:contact="contact" :option="contactOption")
 </template>
         
 <script>
   import contact from "@/components/contact";
+  import card from "@/components/card";
+  import {generateGetUrl} from '@/api';
+  
 	export default {
     components: {
-      contact
+      contact,
+      card
     },
 		data() {
 			return {
+        generateGetUrl,
+        habitDms: null,
+        projectDataFull: null,
         projectData: {},
         isShowGallery: false,
         certificateNames: {
@@ -192,10 +112,11 @@
           }
         ]
 			}
-		}, 
+		},
     onLoad(option) {
       const {id, mu, sf, at} = option
-      this.$api.getProjectData(id, mu, sf, at).then( data => {
+      this.option = option
+      this.$api.getProjectData(id, mu, sf, at).then(async data => {
         // console.log('getProjectData', data)
          data.project_data.zhengshu = []
          for (let [key, value] of Object.entries(data.project_data)) {
@@ -220,11 +141,88 @@
             }
            }
          }
+        this.projectDataFull = data
         this.projectData = data.project_data
-        console.log('projectData', this.projectData)
+        uni.setNavigationBarTitle({
+          title: data.project_data && data.project_data.name_project
+        });
+        const {lat, lng} = this.projectData || {}
+        const latlng = await this.$api.convertCoordinate(lat, lng)
+        this.latlng = latlng
+        console.log('contact', this.contact)
+      })
+      this.$api.getHabitDms(id, mu, sf, at).then(({list}) => {
+        this.habitDms = list
       })
     },
-		methods: {
+		computed: {
+      contactOption() {
+        const {openid} = this.projectDataFull || {}
+        return {...this.option, openid}
+      },
+      contact() {
+        const contact = this.projectDataFull && this.projectDataFull.contact_info
+        return (contact && contact.name) ? contact : null
+      },
+      dataList() {
+        const {
+          opening_date,
+          house_delivery,
+          decoration_state,
+          building_status,
+          building_type,
+          property_limit,
+          houses_type,
+          floor_space,
+          build_area,
+          plot_ratio,
+          greening_rate,
+          house_rate,
+          build_num,
+          planning_num,
+          carport_num,
+          parking_ratio,
+          property_fee,
+          property_company,
+          estate_mating,
+          name_developer,
+          // sales_office_address,
+        } = this.projectData || {}
+        function normalizeVal(val, unit = '', defat = '暂无') {
+          return val ? val + unit : defat
+        }
+        
+        return {
+          '最新开盘': normalizeVal(opening_date),
+          '预计交房': normalizeVal(house_delivery),
+          '装修情况': normalizeVal(decoration_state),
+          '销售状态': normalizeVal(building_status),
+          '楼盘类型': normalizeVal(building_type),
+          '产权年限': normalizeVal(property_limit),
+          '建筑类型': normalizeVal(houses_type),
+          '占地面积': normalizeVal(floor_space),
+          '建筑面积': normalizeVal(build_area),
+          '容积率': normalizeVal(plot_ratio),
+          '绿化率': normalizeVal(greening_rate),
+          '得房率': normalizeVal(house_rate),
+          '规划栋数': normalizeVal(build_num),
+          '规划户数': normalizeVal(planning_num),
+          '车位数': normalizeVal(carport_num),
+          '车位配比': normalizeVal(parking_ratio),
+          '物业费': normalizeVal(property_fee),
+          '物业公司': normalizeVal(property_company),
+          '小区配套': normalizeVal(estate_mating),
+          '开发商': normalizeVal(name_developer),
+          // '售楼处': normalizeVal(sales_office_address),
+        }
+      }
+    },
+    methods: {
+      toNearby() {
+        const latlng = this.latlng || {}
+        // `./nearby?lat=${latlng.lat}&lng=${latlng.lng}`
+        this.$navigateTo({url: generateGetUrl('./nearby', {...latlng, ...this.option || {}})})
+      },
       //一级分类点击
       tabnav(index){
        if(!this.sizeCalcState){
