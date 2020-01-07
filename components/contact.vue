@@ -37,6 +37,16 @@
         default: null
       }
     },
+    watch: {
+      contact: {
+        handler() {
+          if (this.contact && this.contact.name) {
+            this.resetHeight()
+          }
+        },
+        immediate: true
+      }
+    },
 		data() {
 			return {
         generateGetUrl,
@@ -48,7 +58,7 @@
       // this.option = this.$route.query
     },
     mounted() {
-      this.resetHeight()
+      // this.resetHeight()
     },
     methods: {
       seeHouse() {
@@ -76,7 +86,7 @@
           dom.boundingClientRect(data => {
             const {height} = data || {}
             this.height = height
-            console.log('height', height)
+            // console.log('height', height)
           }).exec()
         })
       }
