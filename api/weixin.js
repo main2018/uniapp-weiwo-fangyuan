@@ -1,7 +1,6 @@
 import http from '@/config/http'
 
 function wxConfig(addr) {
-  console.log('http', http);
   return new Promise((resolve, reject) => {
     http.request({
       method: 'get',
@@ -17,9 +16,16 @@ function wxConfig(addr) {
       .catch(reject)
   })
 }
+function getOpenid(code) {
+  return http.request({
+    method: 'get',
+    url: `site/agency_get_openid?code=${code}`
+  })
+}
 
 export {
-  wxConfig
+  wxConfig,
+  getOpenid
 }
 
 function generateGetUrl (url, obj = {}) {

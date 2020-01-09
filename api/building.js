@@ -6,9 +6,10 @@ import {generateGetUrl} from './index'
  * @returns {AxiosPromise}
  */
 function dmDetail(dmid, mu, sf, at) {
+  const id_auth = _getOpenid()
   return http.request({
     method: 'get',
-    url: generateGetUrl(`site/${dmid}/agency_dm_details`, {mu, sf, at})
+    url: generateGetUrl(`site/${dmid}/agency_dm_details`, {mu, sf, at, id_auth})
   })
 }
 
@@ -32,9 +33,10 @@ function buildingDms(did) {
  * @returns {Promise}
  */
 function getBuildingDetail(id, mu, sf, at) {
+  const id_auth = _getOpenid()
   return http.request({
     method: 'get',
-    url: generateGetUrl(`site/${id}/agency_building_push`, {mu, sf, at})
+    url: generateGetUrl(`site/${id}/agency_building_push`, {mu, sf, at, id_auth})
   })
 }
 
@@ -157,7 +159,13 @@ function statistics(data) {
   })
 }
 
+function _getOpenid() {
+  return getApp().globalData.openid
+}
+
 export {
+  _getOpenid,
+  
   dmDetail,
   getPresentBuildingDetail,
   getBuildingDetail,

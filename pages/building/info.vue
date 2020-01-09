@@ -62,7 +62,7 @@
           )
         
         
-    contact(:contact="contact" :option="contactOption")
+    contact(:contact="option" :option="contactOption")
 </template>
         
 <script>
@@ -156,10 +156,6 @@
       })
     },
 		computed: {
-      contactOption() {
-        const {openid} = this.projectDataFull || {}
-        return {...this.option, openid}
-      },
       contact() {
         const contact = this.projectDataFull && this.projectDataFull.contact_info
         return (contact && contact.name) ? contact : null

@@ -112,7 +112,7 @@
         @click.native="navigateTo({url: generateGetUrl('./detail', Object.assign({}, option, {id: item.id}))})"
         )
           
-    contact(:contact="contact" :option="contactOption")
+    contact(:contact="contact" :option="option")
       
 </template>
 
@@ -121,7 +121,6 @@
   import card from "@/components/card";
   import empty from "@/components/empty";
   import {generateGetUrl} from '@/api';
-  import weixin from '@/common/js/weixin';
   
   const app = getApp()
   
@@ -157,10 +156,6 @@
       }
     },
     computed: {
-      contactOption() {
-        const {openid} = this.building || {}
-        return {...this.option, openid}
-      },
       contact() {
         const contact = this.building && this.building.contact_info
         return (contact && contact.name) ? contact : null
@@ -295,17 +290,13 @@
       //   this.habitDms = list
       // })
       
-      weixin.share({
+      // #ifdef H5
+      this.$weixin.share({
         title: '测试微窝分享',
-        imgUrl: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1574153459148&di=aa8c0bbb7f822cea1812ff137c6bb419&imgtype=0&src=http%3A%2F%2Fi8.qhimg.com%2Ft014c0bef2485acc973.jpg'
       })
+      // #endif
     },
     async onReady() {
-      // #ifdef H5
-      // const {lat, lng} = this.building && this.building.building_info
-      // const latlng = this.$api.convertCoordinate(lat, lng)
-      // console.log('latlng', latlng);
-      // #endif
     },
     activated() {
     },
@@ -330,9 +321,8 @@
       },
       join() {
         const {id, mu, sf, at} = this.option
-        const {openid} = this.building || {}
         const dsoid = this.building && this.building.activity_info && this.building.activity_info.dsoid
-        this.$navigateTo({url: `./activity-join?id=${id}&mu=${mu}&sf=${sf}&at=${at}&dsoid=${dsoid}&openid=${openid}`})
+        this.$navigateTo({url: `./activity-join?id=${id}&mu=${mu}&sf=${sf}&at=${at}&dsoid=${dsoid}`})
       },
       isPano(obj) {
         const type = obj && obj.type

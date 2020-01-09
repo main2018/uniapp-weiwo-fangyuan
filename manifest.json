@@ -78,6 +78,10 @@
             "base" : "/page/agency_pushing/"
         },
         // "publicPath" : "./",
-        "template" : "index.html"
+        "template" : "index.html",
+        "devServer" : {
+            "port" : "",
+            "https" : false
+        }
     }
 }

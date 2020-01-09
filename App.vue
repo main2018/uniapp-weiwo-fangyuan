@@ -1,10 +1,15 @@
 <script>
+  
 	export default {
     globalData: {  
-      text: 'text'
+      openid: ''
     },
-		onLaunch: function() {
+		onLaunch: async function() {
 			console.log('App Launch');
+      const openid = await this.$weixin.wxAuthorize()
+      getApp().globalData.openid = openid
+      // alert(`openid:${openid}`)
+      // this.$scope.globalData.openid = openid
 		},
 		onShow: function() {
 			console.log('App Show');

@@ -66,14 +66,14 @@
       },
       call() {
         // location.href = `tel:${phone}`
-        const {id: id_subject, mu, sf, at, openid} = this.option || {}
+        const {id: id_subject, mu, sf, at} = this.option || {}
         
         const data = {
           id_subject,
           mu,
           sf,
           at,
-          openid
+          openid: this.$api._getOpenid()
         }
         this.$api.statistics(data).then(() => {
           // location.href = `tel:${this.config.mem.sc.mobile}`

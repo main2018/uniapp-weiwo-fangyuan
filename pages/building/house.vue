@@ -26,7 +26,9 @@
         view.font-size-sm
           text.font-color-grey.margin-r-20 建筑类型:
           text {{detail.info.building_type || '未知'}}
-        view.font-size-sm(@tap="$navigateBack()")
+        view.font-size-sm(
+          @tap="$navigateTo({url: `./detail?id=${detail.info.did}&mu=${option.mu}&sf=${option.sf}&at=${option.at}`})"
+          )
           text.font-color-grey.margin-r-20 所属楼盘:
           text.font-color-link {{detail.info.name_project || '未知'}}
     view.budling-house-item.analyse.padding-y-40.margin-x-40.border-b-1(v-show="detail.info.introduction")
@@ -114,6 +116,11 @@
         this.dmList = list || []
       })
       
+      // #ifdef H5
+      this.$weixin.share({
+        title: '测试微窝HOUSE分享',
+      })
+      // #endif
     },
     methods: {
       isPano(obj) {

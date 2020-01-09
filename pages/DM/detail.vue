@@ -14,7 +14,7 @@
     card(
     @click.native="$navigateTo({url: '../building/detail'})"
     :data="building")
-    contact(:contact="contact" :option="contactOption")
+    contact(:contact="contact" :option="option")
 </template>
 <script>
   import card from "@/components/card";
@@ -37,10 +37,6 @@
       }
     },
     computed: {
-      contactOption() {
-        const {openid} = this.DmDetail || {}
-        return {...this.option, openid}
-      },
       contact() {
         const contact = this.DmDetail && this.DmDetail.contact_info
         return (contact && contact.name) ? contact : null
@@ -78,7 +74,21 @@
         title: '测试微窝分享',
         imgUrl: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1574153459148&di=aa8c0bbb7f822cea1812ff137c6bb419&imgtype=0&src=http%3A%2F%2Fi8.qhimg.com%2Ft014c0bef2485acc973.jpg'
       })
-    }
+    },
+    onBackPress(options) {
+      if (options.from === 'navigateBack') {
+        return false;  
+      }
+      const {id, mu, sf, at} = this.option || {}
+      if (!id || (this.total == 1)) {
+        return false
+      };
+      // this.$navigateBack({delta: this.total})
+      uni.navigateTo({
+        url: generateGetUrl('/pages/building/detail', {id, mu, sf, at})
+      })
+      return true
+    },
   }
 </script>
 <style lang="scss" scoped>

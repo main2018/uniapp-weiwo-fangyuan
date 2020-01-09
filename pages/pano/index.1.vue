@@ -1,78 +1,141 @@
 <template>
   <div class="pano-details">
-    <div class="example-body">
-      <uni-nav-bar left-icon="arrowleft" title="全景" @click-left="back" background-color="rgb(69, 154, 255)" color="#fff" :fixed="true" :shadow="false"/>
-    </div>
-    <div class="pano-container" ref="panoParent">
-      <div class="pos_r w_100 zIndex300">
-        <section>
-          <div ref="panorama" id="panorama" class=""  @tap="panolensContainerFunc">
-            <div ref="panolensContainer" id="panolensContainer" class="panolens-container" style="width: 100%; height: 100%; position: absolute; background-color: rgb(0, 0, 0);"></div>
-          </div>
-        </section>
-        <view class="building-name font-size-sm font-color-white padding-x-20 padding-y-10">
-          {{'【 ' + (panoData.province_name || '') + ' · ' + (panoData.city_name || '') + ' 】 ' + (panoData.name_project || panoData.name_house || '')}}
-        </view>
-        <!-- <view class="building-cover">
-          <image v-show="IllustrationShow" :src="Illustration" @tap="previewImage([Illustration])">
-          <text @tap="IllustrationClick" class="iconfont image">{{IllustrationShow ? '&#xf2b6;' : '&#xe6a4;'}}</text>
-        </view> -->
-        <view class="building-cover">
-          <image v-show="IllustrationShow" :src="Illustration" @tap="previewImage([Illustration])">
-          <text @tap="IllustrationClick" class="iconfont image">{{!IllustrationShow ? '&#xf2b6;' : '&#xe6a4;'}}</text>
-        </view>
-        <section v-show="panoNameType" class="current-pano-name">
-          <span>{{panoName}}</span>
-        </section>
-        <view v-show="prompt" class="pano-hint">
-          <view class="pano-hint-top">
-            <text class="left iconfont">&#xeafb;</text>
-            <text class="hand iconfont">&#xe6cf;</text>
-            <text class="right iconfont">&#xe608;</text>
+    <div class="">
+      <div class="" ref="panoParent">
+        <div class="pos_r w_100 zIndex300">
+          <section>
+            <div ref="panorama" id="panorama" class=""  @tap="panolensContainerFunc">
+              <div ref="panolensContainer" id="panolensContainer" class="panolens-container" style="width: 100%; height: 100%; position: absolute; background-color: rgb(0, 0, 0);"></div>
+            </div>
+          </section>
+          <view class="building-name font-size-sm font-color-white padding-x-20 padding-y-10">
+            {{'【 ' + (panoData.province_name || '') + ' · ' + (panoData.city_name || '') + ' 】 ' + (panoData.name_project || panoData.name_house || '')}}
           </view>
-          <text class="font-size-sm-s">左右滑动，效果更佳</text>
-        </view>
-        <section :class="{'hide':!currentType || (panoData.panoramas && panoData.panoramas.length < 2)}" class="pano-panoramas">
-          <scroll-view class="scroll-view font-size-sm padding-y-20 padding-x-10" scroll-x="true">
-            <view class="scroll-view-item margin-r-20" :class="currentPanoramaIndex==index && 'active'" @tap="clickSwitchPanoramic(index, p.name)" v-for="(p, index) in panoData.panoramas" :key="index">
-              <image :src="p.cover" class="w_100 height100" mode="aspectFill">
-              <view class="font-size-sm-s font-color-white">{{p.name}}</view>
+          <!-- <section class="pos_a of_h right0 top30">
+            <div>
+              <div style="" class="fixed_width_110 expand-transition pos_r ">
+                <image ref="Illustration" :src="Illustration" @tap="IllustrationIsVisibleFunc(1)">
+                <span :class="!mapsize && 'opacity'" ref="IllustrationCoordinate" class="icon-dingwei-copy pos_a"></span>
+              </div>
+            </div>
+            <div>
+              <div @tap="IllustrationClick" class="f-icon-tupiansuolvetuBox">
+                <span class="icon iconfont icon-tupiansuolvetu f-icon-tupiansuolvetu"></span>
+              </div>
+            </div>
+          </section> -->
+          <view class="building-cover">
+            <image v-show="!IllustrationShow" :src="Illustration" @tap="previewImage([Illustration])">
+            <text @tap="IllustrationClick" class="iconfont image">{{IllustrationShow ? '&#xf2b6;' : '&#xe6a4;'}}</text>
+          </view>
+          <section v-show="panoNameType" class="current-pano-name">
+            <span>{{panoName}}</span>
+          </section>
+          <section v-show="prompt" class="pos_a w_100 top244">
+            <div class="fixed_width_150 ma_auto background-RGBA-5 bor_4 fixed_height_95">
+              <div class="text-center f_co_fff pos_r w_100 pt-10">
+                <span class="icon iconfont icon-shou01 f-font-37"></span>
+                <span class="icon iconfont icon-zuoyoujiantou- f-font-16 pos_a left35"></span>
+                <span class="icon iconfont icon-zuoyoujiantou-1 f-font-16 pos_a right35"></span>
+              </div>
+              <p class="f-12 text-center f_co_fff">左右滑动，效果更佳</p>
+            </div>
+          </section>
+          <view v-show="prompt" class="pano-hint">
+            <view class="pano-hint-top">
+              <text class="left iconfont">&#xeafb;</text>
+              <text class="hand iconfont">&#xe6cf;</text>
+              <text class="right iconfont">&#xe608;</text>
             </view>
-          </scroll-view>
-        </section>
-        <view class="pano-bottom">
-          <view @tap="forwardingShow = !forwardingShow" v-if="panoData.act_status == 2&&($route.query.display_area==1||$route.query.display_area==2)">
-            <text class="iconfont">&#xe641;</text>
-            <text class="font-size-sm-s">有奖转发</text>
+            <text class="font-size-sm-s">左右滑动，效果更佳</text>
           </view>
-          <view
-            @tap="$navigateTo({url: generateGetUrl('/pages/DM/detail', option)})"
-            >
-            <text class="iconfont">&#xe641;</text>
-            <text class="font-size-sm-s">
-              {{panoData.type == 21?'项目':panoData.type == 22?'区位':panoData.type == 23?'户型':'户型'}}介绍
-            </text>
+          <section :class="{'hide':!currentType || (panoData.panoramas && panoData.panoramas.length < 2)}" class="pano-panoramas">
+            <!-- <ul ref="ThumbnailsBox" class="f-panorama-imgListBox cl ma_auto">
+              <li :ref="'Thumbnails'" class="f-panorama-List pos_r of_h l" :class="currentPanoramaIndex==index && 'f-panorama-ListAc'" @tap="clickSwitchPanoramic(index, p.name)" v-for="(p, index) in panoData.panoramas" :key="index">
+                <image :src="p.cover" class="w_100 height100" mode="aspectFill">
+                <p class="pos_a left0 bottom0 background-RGBA-5 f_co_fff f-12 w_100 text-center">{{p.name}}</p>
+              </li>
+            </ul> -->
+            <scroll-view class="scroll-view font-size-sm padding-y-20 padding-x-10" scroll-x="true">
+              <view class="scroll-view-item margin-r-20" :class="currentPanoramaIndex==index && 'active'" @tap="clickSwitchPanoramic(index, p.name)" v-for="(p, index) in panoData.panoramas" :key="index">
+                <image :src="p.cover" class="w_100 height100" mode="aspectFill">
+                <view class="font-size-sm-s font-color-white">{{p.name}}</view>
+              </view>
+            </scroll-view>
+          </section>
+          <view class="pano-bottom">
+            <view @tap="forwardingShow = !forwardingShow" v-if="panoData.act_status == 2&&($route.query.display_area==1||$route.query.display_area==2)">
+              <text class="iconfont">&#xe641;</text>
+              <text class="font-size-sm-s">有奖转发</text>
+            </view>
+            <view
+              @tap="$navigateTo({url: generateGetUrl('/pages/DM/detail', option)})"
+              >
+              <text class="iconfont">&#xe641;</text>
+              <text class="font-size-sm-s">
+                {{panoData.type == 21?'项目':panoData.type == 22?'区位':panoData.type == 23?'户型':'户型'}}介绍
+              </text>
+            </view>
+            <view @tap="statistics(3)">
+              <text class="iconfont">&#xe60d;</text>
+              <text class="font-size-sm-s">咨询电话</text>
+            </view>
+            <view @tap="currentFunc">
+              <text class="iconfont" style="font-size: 50rpx;">&#xe602;</text>
+            </view>
           </view>
-          <view @tap="statistics(3)">
-            <text class="iconfont">&#xe60d;</text>
-            <text class="font-size-sm-s">咨询电话</text>
-          </view>
-          <view @tap="currentFunc">
-            <text class="iconfont" style="font-size: 50rpx;">&#xe602;</text>
-          </view>
-        </view>
-      </div>
-    </div>
-    <!--示意图放大-->
-    <section id="PanoramaDetailsIllustrationMaxBox" :class="IllustrationIsVisible == 1?'z-index-303':'z-index-negative-10'" class="pos_f left0 top0 w_100 height100">
-      <div class="background-RGBA-8 height100 pt-50">
-        <div class="pos_r " style="">
-          <img ref="IllustrationMax" :src="Illustration" alt="" class="w_100">
-          <span :class="!mapsize && 'opacity'" ref="IllustrationCoordinateMax" class="icon-dingwei-copy pos_a"></span>
-          <span class="iconfont icongoufangyixiang" @tap="IllustrationIsVisibleFunc(0)">x</span>
+          <!-- <section class="pano-bottom">
+            <ul class="cl">
+              <li @tap="forwardingShow = !forwardingShow" v-if="panoData.act_status == 2&&($route.query.display_area==1||$route.query.display_area==2)" class="l f-gengduo-list text-center">
+                <div class="f-icon-box bor-50 background-fff">
+                  <span class="activityIcon"></span>
+                </div>
+                <p class="f-12 f_co_fff">有奖转发</p>
+              </li>
+              <li class="l f-gengduo-list text-center">
+                <router-link :to="{path : ($route.query.share=='my'?('/myDM-detail/' + panoData.id+'?share='+$route.query.share+'&dm='+$route.query.dm):'/DM-detail/' + panoData.id) + '?display_area=' + $route.query.display_area}" class="di_bl">
+                  <div class="f-icon-box bor-50 background-fff">
+                    <span class="icon iconfont icon-huxingtu f_co_999 f-font-24"></span>
+                  </div>
+                  <p class="f-12 f_co_fff">{{panoData.type == 21?'项目':panoData.type == 22?'区位':panoData.type == 23?'户型':'户型'}}介绍</p>
+                </router-link>
+              </li>
+              <li @tap="statistics(3)" class="l f-gengduo-list text-center">
+                <div class="f-icon-box bor-50 background-fff">
+                  <span class="icon iconfont icon-dianhua1 f_co_999 f-font-24"></span>
+                </div>
+                <p class="f-12 f_co_fff">咨询电话</p>
+              </li>
+              <li @tap="currentFunc" class="l f-gengduo-list text-center">
+                <div class="f-icon-box bor-50 background-fff">
+                  <span class="icon iconfont icon-gengduo1 f_co_999 f-font-24"></span>
+                </div>
+              </li>
+            </ul>
+          </section> -->
         </div>
       </div>
-    </section>
+      <!--示意图放大-->
+      <section id="PanoramaDetailsIllustrationMaxBox" :class="IllustrationIsVisible == 1?'z-index-303':'z-index-negative-10'" class="pos_f left0 top0 w_100 height100">
+        <div class="background-RGBA-8 height100 pt-50">
+          <div class="pos_r " style="">
+            <img ref="IllustrationMax" :src="Illustration" alt="" class="w_100">
+            <span :class="!mapsize && 'opacity'" ref="IllustrationCoordinateMax" class="icon-dingwei-copy pos_a"></span>
+            <span class="iconfont icongoufangyixiang" @tap="IllustrationIsVisibleFunc(0)">x</span>
+          </div>
+        </div>
+      </section>
+    </div>
+    <!-- <toast v-model="show1" type="text" width="10em">{{show1message}}</toast> -->
+    <!-- 分享 -->
+    <!-- <div v-transfer-dom>
+      <popup v-model="showShare" position="bottom" max-height="60%">
+        
+      </popup>
+    </div> -->
+    <!--<div v-transfer-dom>-->
+      <!--<loading :show="panoLoadingShow" :text="progress"></loading>-->
+    <!--</div>-->
     <div ref="panoLoadingBox" class="panoLoadingBox">
       <p id="panoLoading" class="panoLoading">{{progress + '%'}}</p>
     </div>
@@ -96,24 +159,11 @@
   </div>
 </template>
 <style lang="scss" scoped>
-  .pos_f {
-    position: fixed;
-  }
-  .left0 {
-    left: 0;
-  }
-  .top0 {
-    top: 0;
-  }
-  .w_100 {
-    width: 100%;
-  }
-  .pano-container {
-    position: relative;
-    width: 100%;
-    height: calc(100vh - 44px);
-  }
-  .hide {display: none;}
+  // @import "~common/styles/style";
+  // @import "~@/assets/iconfont/iconfont.css";
+  // @import "~common/styles/mixins/bg-image";
+  // @import '~common/styles/mixins/border-1px.less';
+  //@import "~common/styles/transition";
   .current-pano-name{
     position: absolute;
     top: 30%;
@@ -462,12 +512,11 @@
     }
     .panoLoadingBox{
       position: fixed;
-      top: 40%;
+      top: 5rem;
       left: 0;
       width: 100%;
       text-align: center;
-      z-index: 1000;
-      pointer-events: none;
+      z-index: 1000
     }
     .panoLoading{
       display: inline-block;
@@ -525,7 +574,6 @@
   import { dmDetail, statistics, generateGetUrl } from '@/api'
   import model from './model'
   import renderer from './renderer'
-  import uniNavBar from '@/components/uni-nav-bar/uni-nav-bar.vue'
   console.log('PANOLENS', PANOLENS, demo);
   PANOLENS.Panorama.prototype.href = function (datas) {
     let scope = this;
@@ -560,7 +608,6 @@
     name: 'pano-details',
     /* 组件 */
     components: {
-      uniNavBar
     },
     data () {
       return {

@@ -27,20 +27,23 @@
     width: 100%;
     height: 100%;
     background-color: rgba(0,0,0, .5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
     &-explain{
-      position: absolute;
-      top: 50%;
-      left: 64rpx;
-      right: 64rpx;
-      transform: translateY(-50%);
-      max-height: 70%;
-      overflow: hidden;
+      width:84%;
+      max-height: 90%;
+      min-height: 60%;
+      overflow-y: auto;
       &-content{
-        padding: 30rpx;
+        width: 100%;
+        height: 100%;
+        padding: 30rpx 30rpx 30rpx 0;
         border-radius: 8rpx;
         background-color: $color-white;
-        overflow: hidden auto;
+        overflow-y: auto;
         -webkit-overflow-scrolling: touch;
+        box-sizing: border-box;
         &-title{
           margin-bottom: 40rpx;
           font-weight: bold;
@@ -50,7 +53,7 @@
       }
       &-close{
         display: inline-block;
-        margin-top: 80rpx;
+        margin-top: 50rpx;
         color: $color-white;
         font-size: 64rpx;
         align-self: center;

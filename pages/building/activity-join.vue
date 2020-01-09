@@ -33,7 +33,7 @@
           return this.$showToast({title: '请输入姓名或手机号'})
         }
         
-        const {id, mu, sf, at, dsoid, openid} = this.option
+        const {id, mu, sf, at, dsoid} = this.option
         
         const data = {
           name: this.name,
@@ -41,7 +41,7 @@
           type: 2,
           did: id,
           dsoid,
-          openid,
+          openid: this.$api._getOpenid(),
           mu,
           sf,
           at

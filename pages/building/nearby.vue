@@ -47,7 +47,6 @@
       this.lng = lng
     },
     onBackPress(options) {
-      
       if (options.from === 'navigateBack') {
         return false;  
       }

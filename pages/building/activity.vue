@@ -63,8 +63,7 @@
     methods: {
       join() {
         const {id, mu, sf, at, dsoid} = this.option
-        const {openid} = this.activity || {}
-        this.$navigateTo({url: `./activity-join?id=${id}&mu=${mu}&sf=${sf}&at=${at}&dsoid=${dsoid}&openid=${openid}`})
+        this.$navigateTo({url: `./activity-join?id=${id}&mu=${mu}&sf=${sf}&at=${at}&dsoid=${dsoid}`})
       }
     }
   }

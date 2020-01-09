@@ -3,7 +3,7 @@
   view.pano-list.padding-40(v-else)
     view.pano-list-item.flex.margin-b-20.padding-b-30.border-b-1(
       v-for="item in panos"
-      @tap="$navigateTo({url: generateGetUrl('/pages/pano/index', option)})")
+      @tap="toPano(item.id, item.hxid)")
       view.pano-list-item-view.margin-r-30
         image(:src="$baseUrl + item.cover" mode="aspectFill")
         text.iconfont.font-size-28.pano &#xe7bc;
@@ -36,6 +36,11 @@
         this.panos = list
         this.loading = false
       })
+    },
+    methods: {
+      toPano(dmid, hxid) {
+        this.$navigateTo({url: generateGetUrl('/pages/pano/index', {...this.option, dmid, hxid})})
+      }
     }
   }
 </script>
