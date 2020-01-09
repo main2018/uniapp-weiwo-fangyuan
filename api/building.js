@@ -149,7 +149,8 @@ function dmHouseTypeImgs(id) {
 function statistics(data) {
   const baseData = {
     subject: 2, // 1 传单 2 楼盘
-    type: 4 // 2转发 4来电
+    type: 4, // 2转发 4来电
+    openid: _getOpenid()
   }
   
   return http.request({

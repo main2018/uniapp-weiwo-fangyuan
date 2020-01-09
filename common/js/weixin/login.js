@@ -34,7 +34,8 @@ export default {
         // alert('uri', uri)
         // let authURL = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${uri}&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect`;
         let authURL = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${uri}&response_type=code&scope=snsapi_base&state=123#wechat_redirect`;
-        window.location.href = authURL;
+        // window.location.href = authURL;
+        window.location.replace(authURL);
       }
     })
   },

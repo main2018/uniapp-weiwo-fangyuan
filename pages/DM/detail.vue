@@ -14,14 +14,12 @@
     card(
     @click.native="$navigateTo({url: '../building/detail'})"
     :data="building")
-    contact(:contact="contact" :option="option")
+    contact(:contact="contact" :option="option" :isDM="false")
 </template>
 <script>
   import card from "@/components/card";
   import contact from "@/components/contact";
   import uParse from '@/components/gaoyia-parse/parse.vue'
-  
-  import weixin from '@/common/js/weixin';
   
   export default {
     components: {
@@ -48,6 +46,53 @@
       }
     },
     methods: {
+      share() {
+        // #ifdef H5
+        const {
+          type,
+          intro = '',
+          
+          title = '',
+          province_name = '',
+          city_name = '',
+          name_project = '',
+          
+          building_status = '',
+          building_type = '',
+          
+          all_room = '',
+          area_built = '',
+          
+          cover: imgUrl,
+        } = this.DmDetailInfo || {}
+        const isPano = [21, 22].includes(Number(type))
+        
+        const introductionText = intro.replace(/<\/?.+?>/g, "").replace(/&nbsp;/g, "")
+        const introduction = introductionText.substr(0, 15) + '...'
+        const {name, mobile} = (this.DmDetail && this.DmDetail.contact_info) || {}
+        const newsletter = `${name} ${mobile}`
+        const desc = type == 8 ? `${all_room ? all_room + '/' : ''}${area_built}\n${newsletter}` : `${introduction}\n ${newsletter}`
+        const shareConfig = {
+          title: `${title} 【${province_name}${city_name}·${name_project}】${isPano ? '(3D)' : ''}`,
+          desc,
+          imgUrl: this.$baseUrl + imgUrl,
+        }
+        console.log('shareConfig', shareConfig);
+        this.$weixin.share(shareConfig, this.shareStatistics)
+        // #endif
+      },
+      shareStatistics() {
+        const {dmid: id_subject, mu, sf, at} = this.option || {}
+        const data = {
+          subject: 1,
+          id_subject,
+          type: 2,
+          mu,
+          sf,
+          at,
+        }
+        this.$api.statistics(data)
+      },
       preview(src, e) {
         // do something
       },
@@ -69,10 +114,7 @@
         })
         console.log('DmDetailInfo', this.DmDetailInfo);
         this.DmDetail = data
-      })
-      weixin.share({
-        title: '测试微窝分享',
-        imgUrl: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1574153459148&di=aa8c0bbb7f822cea1812ff137c6bb419&imgtype=0&src=http%3A%2F%2Fi8.qhimg.com%2Ft014c0bef2485acc973.jpg'
+        this.share()
       })
     },
     onBackPress(options) {

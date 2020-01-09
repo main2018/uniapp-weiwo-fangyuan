@@ -72,8 +72,8 @@ export default {
     });
   },
   //在需要自定义分享的页面中调用  
-  share: async function(data = {}){
-    console.log('data', data)
+  share: async function(data = {}, callback){
+    // console.log('data', data)
     //每次都需要重新初始化配置，才可以进行分享
     await this.initJssdk()
     
@@ -89,8 +89,9 @@ export default {
       ...config,
       success: function (res) {
         setTimeout(() => {
-          alert('分享成功 >>>')
-        }, 2000)
+          callback()
+          // alert('分享成功 >>>')
+        }, 1000) // 延迟以解决ios无法触发回调问题
         // 配置成功后的回调
       },
       cancel: function (res) {}

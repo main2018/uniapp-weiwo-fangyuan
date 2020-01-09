@@ -62,7 +62,7 @@
           )
         
         
-    contact(:contact="option" :option="contactOption")
+    contact(:contact="contact" :option="option" :isDM="false")
 </template>
         
 <script>

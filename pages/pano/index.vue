@@ -1,8 +1,8 @@
 <template>
   <div class="pano-details">
-    <div class="example-body">
+    <!-- <div class="example-body">
       <uni-nav-bar left-icon="arrowleft" title="全景" @click-left="back" background-color="rgb(69, 154, 255)" color="#fff" :fixed="true" :shadow="false"/>
-    </div>
+    </div> -->
     <div class="pano-container" ref="panoParent">
       <div class="pos_r w_100 zIndex300">
         <section>
@@ -525,8 +525,8 @@
   import { dmDetail, statistics, generateGetUrl } from '@/api'
   import model from './model'
   import renderer from './renderer'
-  import uniNavBar from '@/components/uni-nav-bar/uni-nav-bar.vue'
-  console.log('PANOLENS', PANOLENS, demo);
+  // import uniNavBar from '@/components/uni-nav-bar/uni-nav-bar.vue'
+  // console.log('PANOLENS', PANOLENS, demo);
   PANOLENS.Panorama.prototype.href = function (datas) {
     let scope = this;
     let spot;
@@ -560,7 +560,7 @@
     name: 'pano-details',
     /* 组件 */
     components: {
-      uniNavBar
+      // uniNavBar
     },
     data () {
       return {
@@ -616,6 +616,53 @@
     },
     /* 在 `methods` 对象中定义方法 */
     methods: {
+      share() {
+        // #ifdef H5
+        const {
+          type,
+          intro = '',
+          
+          title = '',
+          province_name = '',
+          city_name = '',
+          name_project = '',
+          
+          building_status = '',
+          building_type = '',
+          
+          all_room = '',
+          area_built = '',
+          
+          cover: imgUrl,
+        } = (this.detail && this.detail.info) || {}
+        const isPano = [21, 22].includes(Number(type))
+        
+        const introductionText = intro.replace(/<\/?.+?>/g, "").replace(/&nbsp;/g, "")
+        const introduction = introductionText.substr(0, 15) + '...'
+        const {name, mobile} = (this.detail && this.detail.contact_info) || {}
+        const newsletter = `${name} ${mobile}`
+        const desc = type == 8 ? `${all_room ? all_room + '/' : ''}${area_built}\n${newsletter}` : `${introduction}\n ${newsletter}`
+        const shareConfig = {
+          title: `${title} 【${province_name}${city_name}·${name_project}】${isPano ? '(3D)' : ''}`,
+          desc,
+          imgUrl: this.$baseUrl + imgUrl,
+        }
+        console.log('shareConfig', shareConfig);
+        this.$weixin.share(shareConfig, this.shareStatistics)
+        // #endif
+      },
+      shareStatistics() {
+        const {dmid: id_subject, mu, sf, at} = this.option || {}
+        const data = {
+          subject: 1,
+          id_subject,
+          type: 2,
+          mu,
+          sf,
+          at,
+        }
+        this.$api.statistics(data)
+      },
       /* 示意图 是否  显示 与 坐标点 */
       IllustrationCoordinateFunc (pano) {
         let panorama = pano;
@@ -845,6 +892,7 @@
       Detail = dmDetail(dmid, mu, sf, at)
       Detail.then(res => {
         this.detail = res
+        this.share()
         const data = res.info
         data.panoramas_map = data.panoramas_map[0]
         self.panoData = model.apply(data, {

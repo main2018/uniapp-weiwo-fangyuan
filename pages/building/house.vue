@@ -52,7 +52,7 @@
           .scroll-view-item-title.padding-x-20.padding-y-30.line-h1.border-1
             text(decode) {{`${item.defective_room}&nbsp;${item.area_built}`}}
             view.font-color-red.margin-t-20 {{item.price_total || 0}}
-    contact(:contact="contact" :option="contactOption")
+    contact(:contact="contact" :option="option")
         
 </template>
 
@@ -76,10 +76,6 @@
 			};
 		},
     computed: {
-      contactOption() {
-        const {openid} = this.detail || {}
-        return {...this.option, openid}
-      },
       contact() {
         const contact = this.detail && this.detail.contact_info
         return (contact && contact.name) ? contact : null
@@ -110,19 +106,61 @@
       const detail = await this.$api.dmDetail(dmid, mu, sf, at)
       console.log('detail', detail)
       this.detail = detail || {}
+      this.share()
       this.loading = false
       this.$api.getHxDms(id, mu, sf, at, dmid).then(({list}) => {
         console.log('list', list);
         this.dmList = list || []
       })
-      
-      // #ifdef H5
-      this.$weixin.share({
-        title: '测试微窝HOUSE分享',
-      })
-      // #endif
     },
     methods: {
+      share() {
+        // #ifdef H5
+        const {
+          type,
+          intro = '',
+          
+          title = '',
+          province_name = '',
+          city_name = '',
+          name_project = '',
+          
+          building_status = '',
+          building_type = '',
+          
+          all_room = '',
+          area_built = '',
+          
+          cover: imgUrl,
+        } = (this.detail && this.detail.info) || {}
+        const isPano = [21, 22].includes(Number(type))
+        
+        const introductionText = intro.replace(/<\/?.+?>/g, "").replace(/&nbsp;/g, "")
+        const introduction = introductionText.substr(0, 15) + '...'
+        const {name, mobile} = (this.detail && this.detail.contact_info) || {}
+        const newsletter = `${name} ${mobile}`
+        const desc = type == 8 ? `${all_room ? all_room + '/' : ''}${area_built}\n${newsletter}` : `${introduction}\n ${newsletter}`
+        const shareConfig = {
+          title: `${title} 【${province_name}${city_name}·${name_project}】${isPano ? '(3D)' : ''}`,
+          desc,
+          imgUrl: this.$baseUrl + imgUrl,
+        }
+        console.log('shareConfig', shareConfig);
+        this.$weixin.share(shareConfig, this.shareStatistics)
+        // #endif
+      },
+      shareStatistics() {
+        const {dmid: id_subject, mu, sf, at} = this.option || {}
+        const data = {
+          subject: 1,
+          id_subject,
+          type: 2,
+          mu,
+          sf,
+          at,
+        }
+        this.$api.statistics(data)
+      },
       isPano(obj) {
         const type = obj && obj.type
         return [21,22,23].includes(Number(type))
@@ -130,7 +168,16 @@
       navigateTo(obj) {
       	uni.navigateTo(obj);
       }
-    }
+    },
+    onBackPress(options) {
+      // if (options.from === 'navigateBack') {
+      //   return false;
+      // }
+      const len = window.history.length
+      const canBack = len > 1
+      
+      return !canBack
+    },
 	}
 </script>
 

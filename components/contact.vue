@@ -28,6 +28,10 @@
       layerExplain
     },
     props: {
+      isDM: {
+        type: Boolean,
+        default: true
+      },
       option: {
         type: Object,
         default: () => ({})
@@ -66,10 +70,11 @@
       },
       call() {
         // location.href = `tel:${phone}`
-        const {id: id_subject, mu, sf, at} = this.option || {}
+        const {id, dmid, mu, sf, at} = this.option || {}
         
         const data = {
-          id_subject,
+          subject: this.isDM ? 1 : 2,
+          id_subject: this.isDM ? dmid : id,
           mu,
           sf,
           at,

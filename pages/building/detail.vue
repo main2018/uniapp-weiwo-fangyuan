@@ -227,6 +227,9 @@
       // 监听页面显示。页面每次出现在屏幕上都触发，包括从下级页面点返回露出当前页面
     },
     watch: {
+      building() {
+        this.share()
+      },
       '$route.query': {
         handler(option) {
           const pageName = 'pages-building-detail'
@@ -289,25 +292,60 @@
       // this.$api.getHabitDms(id, mu, sf, at).then(({list}) => {
       //   this.habitDms = list
       // })
-      
-      // #ifdef H5
-      this.$weixin.share({
-        title: '测试微窝分享',
-      })
-      // #endif
     },
     async onReady() {
     },
     activated() {
     },
     methods: {
+      share() {
+        console.log('this.building', this.building);
+        // #ifdef H5
+        const {
+          tagline = '',
+          name_project = '',
+          province_name = '',
+          city_name = '',
+          building_status = '',
+          building_type = '',
+          
+          start_price,
+          average_price,
+          max_price,
+          
+          cover: imgUrl,
+        } = (this.building && this.building.building_info) || {}
+        const startPrice = start_price ? `起价${start_price}元/㎡` : ''
+        const averagePrice = average_price ? `均价${average_price}元/㎡` : ''
+        const maxPrice = max_price ? `顶价${max_price}元/㎡` : ''
+        const shareConfig = {
+          title: `${tagline} 【${province_name}·${city_name}·${name_project}】 [${building_status}][${building_type}]`,
+          desc: `${startPrice} ${averagePrice} ${maxPrice}`,
+          imgUrl: this.$baseUrl + imgUrl,
+        }
+        console.log('shareConfig', shareConfig);
+        this.$weixin.share(shareConfig, this.shareStatistics)
+        // #endif
+      },
+      shareStatistics() {
+        const {id: id_subject, mu, sf, at} = this.option || {}
+        const data = {
+          subject: 2,
+          id_subject,
+          type: 2,
+          mu,
+          sf,
+          at,
+        }
+        this.$api.statistics(data)
+      },
       toNearby() {
         const latlng = this.latlng || {}
         // `./nearby?lat=${latlng.lat}&lng=${latlng.lng}`
         this.$navigateTo({url: generateGetUrl('./nearby', {...latlng, ...this.option || {}})})
       },
       toSpecialDetail(item) {
-        const isPano = [21, 22].includes(item && item.type)
+        const isPano = [21, 22].includes(Number(item && item.type))
         const data = {
           dmid: item && item.id,
           ...this.option
