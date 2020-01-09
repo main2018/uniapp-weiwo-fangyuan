@@ -76,6 +76,7 @@
 			};
 		},
     computed: {
+      openid() { return this.$store.state.openid },
       contact() {
         const contact = this.detail && this.detail.contact_info
         return (contact && contact.name) ? contact : null
@@ -113,7 +114,33 @@
         this.dmList = list || []
       })
     },
+    watch: {
+      openid: {
+        handler() {
+          this.hitsStatistics()
+        },
+        immediate: true
+      },
+    },
     methods: {
+      // 浏览统计
+      hitsStatistics() {
+        this.$nextTick(() => {
+          if (this.$weixin.isWechat() && !this.openid) return
+          const {dmid, mu, sf, at} = this.option || {}
+          
+          const data = {
+            subject: 1,
+            id_subject: dmid,
+            type: 1,
+            mu,
+            sf,
+            at,
+            openid: this.openid
+          }
+          this.$api.statistics(data)
+        })
+      },
       share() {
         // #ifdef H5
         const {

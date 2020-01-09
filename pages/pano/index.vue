@@ -162,7 +162,7 @@
     align-items: center;
     image{
       width: 200rpx;
-      height: 300rpx;
+      height: auto;
     }
     text{
       margin-top: 10rpx;
@@ -616,6 +616,24 @@
     },
     /* 在 `methods` 对象中定义方法 */
     methods: {
+      // 浏览统计
+      hitsStatistics() {
+        this.$nextTick(() => {
+          if (this.$weixin.isWechat() && !this.openid) return
+          const {dmid, mu, sf, at} = this.option || {}
+          
+          const data = {
+            subject: 1,
+            id_subject: dmid,
+            type: 1,
+            mu,
+            sf,
+            at,
+            openid: this.openid
+          }
+          this.$api.statistics(data)
+        })
+      },
       share() {
         // #ifdef H5
         const {
@@ -964,6 +982,17 @@
     /* 创建后 */
     created () {
       this.daid = this.$route.query.daid || 0
+    },
+    computed: {
+      openid() { return this.$store.state.openid },
+    },
+    watch: {
+      openid: {
+        handler() {
+          this.hitsStatistics()
+        },
+        immediate: true
+      },
     },
     /* 载入前 */
     beforeMount () {

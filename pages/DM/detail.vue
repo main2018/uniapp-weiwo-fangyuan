@@ -1,7 +1,7 @@
 <template lang="pug">
   view.dm-detail.padding-40
     template(v-if="!isPano")
-      view.dm-detail-title.font-size-36.font-weight-bold {{DmDetailInfo.title}}{{DmDetailInfo.type}}
+      view.dm-detail-title.font-size-36.font-weight-bold {{DmDetailInfo.title}}
       view.tags.padding-y-40.border-b-1
         view.btn.btn-sm(v-for="(item, index) in DmDetailInfo.feature_arr" :class="index %2 == 0 ? 'btn-danger' : 'btn-grey'") {{item.tag_name}}
       view.dm-detail-content.margin-b-40.padding-y-40.border-b-1 
@@ -9,12 +9,13 @@
     view.border-b-1.margin-b-20(v-else)
       view.margin-b-20(v-for="item in DmDetailInfo.package")
         view.margin-b-20 {{item.title}}
-        image(:src="$baseUrl + item.gallery" mode="aspectFill")
+        image(v-for="citem in item.gallery" :src="$baseUrl + citem" mode="aspectFill")
         view(v-html="item.introduction")
     card(
-    @click.native="$navigateTo({url: '../building/detail'})"
-    :data="building")
-    contact(:contact="contact" :option="option" :isDM="false")
+      @click.native="$navigateTo({url: `/pages/building/detail?id=${DmDetailInfo.did}&mu=${option.mu}&sf=${option.sf}&at=${option.at}`})"
+      :data="building"
+      )
+    contact(:contact="contact" :option="option")
 </template>
 <script>
   import card from "@/components/card";
@@ -35,6 +36,7 @@
       }
     },
     computed: {
+      openid() { return this.$store.state.openid },
       contact() {
         const contact = this.DmDetail && this.DmDetail.contact_info
         return (contact && contact.name) ? contact : null
@@ -42,10 +44,36 @@
       isPano() {
         const types = [21, 22, 23]
         const {type} = this.DmDetailInfo || {}
-        return types.includes(type)
+        return types.includes(Number(type))
       }
     },
+    watch: {
+      openid: {
+        handler() {
+          this.hitsStatistics()
+        },
+        immediate: true
+      },
+    },
     methods: {
+      // 浏览统计
+      hitsStatistics() {
+        this.$nextTick(() => {
+          if (this.$weixin.isWechat() && !this.openid) return
+          const {dmid, mu, sf, at} = this.option || {}
+          
+          const data = {
+            subject: 1,
+            id_subject: dmid,
+            type: 1,
+            mu,
+            sf,
+            at,
+            openid: this.openid
+          }
+          this.$api.statistics(data)
+        })
+      },
       share() {
         // #ifdef H5
         const {

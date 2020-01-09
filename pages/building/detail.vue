@@ -19,7 +19,7 @@
       view.building-detail-overview-title.flex.center.font-size-46.font-weight-bold
         |{{building.building_info.name_project}}
         view.rate.font-color-primary.font-size-24.margin-l-20
-          text(class="iconfont" v-for="item in building.building_info.star_level") &#xe671;
+          text(class="iconfont" v-for="item in Number(building.building_info.star_level || 0)") &#xe671;
       view.tags.flex.wrap.font-size-sm-s.font-color-grey.margin-b-40.padding-y-30
         view.tag.btn.btn-grey.btn-sm.margin-b-10(v-for="tag in tags") {{tag}}
       view.building-detail-overview-item.margin-y-15
@@ -27,14 +27,14 @@
         text.font-color-red.font-size-38 {{building.building_info.average_price ? `${building.building_info.average_price}元/㎡` : '待定'}}
       view.building-detail-overview-item.margin-y-15
         text.font-color-grey.margin-r-20 最新开盘
-        text {{building.building_info.opening_date}}
+        text {{building.building_info.opening_date || '暂无'}}
         text.font-color-grey.margin-l-40.margin-r-20 产权年限
-        text {{building.building_info.property_limit || '未知'}}
+        text {{building.building_info.property_limit || '暂无'}}
       view.building-detail-overview-item.margin-y-15
         text.font-color-grey.margin-r-20(:decode="true" @tap="navigateTo({url: './nearby'})") {{`售楼处&emsp;`}}
         text.font-color-link(
           @tap="toNearby"
-          ) {{building.building_info.province_name + building.building_info.city_name + building.building_info.sales_office_address}}
+          ) {{building.building_info.sales_office_address || '暂无'}}
       view.font-size-sm.font-align-center.font-color-primary.btn-grey.margin-t-40.padding-y-20(
         @tap="navigateTo({url: `./info?id=${option.id}&mu=${option.mu}&sf=${option.sf}&at=${option.at}`})"
         ) 更多信息
@@ -156,6 +156,7 @@
       }
     },
     computed: {
+      openid() { return this.$store.state.openid },
       contact() {
         const contact = this.building && this.building.contact_info
         return (contact && contact.name) ? contact : null
@@ -230,6 +231,12 @@
       building() {
         this.share()
       },
+      openid: {
+        handler() {
+          this.hitsStatistics()
+        },
+        immediate: true
+      },
       '$route.query': {
         handler(option) {
           const pageName = 'pages-building-detail'
@@ -298,6 +305,24 @@
     activated() {
     },
     methods: {
+      // 浏览统计
+      hitsStatistics() {
+        this.$nextTick(() => {
+          if (this.$weixin.isWechat() && !this.openid) return
+          const {id, mu, sf, at} = this.option || {}
+          
+          const data = {
+            subject: 2,
+            id_subject: id,
+            type: 1,
+            mu,
+            sf,
+            at,
+            openid: this.openid
+          }
+          this.$api.statistics(data)
+        })
+      },
       share() {
         console.log('this.building', this.building);
         // #ifdef H5

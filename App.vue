@@ -8,6 +8,7 @@
 			console.log('App Launch');
       const openid = await this.$weixin.wxAuthorize()
       getApp().globalData.openid = openid
+      this.$store.commit('SET_OPENID', openid)
       // alert(`openid:${openid}`)
       // this.$scope.globalData.openid = openid
 		},
