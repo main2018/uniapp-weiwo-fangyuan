@@ -7,7 +7,10 @@
 <script>
   import vInput from '@/components/input';
   
+  import {mixin_share_building} from '@/common/js/mixin'
+  
   export default {
+    mixins: [mixin_share_building],
     components: {
       vInput
     },
@@ -20,6 +23,10 @@
     onLoad(option) {
       const {id, mu, sf, at, dsoid} = option
       this.option = option
+      
+      this.$api.getBuildingDetail(id, mu, sf, at).then(data => {
+        this.share(data)
+      })
     },
     computed: {
       disabled() {

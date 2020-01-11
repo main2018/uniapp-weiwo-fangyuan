@@ -1,7 +1,8 @@
 <template lang="pug">
   view.nearby
-    web-view(:src="tecentMap")
+    web-view(:src="tecentMap" v-if="showMap")
     scroll-view(scroll-x="true").nearby-bar.font-align-center
+      view {{showMap}}
       view.nearby-bar-item(v-for="(item, index) in nearby" @tap="changeIndex(index)" :class="{active: currIndex === index}")
         text.iconfont.margin-r-8(decode :style="{color: item.color}") {{unicodeToZh(item.icon)}}
         |{{item.name}}
@@ -15,6 +16,7 @@
 	export default {
 		data() {
 			return {
+        showMap: true,
         unicodeToZh,
         currIndex: 0,
         total: 1,
@@ -39,6 +41,14 @@
         const keyword = this.nearby[this.currIndex].keyword || this.nearby[this.currIndex].name
         return `https://apis.map.qq.com/tools/poimarker?type=1&keyword=${keyword}&tonav=${tonav}&center=${this.lat},${this.lng}&radius=1000&key=${key}&referer=微窝`
       }
+    },
+    activated() {
+      this.showMap = false
+      this.$nextTick(() => {
+        this.showMap = true
+      })
+    },
+    deactivated() {
     },
     onLoad(option) {
       this.option = option

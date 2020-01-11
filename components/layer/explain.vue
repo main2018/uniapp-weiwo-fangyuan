@@ -38,7 +38,7 @@
       &-content{
         width: 100%;
         height: 100%;
-        padding: 30rpx 30rpx 30rpx 0;
+        padding: 30rpx 30rpx 30rpx 30rpx;
         border-radius: 8rpx;
         background-color: $color-white;
         overflow-y: auto;

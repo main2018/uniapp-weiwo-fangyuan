@@ -19,7 +19,8 @@
       view.building-detail-overview-title.flex.center.font-size-46.font-weight-bold
         |{{building.building_info.name_project}}
         view.rate.font-color-primary.font-size-24.margin-l-20
-          text(class="iconfont" v-for="item in Number(building.building_info.star_level || 0)") &#xe671;
+          text(class="iconfont" v-for="(item, index) in 3")
+            |{{Number(building.building_info.star_level || 0) > index ? '&#xe671;' : '&#xe61c;'}}
       view.tags.flex.wrap.font-size-sm-s.font-color-grey.margin-b-40.padding-y-30
         view.tag.btn.btn-grey.btn-sm.margin-b-10(v-for="tag in tags") {{tag}}
       view.building-detail-overview-item.margin-y-15
@@ -64,7 +65,7 @@
     view.building-detail-item.special.padding-40(v-if="specialDms && specialDms.length")
       view.building-detail-item-title.flex.margin-b-40
         text.flex-1 特色解读
-      view.special-item.flex.margin-b-20.padding-b-20.border-b-1(
+      view.special-item.flex.margin-b-30.padding-b-30.border-b-1(
         v-for="item in specialDms"
         @tap="toSpecialDetail(item)"
         )
@@ -74,12 +75,11 @@
           view.margin-b-10 {{item.title}}
           <!-- view.font-size-sm.font-color-grey {{`${item.defective_room}/${Math.round(item.area_built || 0)}㎡`}} -->
           view.font-size-sm.font-color-grey {{item.intro}}
-    view.building-detail-item.nearby.padding-40(v-if="latlng")
+    view.building-detail-item.nearby.padding-40(v-if="latlng" @tap="toNearby")
       view.building-detail-item-title.flex.margin-b-40
         text.flex-1 周边配套
       map#map(
         ref="map"
-        @tap="toNearby"
         :center="[latlng.lat, latlng.lng]"
         :latitude="latlng.lat"
         :longitude="latlng.lng"
@@ -112,7 +112,7 @@
         @click.native="navigateTo({url: generateGetUrl('./detail', Object.assign({}, option, {id: item.id}))})"
         )
           
-    contact(:contact="contact" :option="option")
+    contact(:contact="contact" :option="option" :isDM="false")
       
 </template>
 
@@ -246,7 +246,10 @@
           this.option = option
           
           // if (!id || !mu || !sf || !at) return
-          if (!id) return
+          if (!id) {
+            this.loading = false
+            return
+          }
           // console.log('id, mu, sf, at', id, mu, sf, at);
           // console.log('text', app.globalData.text);
           this.$api.getBuildingDetail(id, mu, sf, at).then(async data => {
@@ -343,9 +346,12 @@
         const startPrice = start_price ? `起价${start_price}元/㎡` : ''
         const averagePrice = average_price ? `均价${average_price}元/㎡` : ''
         const maxPrice = max_price ? `顶价${max_price}元/㎡` : ''
+        const {name = '', mobile = ''} = (this.building && this.building.contact_info) || {}
+        const newsletter = `${name} ${mobile}`
         const shareConfig = {
           title: `${tagline} 【${province_name}·${city_name}·${name_project}】 [${building_status}][${building_type}]`,
-          desc: `${startPrice} ${averagePrice} ${maxPrice}`,
+          // desc: `${startPrice} ${averagePrice} ${maxPrice}\n ${newsletter}`,
+          desc: `${startPrice} ${averagePrice}...\n ${newsletter}`,
           imgUrl: this.$baseUrl + imgUrl,
         }
         console.log('shareConfig', shareConfig);
@@ -361,6 +367,7 @@
           mu,
           sf,
           at,
+          openid: this.openid
         }
         this.$api.statistics(data)
       },
@@ -411,6 +418,16 @@
   #map{
     width: 100%;
     height: 290rpx;
+    &::before{
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 9999;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+    }
   }
   .swiper{
     &-item{

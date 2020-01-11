@@ -3,9 +3,8 @@
     view.card-content.flex
       view.card-content-view.margin-r-30
         view.card-content-view-rate.padding-x-18.padding-y-4.flex.center
-          text.iconfont.font-size-18 &#xe671;
-          text.iconfont.font-size-18 &#xe671;
-          text.iconfont.font-size-18 &#xe671;
+          text.iconfont.font-size-18(v-for="(item, index) in 3")
+            |{{Number(data.star_level || 0) > index ? '&#xe671;' : '&#xe61c;'}}
         text.iconfont.font-size-20(v-show="data.panorama") &#xe7bc;
         image(:src="$baseUrl + data.cover" mode="aspectFill")
       view.flex-1

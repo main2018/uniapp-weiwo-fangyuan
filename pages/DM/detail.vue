@@ -51,11 +51,22 @@
       openid: {
         handler() {
           this.hitsStatistics()
+          
+          this.agencyRed()
         },
         immediate: true
       },
     },
     methods: {
+      agencyRed() {
+        this.$nextTick(() => {
+          const {mu, dmid, id_push_log} = this.option || {}
+          this.$api.agencyRed(mu, dmid, id_push_log, this.openid)
+            .finally(() => {
+              delete this.option.id_push_log
+            })
+        })
+      },
       // 浏览统计
       hitsStatistics() {
         this.$nextTick(() => {
@@ -97,7 +108,7 @@
         
         const introductionText = intro.replace(/<\/?.+?>/g, "").replace(/&nbsp;/g, "")
         const introduction = introductionText.substr(0, 15) + '...'
-        const {name, mobile} = (this.DmDetail && this.DmDetail.contact_info) || {}
+        const {name = '', mobile = ''} = (this.DmDetail && this.DmDetail.contact_info) || {}
         const newsletter = `${name} ${mobile}`
         const desc = type == 8 ? `${all_room ? all_room + '/' : ''}${area_built}\n${newsletter}` : `${introduction}\n ${newsletter}`
         const shareConfig = {
@@ -163,4 +174,8 @@
 </script>
 <style lang="scss" scoped>
   @import url("../../components/gaoyia-parse/parse.css");
+  
+  image{
+    max-width: 100%;
+  }
 </style>

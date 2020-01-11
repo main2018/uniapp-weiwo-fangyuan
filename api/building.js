@@ -146,6 +146,7 @@ function dmHouseTypeImgs(id) {
 // }
 function statistics(data) {
   if (!data) return
+  data.id_subject = data.id_subject || 0
   data.mu = data.mu || 0
   data.sf = data.sf || 0
   data.at = data.at || 0

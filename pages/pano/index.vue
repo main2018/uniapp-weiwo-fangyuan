@@ -18,7 +18,7 @@
           <text @tap="IllustrationClick" class="iconfont image">{{IllustrationShow ? '&#xf2b6;' : '&#xe6a4;'}}</text>
         </view> -->
         <view class="building-cover">
-          <image v-show="IllustrationShow" :src="Illustration" @tap="previewImage([Illustration])">
+          <image v-show="IllustrationShow" :src="Illustration" @tap="previewImage([Illustration])" mode="widthFix">
           <text @tap="IllustrationClick" class="iconfont image">{{!IllustrationShow ? '&#xf2b6;' : '&#xe6a4;'}}</text>
         </view>
         <section v-show="panoNameType" class="current-pano-name">
@@ -616,6 +616,15 @@
     },
     /* 在 `methods` 对象中定义方法 */
     methods: {
+      agencyRed() {
+        this.$nextTick(() => {
+          const {mu, dmid, id_push_log} = this.option || {}
+          this.$api.agencyRed(mu, dmid, id_push_log, this.openid)
+            .finally(() => {
+              delete this.option.id_push_log
+            })
+        })
+      },
       // 浏览统计
       hitsStatistics() {
         this.$nextTick(() => {
@@ -657,7 +666,7 @@
         
         const introductionText = intro.replace(/<\/?.+?>/g, "").replace(/&nbsp;/g, "")
         const introduction = introductionText.substr(0, 15) + '...'
-        const {name, mobile} = (this.detail && this.detail.contact_info) || {}
+        const {name = '', mobile = ''} = (this.detail && this.detail.contact_info) || {}
         const newsletter = `${name} ${mobile}`
         const desc = type == 8 ? `${all_room ? all_room + '/' : ''}${area_built}\n${newsletter}` : `${introduction}\n ${newsletter}`
         const shareConfig = {
@@ -678,6 +687,7 @@
           mu,
           sf,
           at,
+          openid: this.openid
         }
         this.$api.statistics(data)
       },
@@ -990,6 +1000,8 @@
       openid: {
         handler() {
           this.hitsStatistics()
+          
+          this.agencyRed()
         },
         immediate: true
       },

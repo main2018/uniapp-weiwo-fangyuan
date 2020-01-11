@@ -4,13 +4,13 @@
     v-input(v-model="name" placeholder="请输入姓名")
     v-input(v-model="phone" placeholder="请输入手机号")
     view.subscribe-title.font-weight-bold.margin-t-100.margin-b-40 目的地楼盘
-    card(:data="building && building.info" border)
+    card(:data="building && building.info")
     
     view.btn.fullwidth.large.primary.bg-yellow-linear.btn-radius-xs(@tap="subscribe") 立即预约
     view.font-size-24.font-color-link.font-align-center(@tap="explainShow = true") 了解活动说明
     
     layer-explain(v-model="explainShow" title="")
-      ul(v-for="item in rule")
+      ul.acticity-explain(v-for="item in rule")
         li.rule-title {{item.name}}
         li(v-for="citem in item.list") {{citem}}
 </template>
@@ -19,7 +19,10 @@
   import card from "@/components/card";
   import layerExplain from "@/components/layer/explain";
   
+  import {mixin_share_building} from '@/common/js/mixin'
+  
   export default {
+    mixins: [mixin_share_building],
     components: {
       vInput,
       card,
@@ -62,6 +65,10 @@
       
       this.$api.getPresentBuildingDetail(id, mu, sf, at).then(data => {
         this.building = data
+      })
+      
+      this.$api.getBuildingDetail(id, mu, sf, at).then(data => {
+        this.share(data)
       })
     },
     computed: {
@@ -110,5 +117,11 @@
   .font-color-link{
     margin-top: 133rpx;
     font-weight: bold;
+  }
+  .acticity-explain{
+    // padding: 0;
+    li{
+      margin-left: -16rpx;
+    }
   }
 </style>

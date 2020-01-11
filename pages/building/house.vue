@@ -17,7 +17,7 @@
           text.font-color-primary.margin-b-10 {{detail.info.area_built || '暂无'}}
           text.font-color-grey.font-size-sm-s 建筑面积
         view.budling-house-overview-top-item.flex-1.flex.flex-y
-          text.font-color-primary.margin-b-10 {{detail.info.price_starting || '暂无'}}
+          text.font-color-primary.margin-b-10 {{detail.info.price_average || '暂无'}}
           text.font-color-grey.font-size-sm-s 参考均价
       view.budling-house-overview-content.padding-y-40.border-b-1
         view.font-size-sm.item(v-for="item in overviews")
@@ -88,7 +88,7 @@
         function normalizeVal(val, unit = '', defat = '未知') {
           return val ? val + unit : defat
         }
-        const {average_huxing, area_built, public_area, clear_height, state_decoration, name_units, inside_space, orientations, house_usage} = (this.detail && this.detail.info) || {}
+        const {average_huxing, area_built, public_area, clear_height, state_decoration, average_building, inside_space, orientations, house_usage} = (this.detail && this.detail.info) || {}
         
         return [
           {name: '套内面积', value: normalizeVal(inside_space || 0)},
@@ -96,7 +96,7 @@
           {name: '装修标准', value: normalizeVal(state_decoration)},
           {name: '户型朝向', value: normalizeVal(orientations)},
           {name: '户型名称', value: normalizeVal(average_huxing)},
-          {name: '所在楼栋', value: normalizeVal(name_units)},
+          {name: '所在楼栋', value: normalizeVal(average_building)},
           {name: '房屋用途', value: normalizeVal(house_usage)},
         ]
       }
@@ -118,11 +118,22 @@
       openid: {
         handler() {
           this.hitsStatistics()
+          
+          this.agencyRed()
         },
         immediate: true
       },
     },
     methods: {
+      agencyRed() {
+        this.$nextTick(() => {
+          const {mu, dmid, id_push_log} = this.option || {}
+          this.$api.agencyRed(mu, dmid, id_push_log, this.openid)
+            .finally(() => {
+              delete this.option.id_push_log
+            })
+        })
+      },
       // 浏览统计
       hitsStatistics() {
         this.$nextTick(() => {
@@ -164,7 +175,7 @@
         
         const introductionText = intro.replace(/<\/?.+?>/g, "").replace(/&nbsp;/g, "")
         const introduction = introductionText.substr(0, 15) + '...'
-        const {name, mobile} = (this.detail && this.detail.contact_info) || {}
+        const {name = '', mobile = ''} = (this.detail && this.detail.contact_info) || {}
         const newsletter = `${name} ${mobile}`
         const desc = type == 8 ? `${all_room ? all_room + '/' : ''}${area_built}\n${newsletter}` : `${introduction}\n ${newsletter}`
         const shareConfig = {
@@ -197,13 +208,15 @@
       }
     },
     onBackPress(options) {
+      // h5刷新页面 此函数就无效了 鸟用没有
+      
       // if (options.from === 'navigateBack') {
       //   return false;
       // }
-      const len = window.history.length
-      const canBack = len > 1
+      // const len = window.history.length
+      // const canBack = len > 1
       
-      return !canBack
+      // return !canBack
     },
 	}
 </script>

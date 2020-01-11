@@ -4,6 +4,29 @@
     globalData: {  
       openid: ''
     },
+    watch: {
+      routeFullPath(to, from) {
+        const name = 'pages-building-detail'
+        const currName = this.$route.meta.name
+        const isBuildingDetail = currName == name
+        
+        let queryStr = from.split('?')[1]
+        if (isBuildingDetail && !this.$route.query.id && queryStr) {
+          // queryStr = queryStr.replace(/^dmid=[\d]*[&]?/, '')
+          queryStr = queryStr.split('&').filter(item => {
+            const needKeys = ['id', 'mu', 'sf', 'at']
+            return needKeys.find(key => item.split('=')[0] == key)
+          }).join('&')
+          // console.log('queryStr', queryStr)
+          uni.redirectTo({
+            url: `/pages/building/detail?${queryStr}`
+          });
+        }
+      }
+    },
+    computed: {
+      routeFullPath() { return this.$route.fullPath }
+    },
 		onLaunch: async function() {
 			console.log('App Launch');
       const openid = await this.$weixin.wxAuthorize()
