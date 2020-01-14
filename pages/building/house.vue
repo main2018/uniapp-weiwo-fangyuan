@@ -197,6 +197,7 @@
           mu,
           sf,
           at,
+          openid: this.openid,
         }
         this.$api.statistics(data)
       },

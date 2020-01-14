@@ -5,7 +5,12 @@
       view.tags.padding-y-40.border-b-1
         view.btn.btn-sm(v-for="(item, index) in DmDetailInfo.feature_arr" :class="index %2 == 0 ? 'btn-danger' : 'btn-grey'") {{item.tag_name}}
       view.dm-detail-content.margin-b-40.padding-y-40.border-b-1 
+        <!-- #ifndef H5 -->
         u-parse(:content="DmDetailInfo.introduction || ' '" @preview="preview" @navigate="navigate")
+        <!-- #endif -->
+        <!-- #ifdef H5 -->
+        view(v-html="DmDetailInfo.introduction")
+        <!-- #endif -->
     view.border-b-1.margin-b-20(v-else)
       view.margin-b-20(v-for="item in DmDetailInfo.package")
         view.margin-b-20 {{item.title}}
@@ -130,6 +135,7 @@
           mu,
           sf,
           at,
+          openid: this.openid
         }
         this.$api.statistics(data)
       },
@@ -182,7 +188,10 @@
 <style lang="scss" scoped>
   @import url("../../components/gaoyia-parse/parse.css");
   
-  image{
+  image, img{
+    max-width: 100%;
+  }
+  .dm-detail-content view /deep/ img{
     max-width: 100%;
   }
 </style>

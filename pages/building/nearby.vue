@@ -2,7 +2,6 @@
   view.nearby
     web-view(:src="tecentMap" v-if="showMap")
     scroll-view(scroll-x="true").nearby-bar.font-align-center
-      view {{showMap}}
       view.nearby-bar-item(v-for="(item, index) in nearby" @tap="changeIndex(index)" :class="{active: currIndex === index}")
         text.iconfont.margin-r-8(decode :style="{color: item.color}") {{unicodeToZh(item.icon)}}
         |{{item.name}}

@@ -7,7 +7,7 @@ import {generateGetUrl} from './index'
  * @returns {Promise}
  */
 function agencyRed(mu, dmid, id_push_log, openid) {
-  if (!mu || !dmid || !id_push_log || !openid) return Promise.reject()
+  if (!mu || !dmid || !Number(id_push_log) || !openid) return Promise.reject()
   
   return http.request({
     method: 'post',
