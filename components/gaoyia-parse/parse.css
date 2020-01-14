@@ -19,6 +19,9 @@
 	line-height: 1.5;
 	font-size: 1em;
 	text-align:justify;/* //左右两端对齐 */
+  max-width: 100%;
+  
+  overflow-x: hidden; /*新增:解决X轴可滑动问题*/
 }
 .wxParse view ,.wxParse uni-view{
 	word-break: break-word;

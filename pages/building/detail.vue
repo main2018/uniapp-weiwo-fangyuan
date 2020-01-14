@@ -163,7 +163,10 @@
       },
       tags() {
         const {building_status, building_type, feature_arr} = this.building && this.building.building_info || {}
-        return [building_status, building_type, ...feature_arr]
+        const arr = [...feature_arr]
+        building_status && arr.push(building_status)
+        building_type && arr.push(building_type)
+        return arr
       },
       covers() {
         if (!this.latlng) return []

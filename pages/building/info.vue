@@ -52,7 +52,7 @@
               @click="certificateShow(index)"
               )
             view.aux.ellipsis.font-size-28 《{{item.title}}》
-      view.container.mod-bg
+      view.container.mod-bg(v-show="habitDms && habitDms.length")
         view.title 看了又看
         card(
           v-for="item in habitDms"
@@ -343,7 +343,8 @@
     margin-right: 20rpx;
     margin-bottom: 40rpx;
     .x-form-label {
-      width: 160rpx;
+      // width: 160rpx;
+      width: 5em;
       margin-right: 10rpx;
       white-space: nowrap;
       overflow: hidden;

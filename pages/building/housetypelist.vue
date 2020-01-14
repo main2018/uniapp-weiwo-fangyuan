@@ -30,7 +30,7 @@
                   text.font-size-24 建面{{item.area_built+(item.area_built && item.orientations? '/': '')+item.orientations}}
                 view.margin-b-12.font-align-right
                   //- text.font-color-red.font-size-24 转发
-    view.padding-40
+    view.padding-40(v-show="habitDms && habitDms.length")
       view.building-detail-item-title.flex.margin-b-40.font-size-36
         text.flex-1 看了又看
       card(

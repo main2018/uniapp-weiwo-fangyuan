@@ -33,7 +33,7 @@
 		</scroll-view>
     
     <uni-popup ref="popup" type="center">
-      <video :src="$baseUrl + list[currentIndex].list[selectIndex].picture" controls v-if="list && list.length"></video>
+      <video :src="$baseUrl + videoUrl" controls v-if="list && list.length"></video>
     </uni-popup>
 	</view>
 </template>
@@ -69,6 +69,7 @@
     },
 		data() {
 			return {
+        videoUrl: '',
         timer: null,
         isClick: false,
 				sizeCalcState: false,
@@ -93,6 +94,8 @@
         isImg ? this.preImg(list, id) : this.preVideo(list, id)
       },
       preVideo(list, id) {
+        const index = list.findIndex(item => item.id == id)
+        this.videoUrl = list[index].picture
         this.toggleOpen(true)
       },
       // 放大图片

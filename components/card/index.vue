@@ -9,7 +9,7 @@
         image(:src="$baseUrl + data.cover" mode="aspectFill")
       view.flex-1
         view.margin-b-10 {{data.name_project}}
-        view.margin-b-5.font-size-28.font-color-red {{data.average_price}}/㎡
+        view.margin-b-5.font-size-28.font-color-red {{data.average_price}}
         view.font-size-24.font-color-grey(v-show="data.room_num && data.area_built")
           |{{data.county_name}} {{data.city_name}}/
           |{{data.room_num}} {{data.area_built}}

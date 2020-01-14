@@ -13,7 +13,7 @@
   	:mode="node.attr.mode"
   	:lazy-load="node.attr.lazyLoad"
   	:class="node.classStr"
-  	:style="newStyleStr || node.styleStr"
+  	:style="(newStyleStr || node.styleStr) + `opacity: ${isReady ? 1 : 0}`"
   	:data-src="src"
   	:src="src"
   	@tap="wxParseImgTap"
@@ -27,7 +27,8 @@ export default {
 	data() {
 		return {
 			newStyleStr: '',
-			preview: true
+			preview: true,
+      isReady: false
 		};
 	},
 	inject: ['parseWidth'],
@@ -75,8 +76,11 @@ export default {
 			const { styleStr } = this.node;
 			const imageHeightStyle = mode === 'widthFix' ? '' : `height: ${imageheight}px;`;
 
-			this.newStyleStr = `${styleStr}; ${imageHeightStyle}; width: ${imageWidth}px; padding: 0 ${+padding}px;`;//删除padding
-			// this.newStyleStr = `${styleStr}; ${imageHeightStyle}; width: ${imageWidth}px;`;
+			// this.newStyleStr = `${styleStr}; ${imageHeightStyle}; width: ${imageWidth}px; padding: 0 ${+padding}px;`;//删除padding
+			this.newStyleStr = `${styleStr}; ${imageHeightStyle}; width: ${imageWidth}px; max-width: 100%; padding: 0 ${+padding}px;`;//删除padding
+			// console.log('newStyleStr', this.newStyleStr)
+      this.isReady = true
+      // this.newStyleStr = `${styleStr}; ${imageHeightStyle}; width: ${imageWidth}px;`;
 		},
 		// 计算视觉优先的图片宽高
 		wxAutoImageCal(originalWidth, originalHeight) {
