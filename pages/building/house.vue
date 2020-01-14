@@ -126,6 +126,7 @@
     },
     methods: {
       agencyRed() {
+        if (!this.openid) return
         this.$nextTick(() => {
           const {mu, dmid, id_push_log} = this.option || {}
           this.$api.agencyRed(mu, dmid, id_push_log, this.openid)

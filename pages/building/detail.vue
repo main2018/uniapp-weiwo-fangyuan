@@ -262,6 +262,8 @@
             const latlng = await this.$api.convertCoordinate(lat, lng)
             this.latlng = latlng
             this.loading = false
+            
+            this.$setTitle(this.building.building_info && this.building.building_info.name_project)
           })
           this.$api.getHxDms(id, mu, sf, at).then(({list}) => {
             // this.detail = data
@@ -305,6 +307,7 @@
       // this.$api.getHabitDms(id, mu, sf, at).then(({list}) => {
       //   this.habitDms = list
       // })
+      
     },
     async onReady() {
     },

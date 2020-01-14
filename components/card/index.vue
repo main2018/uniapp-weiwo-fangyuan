@@ -10,12 +10,12 @@
       view.flex-1
         view.margin-b-10 {{data.name_project}}
         view.margin-b-5.font-size-28.font-color-red {{data.average_price}}
-        view.font-size-24.font-color-grey(v-show="data.room_num && data.area_built")
+        view.font-size-24.font-color-grey.margin-b-4(v-show="data.room_num && data.area_built")
           |{{data.county_name}} {{data.city_name}}/
           |{{data.room_num}} {{data.area_built}}
-        view.btn.btn-sm(
+        view.btn.btn-sm.btn-grey(
           v-for="item, index in tags"
-          :class="index == 0 ? 'btn-danger' : 'btn-grey'"
+          v-show="index < 4"
           ) {{item}}
     view.card-bottom.flex.center.margin-t-18(v-show="data.markedness")
       text.iconfont.font-color-primary.margin-r-10 &#xe605;
@@ -43,8 +43,8 @@
     },
     computed: {
       tags() {
-        const {building_status, building_type} = this.data || {}
-        return [building_status, building_type].filter(item => item)
+        const {building_status, building_type, feature_arr = []} = this.data || {}
+        return [...feature_arr, building_status, building_type].filter(item => item)
       }
     },
     methods: {

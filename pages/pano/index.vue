@@ -617,6 +617,7 @@
     /* 在 `methods` 对象中定义方法 */
     methods: {
       agencyRed() {
+        if (!this.openid) return
         this.$nextTick(() => {
           const {mu, dmid, id_push_log} = this.option || {}
           this.$api.agencyRed(mu, dmid, id_push_log, this.openid)

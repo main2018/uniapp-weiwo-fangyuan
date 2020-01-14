@@ -10,6 +10,16 @@ function $showToast(obj) {
   })
 }
 
+function $setTitle(title) {
+  // ifdef H5
+  document.title = title
+  // endif
+}
+
+
+
 export default {
-  $showToast
+  $showToast,
+  
+  $setTitle
 }

@@ -143,9 +143,8 @@
          }
         this.projectDataFull = data
         this.projectData = data.project_data
-        uni.setNavigationBarTitle({
-          title: data.project_data && data.project_data.name_project
-        });
+        
+        this.$setTitle(data.project_data && data.project_data.name_project)
         const {lat, lng} = this.projectData || {}
         const latlng = await this.$api.convertCoordinate(lat, lng)
         this.latlng = latlng

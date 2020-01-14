@@ -64,9 +64,20 @@ function getSpecialDms(id, mu, sf, at) {
 
 // 看了又看
 function getHabitDms(id, mu, sf, at) {
-  return http.request({
-    method: 'get',
-    url: generateGetUrl(`site/${id}/agency_enshrine_building`, {mu, sf, at})
+  // return http.request({
+  //   method: 'get',
+  //   url: generateGetUrl(`site/${id}/agency_enshrine_building`, {mu, sf, at})
+  // })
+  return new Promise(resolve => {
+    const len = 3 // 显示的长度
+    http.request({
+      method: 'get',
+      url: generateGetUrl(`site/${id}/agency_enshrine_building`, {mu, sf, at})
+    })
+      .then(res => {
+        if (res && res.list) res.list = res.list.slice(0, len)
+        resolve(res)
+      })
   })
 }
 

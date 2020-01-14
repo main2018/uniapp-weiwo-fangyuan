@@ -59,6 +59,7 @@
     },
     methods: {
       agencyRed() {
+        if (!this.openid) return
         this.$nextTick(() => {
           const {mu, dmid, id_push_log} = this.option || {}
           this.$api.agencyRed(mu, dmid, id_push_log, this.openid)
@@ -145,8 +146,14 @@
       this.$api.dmDetail(dmid, mu, sf, at).then( data =>{
         this.DmDetailInfo = data.info
         uni.setNavigationBarTitle({
-          title: data.info && data.info.title
+          title: data.info && data.info.title,
+          complete() {
+          }
         });
+        // ifdef H5
+        document.title = data.info && data.info.name_project
+        // endif
+        
         // 楼盘详情
         this.$api.getPresentBuildingDetail(this.DmDetailInfo.did, mu, sf, at).then(async data => {
           this.building = data.info || {}
