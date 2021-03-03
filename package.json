@@ -6,7 +6,7 @@
   "dependencies": {
     "@dcloudio/uni-ui": "^1.0.8",
     "jweixin-module": "^1.6.0",
-    "pug": "^2.0.4",
+    "pug": "^3.0.1",
     "pug-cli": "^1.0.0-alpha6",
     "pug-loader": "^2.4.0"
   },
